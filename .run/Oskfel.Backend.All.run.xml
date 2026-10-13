@@ -1,0 +1,23 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Oskfel.Backend.All" type="CompoundRunConfigurationType">
+    <toRun name="Intowork.ActiveWork.API: http" type="LaunchSettings" />
+    <toRun name="Intowork.ActiveWork.Background: http" type="LaunchSettings" />
+    <toRun name="Intowork.Attendance.API: http" type="LaunchSettings" />
+    <toRun name="Intowork.Attendance.Background: http" type="LaunchSettings" />
+    <toRun name="Intowork.Customers.API: http" type="LaunchSettings" />
+    <toRun name="Intowork.Forecasting.API: http" type="LaunchSettings" />
+    <toRun name="Intowork.Forecasting.Background: http" type="LaunchSettings" />
+    <toRun name="Intowork.HandoverService.API: http" type="LaunchSettings" />
+    <toRun name="Intowork.HandoverService.Background: http" type="LaunchSettings" />
+    <toRun name="Intowork.Inspections.API: http" type="LaunchSettings" />
+    <toRun name="Intowork.Inspections.Background: http" type="LaunchSettings" />
+    <toRun name="Intowork.Jobs.API: http" type="LaunchSettings" />
+    <toRun name="Intowork.Jobs.BackgroundService: http" type="LaunchSettings" />
+    <toRun name="Intowork.MaterialsService.API: http" type="LaunchSettings" />
+    <toRun name="Intowork.NotificationService.API: http" type="LaunchSettings" />
+    <toRun name="Intowork.Permissions.API: http" type="LaunchSettings" />
+    <toRun name="Intowork.Resources.API: http" type="LaunchSettings" />
+    <toRun name="Intowork.Resources.Background: http" type="LaunchSettings" />
+    <method v="2" />
+  </configuration>
+</component>

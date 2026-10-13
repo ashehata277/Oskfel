@@ -1,0 +1,4163 @@
+{
+    "_id" : ObjectId("644795c7ebc4521eaf3f4d99"),
+    "sectionId" : "58a31d5a-6027-4a71-b6b8-3cbe8fb6b758",
+    "jobId" : ObjectId("609f84c17a4cc1c0b0efdd7e"),
+    "name" : "Plots 178-179 (Ludlow Render)",
+    "teamName" : "framework",
+    "items" : [
+        {
+            "itemId" : "bf6af6f2-bffe-4614-a82b-aa51a3beeefb",
+            "pricedItem" : {
+                "_id" : null,
+                "category" : "External",
+                "fullName" : "Putlog Blocking Lift, > 1.8m progressive, 4 + 2 boards",
+                "name" : "4 + 2 boards",
+                "costs" : [
+                    {
+                        "name" : "Consumable",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Preliminaries",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Labour",
+                        "value" : "2.5"
+                    },
+                    {
+                        "name" : "Plant",
+                        "value" : "0.15"
+                    }
+                ],
+                "children" : [
+
+                ],
+                "breakdown" : [
+                    {
+                        "name" : "Tube Weight",
+                        "quantity" : "1",
+                        "weight" : "18.06"
+                    },
+                    {
+                        "name" : "Boards Weight",
+                        "quantity" : "1",
+                        "weight" : "0"
+                    },
+                    {
+                        "name" : "Fittings Weight",
+                        "quantity" : "1",
+                        "weight" : "7.52"
+                    }
+                ],
+                "units" : {
+                    "_id" : ObjectId("67ea73bab10c6ff12e072f8a"),
+                    "teamName" : "framework",
+                    "name" : "Metre",
+                    "displayName" : "m"
+                },
+                "strikeRate" : "0",
+                "duty" : "General Purpose",
+                "profit" : "162.18",
+                "floor" : null,
+                "labour" : "0",
+                "plant" : "0",
+                "consumable" : "0",
+                "weight" : "0",
+                "linear" : false,
+                "strike" : "0",
+                "pricedMaterials" : null,
+                "prelim" : "0",
+                "labourPrelim" : false
+            },
+            "unpricedItem" : null,
+            "quantity" : "50.88",
+            "quantityFormula" : "50.88",
+            "start" : NumberInt(0),
+            "end" : NumberInt(12),
+            "strikeRate" : "50",
+            "duty" : "General Purpose",
+            "floor" : "Ground",
+            "narrative" : "Perimeter Scaffold",
+            "extras" : [
+
+            ],
+            "itemExtras" : [
+
+            ],
+            "priceTotals" : {
+                "totalLabour" : "190.8",
+                "totalPlant" : NumberDecimal("91.59"),
+                "totalConsumable" : NumberDecimal("0"),
+                "totalTransport" : "0",
+                "totalWeight" : NumberDecimal("1301.5104"),
+                "totalPreliminaries" : NumberDecimal("0"),
+                "totalProfit" : "0",
+                "overhead" : "149.10192",
+                "extraTotal" : "0",
+                "totalPrice" : "1131.29",
+                "totalLabourUnadjusted" : "190.8",
+                "totalPlantUnadjusted" : "91.59",
+                "totalConsumableUnadjusted" : "0",
+                "totalTransportUnadjusted" : "0",
+                "totalPreliminariesUnadjusted" : "0",
+                "totalPriceUnadjusted" : "431.49192",
+                "totalErect" : "0",
+                "totalStrike" : "0",
+                "lineProfitPercent" : "0",
+                "lineProfit" : "0",
+                "subTotal" : "0",
+                "adjustedSubtotal" : "0",
+                "companyOverheadMarkup" : "0",
+                "companyProfitMarkup" : "0",
+                "preNegotiatedPrice" : "0",
+                "preAdjustedProfit" : "0",
+                "preAdjustedPriceToClient" : "0",
+                "preGlobalAdjustLabour" : "0",
+                "preGlobalAdjustPlant" : "0",
+                "preGlobalAdjustConsumable" : "0",
+                "preGlobalAdjustTransport" : "0",
+                "preGlobalAdjustPreliminaries" : "0",
+                "preGlobalAdjustProfit" : "0",
+                "preGlobalAdjustSubtotal" : "0",
+                "totalPrelimLabour" : "0",
+                "totalWeightUnadjusted" : "1301.5104",
+                "overHireRate" : NumberDecimal("0.03"),
+                "weeklyOverHire" : NumberDecimal("33.9387")
+            },
+            "adjustments" : [
+                {
+                    "bracketName" : "Labour",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Plant",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Consumable",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Preliminaries",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Transport",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Profit",
+                    "value" : "0"
+                }
+            ],
+            "globalAdjustments" : null,
+            "profit" : "0",
+            "itemProfitPercentage" : "162.18",
+            "hasSEPhases" : true,
+            "includeTransport" : true,
+            "clientHandover" : false,
+            "createItw" : false,
+            "spreadCost" : false,
+            "internalItem" : false,
+            "complete" : false,
+            "includeProjectDiscount" : true,
+            "isDaywork" : false,
+            "variationForSectionId" : null
+        },
+        {
+            "itemId" : "506b6b56-6b4c-4e31-8e0a-ed37f8822c30",
+            "pricedItem" : {
+                "_id" : null,
+                "category" : "External",
+                "fullName" : "1st Lift Access Scaffold, > 1.8m progressive, 4 + 2 boards",
+                "name" : "4 + 2 boards",
+                "costs" : [
+                    {
+                        "name" : "Consumable",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Preliminaries",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Labour",
+                        "value" : "4.32"
+                    },
+                    {
+                        "name" : "Plant",
+                        "value" : "0.4"
+                    }
+                ],
+                "children" : [
+
+                ],
+                "breakdown" : [
+                    {
+                        "name" : "Tube Weight",
+                        "quantity" : "1",
+                        "weight" : "43.4"
+                    },
+                    {
+                        "name" : "Boards Weight",
+                        "quantity" : "1",
+                        "weight" : "40.21"
+                    },
+                    {
+                        "name" : "Fittings Weight",
+                        "quantity" : "1",
+                        "weight" : "9.93"
+                    }
+                ],
+                "units" : {
+                    "_id" : ObjectId("67ea73bab10c6ff12e072f8a"),
+                    "teamName" : "framework",
+                    "name" : "Metre",
+                    "displayName" : "m"
+                },
+                "strikeRate" : "0",
+                "duty" : "General Purpose",
+                "profit" : "0",
+                "floor" : null,
+                "labour" : "0",
+                "plant" : "0",
+                "consumable" : "0",
+                "weight" : "0",
+                "linear" : false,
+                "strike" : "0",
+                "pricedMaterials" : null,
+                "prelim" : "0",
+                "labourPrelim" : false
+            },
+            "unpricedItem" : null,
+            "quantity" : "50.88",
+            "quantityFormula" : "50.88",
+            "start" : NumberInt(0),
+            "end" : NumberInt(12),
+            "strikeRate" : "50",
+            "duty" : "General Purpose",
+            "floor" : "Ground",
+            "narrative" : "Perimeter Scaffold",
+            "extras" : [
+
+            ],
+            "itemExtras" : [
+
+            ],
+            "priceTotals" : {
+                "totalLabour" : "329.71",
+                "totalPlant" : NumberDecimal("244.23"),
+                "totalConsumable" : NumberDecimal("0"),
+                "totalTransport" : "0",
+                "totalWeight" : NumberDecimal("4759.3152"),
+                "totalPreliminaries" : NumberDecimal("0"),
+                "totalProfit" : "0",
+                "overhead" : "303.04032",
+                "extraTotal" : "0",
+                "totalPrice" : "876.99",
+                "totalLabourUnadjusted" : "329.71",
+                "totalPlantUnadjusted" : "244.23",
+                "totalConsumableUnadjusted" : "0",
+                "totalTransportUnadjusted" : "0",
+                "totalPreliminariesUnadjusted" : "0",
+                "totalPriceUnadjusted" : "876.9803199999999",
+                "totalErect" : "0",
+                "totalStrike" : "0",
+                "lineProfitPercent" : "0",
+                "lineProfit" : "0",
+                "subTotal" : "0",
+                "adjustedSubtotal" : "0",
+                "companyOverheadMarkup" : "0",
+                "companyProfitMarkup" : "0",
+                "preNegotiatedPrice" : "0",
+                "preAdjustedProfit" : "0",
+                "preAdjustedPriceToClient" : "0",
+                "preGlobalAdjustLabour" : "0",
+                "preGlobalAdjustPlant" : "0",
+                "preGlobalAdjustConsumable" : "0",
+                "preGlobalAdjustTransport" : "0",
+                "preGlobalAdjustPreliminaries" : "0",
+                "preGlobalAdjustProfit" : "0",
+                "preGlobalAdjustSubtotal" : "0",
+                "totalPrelimLabour" : "0",
+                "totalWeightUnadjusted" : "4759.3152",
+                "overHireRate" : NumberDecimal("0.03"),
+                "weeklyOverHire" : NumberDecimal("26.3097")
+            },
+            "adjustments" : [
+                {
+                    "bracketName" : "Labour",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Plant",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Consumable",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Preliminaries",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Transport",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Profit",
+                    "value" : "0"
+                }
+            ],
+            "globalAdjustments" : null,
+            "profit" : "0",
+            "itemProfitPercentage" : "0",
+            "hasSEPhases" : true,
+            "includeTransport" : true,
+            "clientHandover" : false,
+            "createItw" : false,
+            "spreadCost" : false,
+            "internalItem" : false,
+            "complete" : false,
+            "includeProjectDiscount" : true,
+            "isDaywork" : false,
+            "variationForSectionId" : null
+        },
+        {
+            "itemId" : "49d9d052-981b-4413-9fb0-9d086daf242e",
+            "pricedItem" : {
+                "_id" : null,
+                "category" : "External",
+                "fullName" : "2nd Lift Access Scaffold, > 1.8m progressive, 4 + 2 boards",
+                "name" : "4 + 2 boards",
+                "costs" : [
+                    {
+                        "name" : "Consumable",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Preliminaries",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Labour",
+                        "value" : "3.3"
+                    },
+                    {
+                        "name" : "Plant",
+                        "value" : "0.24"
+                    }
+                ],
+                "children" : [
+
+                ],
+                "breakdown" : [
+                    {
+                        "name" : "Tube Weight",
+                        "quantity" : "1",
+                        "weight" : "35.65"
+                    },
+                    {
+                        "name" : "Boards Weight",
+                        "quantity" : "1",
+                        "weight" : "0"
+                    },
+                    {
+                        "name" : "Fittings Weight",
+                        "quantity" : "1",
+                        "weight" : "8.42"
+                    }
+                ],
+                "units" : {
+                    "_id" : ObjectId("67ea73bab10c6ff12e072f8a"),
+                    "teamName" : "framework",
+                    "name" : "Metre",
+                    "displayName" : "m"
+                },
+                "strikeRate" : "0",
+                "duty" : "General Purpose",
+                "profit" : "0",
+                "floor" : null,
+                "labour" : "0",
+                "plant" : "0",
+                "consumable" : "0",
+                "weight" : "0",
+                "linear" : false,
+                "strike" : "0",
+                "pricedMaterials" : null,
+                "prelim" : "0",
+                "labourPrelim" : false
+            },
+            "unpricedItem" : null,
+            "quantity" : "50.88",
+            "quantityFormula" : "50.88",
+            "start" : NumberInt(2),
+            "end" : NumberInt(12),
+            "strikeRate" : "50",
+            "duty" : "General Purpose",
+            "floor" : "1st",
+            "narrative" : "Perimeter Scaffold",
+            "extras" : [
+
+            ],
+            "itemExtras" : [
+
+            ],
+            "priceTotals" : {
+                "totalLabour" : "251.86",
+                "totalPlant" : NumberDecimal("122.12"),
+                "totalConsumable" : NumberDecimal("0"),
+                "totalTransport" : "0",
+                "totalWeight" : NumberDecimal("2242.2816000000003"),
+                "totalPreliminaries" : NumberDecimal("0"),
+                "totalProfit" : "0",
+                "overhead" : "197.46144",
+                "extraTotal" : "0",
+                "totalPrice" : "571.45",
+                "totalLabourUnadjusted" : "251.86",
+                "totalPlantUnadjusted" : "122.12",
+                "totalConsumableUnadjusted" : "0",
+                "totalTransportUnadjusted" : "0",
+                "totalPreliminariesUnadjusted" : "0",
+                "totalPriceUnadjusted" : "571.4414400000001",
+                "totalErect" : "0",
+                "totalStrike" : "0",
+                "lineProfitPercent" : "0",
+                "lineProfit" : "0",
+                "subTotal" : "0",
+                "adjustedSubtotal" : "0",
+                "companyOverheadMarkup" : "0",
+                "companyProfitMarkup" : "0",
+                "preNegotiatedPrice" : "0",
+                "preAdjustedProfit" : "0",
+                "preAdjustedPriceToClient" : "0",
+                "preGlobalAdjustLabour" : "0",
+                "preGlobalAdjustPlant" : "0",
+                "preGlobalAdjustConsumable" : "0",
+                "preGlobalAdjustTransport" : "0",
+                "preGlobalAdjustPreliminaries" : "0",
+                "preGlobalAdjustProfit" : "0",
+                "preGlobalAdjustSubtotal" : "0",
+                "totalPrelimLabour" : "0",
+                "totalWeightUnadjusted" : "2242.2816000000003",
+                "overHireRate" : NumberDecimal("0.03"),
+                "weeklyOverHire" : NumberDecimal("17.1435")
+            },
+            "adjustments" : [
+                {
+                    "bracketName" : "Labour",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Plant",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Consumable",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Preliminaries",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Transport",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Profit",
+                    "value" : "0"
+                }
+            ],
+            "globalAdjustments" : null,
+            "profit" : "0",
+            "itemProfitPercentage" : "0",
+            "hasSEPhases" : true,
+            "includeTransport" : true,
+            "clientHandover" : false,
+            "createItw" : false,
+            "spreadCost" : false,
+            "internalItem" : false,
+            "complete" : false,
+            "includeProjectDiscount" : true,
+            "isDaywork" : false,
+            "variationForSectionId" : null
+        },
+        {
+            "itemId" : "8959829c-d6b7-4c52-8b4d-e5d768b29646",
+            "pricedItem" : {
+                "_id" : null,
+                "category" : "External",
+                "fullName" : "3rd Lift Access Scaffold, > 1.8m progressive, 4 + 2 boards",
+                "name" : "4 + 2 boards",
+                "costs" : [
+                    {
+                        "name" : "Consumable",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Preliminaries",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Labour",
+                        "value" : "3.3"
+                    },
+                    {
+                        "name" : "Plant",
+                        "value" : "0.23"
+                    }
+                ],
+                "children" : [
+
+                ],
+                "breakdown" : [
+                    {
+                        "name" : "Tube Weight",
+                        "quantity" : "1",
+                        "weight" : "35.65"
+                    },
+                    {
+                        "name" : "Boards Weight",
+                        "quantity" : "1",
+                        "weight" : "0"
+                    },
+                    {
+                        "name" : "Fittings Weight",
+                        "quantity" : "1",
+                        "weight" : "8.42"
+                    }
+                ],
+                "units" : {
+                    "_id" : ObjectId("67ea73bab10c6ff12e072f8a"),
+                    "teamName" : "framework",
+                    "name" : "Metre",
+                    "displayName" : "m"
+                },
+                "strikeRate" : "0",
+                "duty" : "General Purpose",
+                "profit" : "0",
+                "floor" : null,
+                "labour" : "0",
+                "plant" : "0",
+                "consumable" : "0",
+                "weight" : "0",
+                "linear" : false,
+                "strike" : "0",
+                "pricedMaterials" : null,
+                "prelim" : "0",
+                "labourPrelim" : false
+            },
+            "unpricedItem" : null,
+            "quantity" : "50.88",
+            "quantityFormula" : "50.88",
+            "start" : NumberInt(4),
+            "end" : NumberInt(12),
+            "strikeRate" : "50",
+            "duty" : "General Purpose",
+            "floor" : "1st",
+            "narrative" : "Perimeter Scaffold",
+            "extras" : [
+
+            ],
+            "itemExtras" : [
+
+            ],
+            "priceTotals" : {
+                "totalLabour" : "251.86",
+                "totalPlant" : NumberDecimal("93.62"),
+                "totalConsumable" : NumberDecimal("0"),
+                "totalTransport" : "0",
+                "totalWeight" : NumberDecimal("2242.2816000000003"),
+                "totalPreliminaries" : NumberDecimal("0"),
+                "totalProfit" : "0",
+                "overhead" : "182.41344",
+                "extraTotal" : "0",
+                "totalPrice" : "527.9",
+                "totalLabourUnadjusted" : "251.86",
+                "totalPlantUnadjusted" : "93.62",
+                "totalConsumableUnadjusted" : "0",
+                "totalTransportUnadjusted" : "0",
+                "totalPreliminariesUnadjusted" : "0",
+                "totalPriceUnadjusted" : "527.89344",
+                "totalErect" : "0",
+                "totalStrike" : "0",
+                "lineProfitPercent" : "0",
+                "lineProfit" : "0",
+                "subTotal" : "0",
+                "adjustedSubtotal" : "0",
+                "companyOverheadMarkup" : "0",
+                "companyProfitMarkup" : "0",
+                "preNegotiatedPrice" : "0",
+                "preAdjustedProfit" : "0",
+                "preAdjustedPriceToClient" : "0",
+                "preGlobalAdjustLabour" : "0",
+                "preGlobalAdjustPlant" : "0",
+                "preGlobalAdjustConsumable" : "0",
+                "preGlobalAdjustTransport" : "0",
+                "preGlobalAdjustPreliminaries" : "0",
+                "preGlobalAdjustProfit" : "0",
+                "preGlobalAdjustSubtotal" : "0",
+                "totalPrelimLabour" : "0",
+                "totalWeightUnadjusted" : "2242.2816000000003",
+                "overHireRate" : NumberDecimal("0.03"),
+                "weeklyOverHire" : NumberDecimal("15.837")
+            },
+            "adjustments" : [
+                {
+                    "bracketName" : "Labour",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Plant",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Consumable",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Preliminaries",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Transport",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Profit",
+                    "value" : "0"
+                }
+            ],
+            "globalAdjustments" : null,
+            "profit" : "0",
+            "itemProfitPercentage" : "0",
+            "hasSEPhases" : true,
+            "includeTransport" : true,
+            "clientHandover" : false,
+            "createItw" : false,
+            "spreadCost" : false,
+            "internalItem" : false,
+            "complete" : false,
+            "includeProjectDiscount" : true,
+            "isDaywork" : false,
+            "variationForSectionId" : null
+        },
+        {
+            "itemId" : "268f4231-49d5-47ee-940f-9eb4e8f24a23",
+            "pricedItem" : {
+                "_id" : null,
+                "category" : "External",
+                "fullName" : "4th Lift Access Scaffold, > 1.8m progressive, 4 + 2 boards",
+                "name" : "4 + 2 boards",
+                "costs" : [
+                    {
+                        "name" : "Consumable",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Preliminaries",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Labour",
+                        "value" : "3.3"
+                    },
+                    {
+                        "name" : "Plant",
+                        "value" : "0.24"
+                    }
+                ],
+                "children" : [
+
+                ],
+                "breakdown" : [
+                    {
+                        "name" : "Tube Weight",
+                        "quantity" : "1",
+                        "weight" : "35.65"
+                    },
+                    {
+                        "name" : "Boards Weight",
+                        "quantity" : "1",
+                        "weight" : "0"
+                    },
+                    {
+                        "name" : "Fittings Weight",
+                        "quantity" : "1",
+                        "weight" : "8.42"
+                    }
+                ],
+                "units" : {
+                    "_id" : ObjectId("67ea73bab10c6ff12e072f8a"),
+                    "teamName" : "framework",
+                    "name" : "Metre",
+                    "displayName" : "m"
+                },
+                "strikeRate" : "0",
+                "duty" : "General Purpose",
+                "profit" : "0",
+                "floor" : null,
+                "labour" : "0",
+                "plant" : "0",
+                "consumable" : "0",
+                "weight" : "0",
+                "linear" : false,
+                "strike" : "0",
+                "pricedMaterials" : null,
+                "prelim" : "0",
+                "labourPrelim" : false
+            },
+            "unpricedItem" : null,
+            "quantity" : "50.88",
+            "quantityFormula" : "50.88",
+            "start" : NumberInt(6),
+            "end" : NumberInt(12),
+            "strikeRate" : "50",
+            "duty" : "General Purpose",
+            "floor" : "2nd",
+            "narrative" : "Perimeter Scaffold",
+            "extras" : [
+
+            ],
+            "itemExtras" : [
+
+            ],
+            "priceTotals" : {
+                "totalLabour" : "251.86",
+                "totalPlant" : NumberDecimal("73.27"),
+                "totalConsumable" : NumberDecimal("0"),
+                "totalTransport" : "0",
+                "totalWeight" : NumberDecimal("2242.2816000000003"),
+                "totalPreliminaries" : NumberDecimal("0"),
+                "totalProfit" : "0",
+                "overhead" : "171.66864",
+                "extraTotal" : "0",
+                "totalPrice" : "496.8",
+                "totalLabourUnadjusted" : "251.86",
+                "totalPlantUnadjusted" : "73.27",
+                "totalConsumableUnadjusted" : "0",
+                "totalTransportUnadjusted" : "0",
+                "totalPreliminariesUnadjusted" : "0",
+                "totalPriceUnadjusted" : "496.79864",
+                "totalErect" : "0",
+                "totalStrike" : "0",
+                "lineProfitPercent" : "0",
+                "lineProfit" : "0",
+                "subTotal" : "0",
+                "adjustedSubtotal" : "0",
+                "companyOverheadMarkup" : "0",
+                "companyProfitMarkup" : "0",
+                "preNegotiatedPrice" : "0",
+                "preAdjustedProfit" : "0",
+                "preAdjustedPriceToClient" : "0",
+                "preGlobalAdjustLabour" : "0",
+                "preGlobalAdjustPlant" : "0",
+                "preGlobalAdjustConsumable" : "0",
+                "preGlobalAdjustTransport" : "0",
+                "preGlobalAdjustPreliminaries" : "0",
+                "preGlobalAdjustProfit" : "0",
+                "preGlobalAdjustSubtotal" : "0",
+                "totalPrelimLabour" : "0",
+                "totalWeightUnadjusted" : "2242.2816000000003",
+                "overHireRate" : NumberDecimal("0.03"),
+                "weeklyOverHire" : NumberDecimal("14.904")
+            },
+            "adjustments" : [
+                {
+                    "bracketName" : "Labour",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Plant",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Consumable",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Preliminaries",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Transport",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Profit",
+                    "value" : "0"
+                }
+            ],
+            "globalAdjustments" : null,
+            "profit" : "0",
+            "itemProfitPercentage" : "0",
+            "hasSEPhases" : true,
+            "includeTransport" : true,
+            "clientHandover" : false,
+            "createItw" : false,
+            "spreadCost" : false,
+            "internalItem" : false,
+            "complete" : false,
+            "includeProjectDiscount" : true,
+            "isDaywork" : false,
+            "variationForSectionId" : null
+        },
+        {
+            "itemId" : "d0967306-a661-4c87-bc6a-dcb466bb4fc9",
+            "pricedItem" : {
+                "_id" : null,
+                "category" : "External",
+                "fullName" : "1st Lift Access Scaffold, > 1.8m progressive, 4 + 2 boards",
+                "name" : "4 + 2 boards",
+                "costs" : [
+                    {
+                        "name" : "Consumable",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Preliminaries",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Labour",
+                        "value" : "4.32"
+                    },
+                    {
+                        "name" : "Plant",
+                        "value" : "0.4"
+                    }
+                ],
+                "children" : [
+
+                ],
+                "breakdown" : [
+                    {
+                        "name" : "Tube Weight",
+                        "quantity" : "1",
+                        "weight" : "43.4"
+                    },
+                    {
+                        "name" : "Boards Weight",
+                        "quantity" : "1",
+                        "weight" : "40.21"
+                    },
+                    {
+                        "name" : "Fittings Weight",
+                        "quantity" : "1",
+                        "weight" : "9.93"
+                    }
+                ],
+                "units" : {
+                    "_id" : ObjectId("67ea73bab10c6ff12e072f8a"),
+                    "teamName" : "framework",
+                    "name" : "Metre",
+                    "displayName" : "m"
+                },
+                "strikeRate" : "0",
+                "duty" : "General Purpose",
+                "profit" : "0",
+                "floor" : null,
+                "labour" : "0",
+                "plant" : "0",
+                "consumable" : "0",
+                "weight" : "0",
+                "linear" : false,
+                "strike" : "0",
+                "pricedMaterials" : null,
+                "prelim" : "0",
+                "labourPrelim" : false
+            },
+            "unpricedItem" : null,
+            "quantity" : "4",
+            "quantityFormula" : "4",
+            "start" : NumberInt(0),
+            "end" : NumberInt(12),
+            "strikeRate" : "50",
+            "duty" : "General Purpose",
+            "floor" : "Ground",
+            "narrative" : "Ladder Access Tower",
+            "extras" : [
+
+            ],
+            "itemExtras" : [
+
+            ],
+            "priceTotals" : {
+                "totalLabour" : "25.92",
+                "totalPlant" : NumberDecimal("19.2"),
+                "totalConsumable" : NumberDecimal("0"),
+                "totalTransport" : "0",
+                "totalWeight" : NumberDecimal("374.15999999999997"),
+                "totalPreliminaries" : NumberDecimal("0"),
+                "totalProfit" : "0",
+                "overhead" : "23.823360000000005",
+                "extraTotal" : "0",
+                "totalPrice" : "68.95",
+                "totalLabourUnadjusted" : "25.92",
+                "totalPlantUnadjusted" : "19.2",
+                "totalConsumableUnadjusted" : "0",
+                "totalTransportUnadjusted" : "0",
+                "totalPreliminariesUnadjusted" : "0",
+                "totalPriceUnadjusted" : "68.94336000000001",
+                "totalErect" : "0",
+                "totalStrike" : "0",
+                "lineProfitPercent" : "0",
+                "lineProfit" : "0",
+                "subTotal" : "0",
+                "adjustedSubtotal" : "0",
+                "companyOverheadMarkup" : "0",
+                "companyProfitMarkup" : "0",
+                "preNegotiatedPrice" : "0",
+                "preAdjustedProfit" : "0",
+                "preAdjustedPriceToClient" : "0",
+                "preGlobalAdjustLabour" : "0",
+                "preGlobalAdjustPlant" : "0",
+                "preGlobalAdjustConsumable" : "0",
+                "preGlobalAdjustTransport" : "0",
+                "preGlobalAdjustPreliminaries" : "0",
+                "preGlobalAdjustProfit" : "0",
+                "preGlobalAdjustSubtotal" : "0",
+                "totalPrelimLabour" : "0",
+                "totalWeightUnadjusted" : "374.15999999999997",
+                "overHireRate" : NumberDecimal("0.03"),
+                "weeklyOverHire" : NumberDecimal("2.0685")
+            },
+            "adjustments" : [
+                {
+                    "bracketName" : "Labour",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Plant",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Consumable",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Preliminaries",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Transport",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Profit",
+                    "value" : "0"
+                }
+            ],
+            "globalAdjustments" : null,
+            "profit" : "0",
+            "itemProfitPercentage" : "0",
+            "hasSEPhases" : true,
+            "includeTransport" : true,
+            "clientHandover" : false,
+            "createItw" : false,
+            "spreadCost" : false,
+            "internalItem" : false,
+            "complete" : false,
+            "includeProjectDiscount" : true,
+            "isDaywork" : false,
+            "variationForSectionId" : null
+        },
+        {
+            "itemId" : "4475c1b2-f860-40f0-a2de-e1bae8164d2d",
+            "pricedItem" : {
+                "_id" : null,
+                "category" : "External",
+                "fullName" : "2nd Lift Access Scaffold, > 1.8m progressive, 4 + 2 boards",
+                "name" : "4 + 2 boards",
+                "costs" : [
+                    {
+                        "name" : "Consumable",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Preliminaries",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Labour",
+                        "value" : "3.3"
+                    },
+                    {
+                        "name" : "Plant",
+                        "value" : "0.24"
+                    }
+                ],
+                "children" : [
+
+                ],
+                "breakdown" : [
+                    {
+                        "name" : "Tube Weight",
+                        "quantity" : "1",
+                        "weight" : "35.65"
+                    },
+                    {
+                        "name" : "Boards Weight",
+                        "quantity" : "1",
+                        "weight" : "0"
+                    },
+                    {
+                        "name" : "Fittings Weight",
+                        "quantity" : "1",
+                        "weight" : "8.42"
+                    }
+                ],
+                "units" : {
+                    "_id" : ObjectId("67ea73bab10c6ff12e072f8a"),
+                    "teamName" : "framework",
+                    "name" : "Metre",
+                    "displayName" : "m"
+                },
+                "strikeRate" : "0",
+                "duty" : "General Purpose",
+                "profit" : "0",
+                "floor" : null,
+                "labour" : "0",
+                "plant" : "0",
+                "consumable" : "0",
+                "weight" : "0",
+                "linear" : false,
+                "strike" : "0",
+                "pricedMaterials" : null,
+                "prelim" : "0",
+                "labourPrelim" : false
+            },
+            "unpricedItem" : null,
+            "quantity" : "4",
+            "quantityFormula" : "4",
+            "start" : NumberInt(2),
+            "end" : NumberInt(12),
+            "strikeRate" : "50",
+            "duty" : "General Purpose",
+            "floor" : "1st",
+            "narrative" : "Ladder Access Tower",
+            "extras" : [
+
+            ],
+            "itemExtras" : [
+
+            ],
+            "priceTotals" : {
+                "totalLabour" : "19.8",
+                "totalPlant" : NumberDecimal("9.6"),
+                "totalConsumable" : NumberDecimal("0"),
+                "totalTransport" : "0",
+                "totalWeight" : NumberDecimal("176.28"),
+                "totalPreliminaries" : NumberDecimal("0"),
+                "totalProfit" : "0",
+                "overhead" : "15.5232",
+                "extraTotal" : "0",
+                "totalPrice" : "44.93",
+                "totalLabourUnadjusted" : "19.8",
+                "totalPlantUnadjusted" : "9.6",
+                "totalConsumableUnadjusted" : "0",
+                "totalTransportUnadjusted" : "0",
+                "totalPreliminariesUnadjusted" : "0",
+                "totalPriceUnadjusted" : "44.923199999999994",
+                "totalErect" : "0",
+                "totalStrike" : "0",
+                "lineProfitPercent" : "0",
+                "lineProfit" : "0",
+                "subTotal" : "0",
+                "adjustedSubtotal" : "0",
+                "companyOverheadMarkup" : "0",
+                "companyProfitMarkup" : "0",
+                "preNegotiatedPrice" : "0",
+                "preAdjustedProfit" : "0",
+                "preAdjustedPriceToClient" : "0",
+                "preGlobalAdjustLabour" : "0",
+                "preGlobalAdjustPlant" : "0",
+                "preGlobalAdjustConsumable" : "0",
+                "preGlobalAdjustTransport" : "0",
+                "preGlobalAdjustPreliminaries" : "0",
+                "preGlobalAdjustProfit" : "0",
+                "preGlobalAdjustSubtotal" : "0",
+                "totalPrelimLabour" : "0",
+                "totalWeightUnadjusted" : "176.28",
+                "overHireRate" : NumberDecimal("0.03"),
+                "weeklyOverHire" : NumberDecimal("1.3479")
+            },
+            "adjustments" : [
+                {
+                    "bracketName" : "Labour",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Plant",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Consumable",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Preliminaries",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Transport",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Profit",
+                    "value" : "0"
+                }
+            ],
+            "globalAdjustments" : null,
+            "profit" : "0",
+            "itemProfitPercentage" : "0",
+            "hasSEPhases" : true,
+            "includeTransport" : true,
+            "clientHandover" : false,
+            "createItw" : false,
+            "spreadCost" : false,
+            "internalItem" : false,
+            "complete" : false,
+            "includeProjectDiscount" : true,
+            "isDaywork" : false,
+            "variationForSectionId" : null
+        },
+        {
+            "itemId" : "8ba7eaf5-97ca-4b82-92c1-05c0d6fb3c21",
+            "pricedItem" : {
+                "_id" : null,
+                "category" : "Loading bays",
+                "fullName" : "1st Lift loading bay, > 1.8m progressive, no board config",
+                "name" : "no board config",
+                "costs" : [
+                    {
+                        "name" : "Consumable",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Preliminaries",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Labour",
+                        "value" : "46.75"
+                    },
+                    {
+                        "name" : "Plant",
+                        "value" : "6.32"
+                    }
+                ],
+                "children" : [
+
+                ],
+                "breakdown" : [
+                    {
+                        "name" : "Tube Weight",
+                        "quantity" : "1",
+                        "weight" : "590.05"
+                    },
+                    {
+                        "name" : "Boards Weight",
+                        "quantity" : "1",
+                        "weight" : "352.72"
+                    },
+                    {
+                        "name" : "Fittings Weight",
+                        "quantity" : "1",
+                        "weight" : "131.98"
+                    }
+                ],
+                "units" : {
+                    "_id" : ObjectId("67ea73bab10c6ff12e072f8c"),
+                    "teamName" : "framework",
+                    "name" : "Number",
+                    "displayName" : "no"
+                },
+                "strikeRate" : "0",
+                "duty" : "Heavy Duty",
+                "profit" : "0",
+                "floor" : null,
+                "labour" : "0",
+                "plant" : "0",
+                "consumable" : "0",
+                "weight" : "0",
+                "linear" : false,
+                "strike" : "0",
+                "pricedMaterials" : null,
+                "prelim" : "0",
+                "labourPrelim" : false
+            },
+            "unpricedItem" : null,
+            "quantity" : "1",
+            "quantityFormula" : "1",
+            "start" : NumberInt(0),
+            "end" : NumberInt(12),
+            "strikeRate" : "50",
+            "duty" : "Heavy Duty",
+            "floor" : "Ground",
+            "narrative" : "",
+            "extras" : [
+
+            ],
+            "itemExtras" : [
+
+            ],
+            "priceTotals" : {
+                "totalLabour" : "70.13",
+                "totalPlant" : NumberDecimal("75.84"),
+                "totalConsumable" : NumberDecimal("0"),
+                "totalTransport" : "0",
+                "totalWeight" : NumberDecimal("1074.75"),
+                "totalPreliminaries" : NumberDecimal("0"),
+                "totalProfit" : "0",
+                "overhead" : "77.07216",
+                "extraTotal" : "0",
+                "totalPrice" : "223.05",
+                "totalLabourUnadjusted" : "70.13",
+                "totalPlantUnadjusted" : "75.84",
+                "totalConsumableUnadjusted" : "0",
+                "totalTransportUnadjusted" : "0",
+                "totalPreliminariesUnadjusted" : "0",
+                "totalPriceUnadjusted" : "223.04216",
+                "totalErect" : "0",
+                "totalStrike" : "0",
+                "lineProfitPercent" : "0",
+                "lineProfit" : "0",
+                "subTotal" : "0",
+                "adjustedSubtotal" : "0",
+                "companyOverheadMarkup" : "0",
+                "companyProfitMarkup" : "0",
+                "preNegotiatedPrice" : "0",
+                "preAdjustedProfit" : "0",
+                "preAdjustedPriceToClient" : "0",
+                "preGlobalAdjustLabour" : "0",
+                "preGlobalAdjustPlant" : "0",
+                "preGlobalAdjustConsumable" : "0",
+                "preGlobalAdjustTransport" : "0",
+                "preGlobalAdjustPreliminaries" : "0",
+                "preGlobalAdjustProfit" : "0",
+                "preGlobalAdjustSubtotal" : "0",
+                "totalPrelimLabour" : "0",
+                "totalWeightUnadjusted" : "1074.75",
+                "overHireRate" : NumberDecimal("0.03"),
+                "weeklyOverHire" : NumberDecimal("6.6915")
+            },
+            "adjustments" : [
+                {
+                    "bracketName" : "Labour",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Plant",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Consumable",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Preliminaries",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Transport",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Profit",
+                    "value" : "0"
+                }
+            ],
+            "globalAdjustments" : null,
+            "profit" : "0",
+            "itemProfitPercentage" : "0",
+            "hasSEPhases" : true,
+            "includeTransport" : true,
+            "clientHandover" : false,
+            "createItw" : false,
+            "spreadCost" : false,
+            "internalItem" : false,
+            "complete" : false,
+            "includeProjectDiscount" : true,
+            "isDaywork" : false,
+            "variationForSectionId" : null
+        },
+        {
+            "itemId" : "902bcd21-7cb2-4a2f-939a-7dc9f979fbdc",
+            "pricedItem" : {
+                "_id" : null,
+                "category" : "Loading bays",
+                "fullName" : "2nd Lift loading bay, > 1.8m progressive, no board config",
+                "name" : "no board config",
+                "costs" : [
+                    {
+                        "name" : "Consumable",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Preliminaries",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Labour",
+                        "value" : "38.15"
+                    },
+                    {
+                        "name" : "Plant",
+                        "value" : "2.28"
+                    }
+                ],
+                "children" : [
+
+                ],
+                "breakdown" : [
+                    {
+                        "name" : "Tube Weight",
+                        "quantity" : "1",
+                        "weight" : "326.5"
+                    },
+                    {
+                        "name" : "Boards Weight",
+                        "quantity" : "1",
+                        "weight" : "0"
+                    },
+                    {
+                        "name" : "Fittings Weight",
+                        "quantity" : "1",
+                        "weight" : "95.46"
+                    }
+                ],
+                "units" : {
+                    "_id" : ObjectId("67ea73bab10c6ff12e072f8c"),
+                    "teamName" : "framework",
+                    "name" : "Number",
+                    "displayName" : "no"
+                },
+                "strikeRate" : "0",
+                "duty" : "Heavy Duty",
+                "profit" : "0",
+                "floor" : null,
+                "labour" : "0",
+                "plant" : "0",
+                "consumable" : "0",
+                "weight" : "0",
+                "linear" : false,
+                "strike" : "0",
+                "pricedMaterials" : null,
+                "prelim" : "0",
+                "labourPrelim" : false
+            },
+            "unpricedItem" : null,
+            "quantity" : "1",
+            "quantityFormula" : "1",
+            "start" : NumberInt(2),
+            "end" : NumberInt(12),
+            "strikeRate" : "50",
+            "duty" : "Heavy Duty",
+            "floor" : "1st",
+            "narrative" : "",
+            "extras" : [
+
+            ],
+            "itemExtras" : [
+
+            ],
+            "priceTotals" : {
+                "totalLabour" : "57.23",
+                "totalPlant" : NumberDecimal("22.8"),
+                "totalConsumable" : NumberDecimal("0"),
+                "totalTransport" : "0",
+                "totalWeight" : NumberDecimal("421.96"),
+                "totalPreliminaries" : NumberDecimal("0"),
+                "totalProfit" : "0",
+                "overhead" : "42.25584",
+                "extraTotal" : "0",
+                "totalPrice" : "122.29",
+                "totalLabourUnadjusted" : "57.23",
+                "totalPlantUnadjusted" : "22.8",
+                "totalConsumableUnadjusted" : "0",
+                "totalTransportUnadjusted" : "0",
+                "totalPreliminariesUnadjusted" : "0",
+                "totalPriceUnadjusted" : "122.28584000000001",
+                "totalErect" : "0",
+                "totalStrike" : "0",
+                "lineProfitPercent" : "0",
+                "lineProfit" : "0",
+                "subTotal" : "0",
+                "adjustedSubtotal" : "0",
+                "companyOverheadMarkup" : "0",
+                "companyProfitMarkup" : "0",
+                "preNegotiatedPrice" : "0",
+                "preAdjustedProfit" : "0",
+                "preAdjustedPriceToClient" : "0",
+                "preGlobalAdjustLabour" : "0",
+                "preGlobalAdjustPlant" : "0",
+                "preGlobalAdjustConsumable" : "0",
+                "preGlobalAdjustTransport" : "0",
+                "preGlobalAdjustPreliminaries" : "0",
+                "preGlobalAdjustProfit" : "0",
+                "preGlobalAdjustSubtotal" : "0",
+                "totalPrelimLabour" : "0",
+                "totalWeightUnadjusted" : "421.96",
+                "overHireRate" : NumberDecimal("0.03"),
+                "weeklyOverHire" : NumberDecimal("3.6687")
+            },
+            "adjustments" : [
+                {
+                    "bracketName" : "Labour",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Plant",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Consumable",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Preliminaries",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Transport",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Profit",
+                    "value" : "0"
+                }
+            ],
+            "globalAdjustments" : null,
+            "profit" : "0",
+            "itemProfitPercentage" : "0",
+            "hasSEPhases" : true,
+            "includeTransport" : true,
+            "clientHandover" : false,
+            "createItw" : false,
+            "spreadCost" : false,
+            "internalItem" : false,
+            "complete" : false,
+            "includeProjectDiscount" : true,
+            "isDaywork" : false,
+            "variationForSectionId" : null
+        },
+        {
+            "itemId" : "b5d835d6-955c-406b-b778-3433afbef0fc",
+            "pricedItem" : {
+                "_id" : null,
+                "category" : "Loading bays",
+                "fullName" : "3rd Lift loading bay, > 1.8m progressive, no board config",
+                "name" : "no board config",
+                "costs" : [
+                    {
+                        "name" : "Consumable",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Preliminaries",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Labour",
+                        "value" : "38.15"
+                    },
+                    {
+                        "name" : "Plant",
+                        "value" : "2.28"
+                    }
+                ],
+                "children" : [
+
+                ],
+                "breakdown" : [
+                    {
+                        "name" : "Tube Weight",
+                        "quantity" : "1",
+                        "weight" : "326.5"
+                    },
+                    {
+                        "name" : "Boards Weight",
+                        "quantity" : "1",
+                        "weight" : "0"
+                    },
+                    {
+                        "name" : "Fittings Weight",
+                        "quantity" : "1",
+                        "weight" : "95.46"
+                    }
+                ],
+                "units" : {
+                    "_id" : ObjectId("67ea73bab10c6ff12e072f8c"),
+                    "teamName" : "framework",
+                    "name" : "Number",
+                    "displayName" : "no"
+                },
+                "strikeRate" : "0",
+                "duty" : "Heavy Duty",
+                "profit" : "0",
+                "floor" : null,
+                "labour" : "0",
+                "plant" : "0",
+                "consumable" : "0",
+                "weight" : "0",
+                "linear" : false,
+                "strike" : "0",
+                "pricedMaterials" : null,
+                "prelim" : "0",
+                "labourPrelim" : false
+            },
+            "unpricedItem" : null,
+            "quantity" : "1",
+            "quantityFormula" : "1",
+            "start" : NumberInt(4),
+            "end" : NumberInt(12),
+            "strikeRate" : "50",
+            "duty" : "Heavy Duty",
+            "floor" : "1st",
+            "narrative" : "",
+            "extras" : [
+
+            ],
+            "itemExtras" : [
+
+            ],
+            "priceTotals" : {
+                "totalLabour" : "57.23",
+                "totalPlant" : NumberDecimal("18.24"),
+                "totalConsumable" : NumberDecimal("0"),
+                "totalTransport" : "0",
+                "totalWeight" : NumberDecimal("421.96"),
+                "totalPreliminaries" : NumberDecimal("0"),
+                "totalProfit" : "0",
+                "overhead" : "39.84816",
+                "extraTotal" : "0",
+                "totalPrice" : "115.32",
+                "totalLabourUnadjusted" : "57.23",
+                "totalPlantUnadjusted" : "18.24",
+                "totalConsumableUnadjusted" : "0",
+                "totalTransportUnadjusted" : "0",
+                "totalPreliminariesUnadjusted" : "0",
+                "totalPriceUnadjusted" : "115.31816",
+                "totalErect" : "0",
+                "totalStrike" : "0",
+                "lineProfitPercent" : "0",
+                "lineProfit" : "0",
+                "subTotal" : "0",
+                "adjustedSubtotal" : "0",
+                "companyOverheadMarkup" : "0",
+                "companyProfitMarkup" : "0",
+                "preNegotiatedPrice" : "0",
+                "preAdjustedProfit" : "0",
+                "preAdjustedPriceToClient" : "0",
+                "preGlobalAdjustLabour" : "0",
+                "preGlobalAdjustPlant" : "0",
+                "preGlobalAdjustConsumable" : "0",
+                "preGlobalAdjustTransport" : "0",
+                "preGlobalAdjustPreliminaries" : "0",
+                "preGlobalAdjustProfit" : "0",
+                "preGlobalAdjustSubtotal" : "0",
+                "totalPrelimLabour" : "0",
+                "totalWeightUnadjusted" : "421.96",
+                "overHireRate" : NumberDecimal("0.03"),
+                "weeklyOverHire" : NumberDecimal("3.4596")
+            },
+            "adjustments" : [
+                {
+                    "bracketName" : "Labour",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Plant",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Consumable",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Preliminaries",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Transport",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Profit",
+                    "value" : "0"
+                }
+            ],
+            "globalAdjustments" : null,
+            "profit" : "0",
+            "itemProfitPercentage" : "0",
+            "hasSEPhases" : true,
+            "includeTransport" : true,
+            "clientHandover" : false,
+            "createItw" : false,
+            "spreadCost" : false,
+            "internalItem" : false,
+            "complete" : false,
+            "includeProjectDiscount" : true,
+            "isDaywork" : false,
+            "variationForSectionId" : null
+        },
+        {
+            "itemId" : "1ce47970-6e1d-4cfa-8b28-94d65835c4aa",
+            "pricedItem" : {
+                "_id" : null,
+                "category" : "Loading bays",
+                "fullName" : "4th Lift loading bay, > 1.8m progressive, no board config",
+                "name" : "no board config",
+                "costs" : [
+                    {
+                        "name" : "Consumable",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Preliminaries",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Labour",
+                        "value" : "38.15"
+                    },
+                    {
+                        "name" : "Plant",
+                        "value" : "2.28"
+                    }
+                ],
+                "children" : [
+
+                ],
+                "breakdown" : [
+                    {
+                        "name" : "Tube Weight",
+                        "quantity" : "1",
+                        "weight" : "326.5"
+                    },
+                    {
+                        "name" : "Boards Weight",
+                        "quantity" : "1",
+                        "weight" : "0"
+                    },
+                    {
+                        "name" : "Fittings Weight",
+                        "quantity" : "1",
+                        "weight" : "95.46"
+                    }
+                ],
+                "units" : {
+                    "_id" : ObjectId("67ea73bab10c6ff12e072f8c"),
+                    "teamName" : "framework",
+                    "name" : "Number",
+                    "displayName" : "no"
+                },
+                "strikeRate" : "0",
+                "duty" : "Heavy Duty",
+                "profit" : "0",
+                "floor" : null,
+                "labour" : "0",
+                "plant" : "0",
+                "consumable" : "0",
+                "weight" : "0",
+                "linear" : false,
+                "strike" : "0",
+                "pricedMaterials" : null,
+                "prelim" : "0",
+                "labourPrelim" : false
+            },
+            "unpricedItem" : null,
+            "quantity" : "1",
+            "quantityFormula" : "1",
+            "start" : NumberInt(6),
+            "end" : NumberInt(12),
+            "strikeRate" : "50",
+            "duty" : "Heavy Duty",
+            "floor" : "2nd",
+            "narrative" : "",
+            "extras" : [
+
+            ],
+            "itemExtras" : [
+
+            ],
+            "priceTotals" : {
+                "totalLabour" : "57.23",
+                "totalPlant" : NumberDecimal("13.68"),
+                "totalConsumable" : NumberDecimal("0"),
+                "totalTransport" : "0",
+                "totalWeight" : NumberDecimal("421.96"),
+                "totalPreliminaries" : NumberDecimal("0"),
+                "totalProfit" : "0",
+                "overhead" : "37.44048",
+                "extraTotal" : "0",
+                "totalPrice" : "108.36",
+                "totalLabourUnadjusted" : "57.23",
+                "totalPlantUnadjusted" : "13.68",
+                "totalConsumableUnadjusted" : "0",
+                "totalTransportUnadjusted" : "0",
+                "totalPreliminariesUnadjusted" : "0",
+                "totalPriceUnadjusted" : "108.35048",
+                "totalErect" : "0",
+                "totalStrike" : "0",
+                "lineProfitPercent" : "0",
+                "lineProfit" : "0",
+                "subTotal" : "0",
+                "adjustedSubtotal" : "0",
+                "companyOverheadMarkup" : "0",
+                "companyProfitMarkup" : "0",
+                "preNegotiatedPrice" : "0",
+                "preAdjustedProfit" : "0",
+                "preAdjustedPriceToClient" : "0",
+                "preGlobalAdjustLabour" : "0",
+                "preGlobalAdjustPlant" : "0",
+                "preGlobalAdjustConsumable" : "0",
+                "preGlobalAdjustTransport" : "0",
+                "preGlobalAdjustPreliminaries" : "0",
+                "preGlobalAdjustProfit" : "0",
+                "preGlobalAdjustSubtotal" : "0",
+                "totalPrelimLabour" : "0",
+                "totalWeightUnadjusted" : "421.96",
+                "overHireRate" : NumberDecimal("0.03"),
+                "weeklyOverHire" : NumberDecimal("3.2508")
+            },
+            "adjustments" : [
+                {
+                    "bracketName" : "Labour",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Plant",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Consumable",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Preliminaries",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Transport",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Profit",
+                    "value" : "0"
+                }
+            ],
+            "globalAdjustments" : null,
+            "profit" : "0",
+            "itemProfitPercentage" : "0",
+            "hasSEPhases" : true,
+            "includeTransport" : true,
+            "clientHandover" : false,
+            "createItw" : false,
+            "spreadCost" : false,
+            "internalItem" : false,
+            "complete" : false,
+            "includeProjectDiscount" : true,
+            "isDaywork" : false,
+            "variationForSectionId" : null
+        },
+        {
+            "itemId" : "84c704d4-e549-43e9-86de-fc5f3bdfd217",
+            "pricedItem" : {
+                "_id" : null,
+                "category" : "Handrails",
+                "fullName" : "Boarded infill to perimeter openings",
+                "name" : "Boarded infill to perimeter openings",
+                "costs" : [
+                    {
+                        "name" : "Consumable",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Preliminaries",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Labour",
+                        "value" : "1.25"
+                    },
+                    {
+                        "name" : "Plant",
+                        "value" : "0.12"
+                    }
+                ],
+                "children" : [
+
+                ],
+                "breakdown" : [
+                    {
+                        "name" : "Tube Weight",
+                        "quantity" : "1",
+                        "weight" : "16.06"
+                    },
+                    {
+                        "name" : "Boards Weight",
+                        "quantity" : "1",
+                        "weight" : "11.69"
+                    },
+                    {
+                        "name" : "Fittings Weight",
+                        "quantity" : "1",
+                        "weight" : "2.6"
+                    }
+                ],
+                "units" : {
+                    "_id" : ObjectId("67ea73bab10c6ff12e072f8c"),
+                    "teamName" : "framework",
+                    "name" : "Number",
+                    "displayName" : "no"
+                },
+                "strikeRate" : "0",
+                "duty" : "",
+                "profit" : "312.45",
+                "floor" : null,
+                "labour" : "0",
+                "plant" : "0",
+                "consumable" : "0",
+                "weight" : "0",
+                "linear" : false,
+                "strike" : "0",
+                "pricedMaterials" : null,
+                "prelim" : "0",
+                "labourPrelim" : false
+            },
+            "unpricedItem" : null,
+            "quantity" : "5",
+            "quantityFormula" : "5",
+            "start" : NumberInt(0),
+            "end" : NumberInt(6),
+            "strikeRate" : "50",
+            "duty" : "Not Applicable",
+            "floor" : "Ground",
+            "narrative" : "Ground Floor",
+            "extras" : [
+
+            ],
+            "itemExtras" : [
+
+            ],
+            "priceTotals" : {
+                "totalLabour" : "9.38",
+                "totalPlant" : NumberDecimal("3.6"),
+                "totalConsumable" : NumberDecimal("0"),
+                "totalTransport" : "0",
+                "totalWeight" : NumberDecimal("151.75"),
+                "totalPreliminaries" : NumberDecimal("0"),
+                "totalProfit" : "0",
+                "overhead" : "6.853440000000001",
+                "extraTotal" : "0",
+                "totalPrice" : "81.81",
+                "totalLabourUnadjusted" : "9.38",
+                "totalPlantUnadjusted" : "3.6",
+                "totalConsumableUnadjusted" : "0",
+                "totalTransportUnadjusted" : "0",
+                "totalPreliminariesUnadjusted" : "0",
+                "totalPriceUnadjusted" : "19.833440000000003",
+                "totalErect" : "0",
+                "totalStrike" : "0",
+                "lineProfitPercent" : "0",
+                "lineProfit" : "0",
+                "subTotal" : "0",
+                "adjustedSubtotal" : "0",
+                "companyOverheadMarkup" : "0",
+                "companyProfitMarkup" : "0",
+                "preNegotiatedPrice" : "0",
+                "preAdjustedProfit" : "0",
+                "preAdjustedPriceToClient" : "0",
+                "preGlobalAdjustLabour" : "0",
+                "preGlobalAdjustPlant" : "0",
+                "preGlobalAdjustConsumable" : "0",
+                "preGlobalAdjustTransport" : "0",
+                "preGlobalAdjustPreliminaries" : "0",
+                "preGlobalAdjustProfit" : "0",
+                "preGlobalAdjustSubtotal" : "0",
+                "totalPrelimLabour" : "0",
+                "totalWeightUnadjusted" : "151.75",
+                "overHireRate" : NumberDecimal("0.03"),
+                "weeklyOverHire" : NumberDecimal("2.4543")
+            },
+            "adjustments" : [
+                {
+                    "bracketName" : "Labour",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Plant",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Consumable",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Preliminaries",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Transport",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Profit",
+                    "value" : "0"
+                }
+            ],
+            "globalAdjustments" : null,
+            "profit" : "0",
+            "itemProfitPercentage" : "312.45",
+            "hasSEPhases" : true,
+            "includeTransport" : true,
+            "clientHandover" : false,
+            "createItw" : false,
+            "spreadCost" : false,
+            "internalItem" : false,
+            "complete" : false,
+            "includeProjectDiscount" : true,
+            "isDaywork" : false,
+            "variationForSectionId" : null
+        },
+        {
+            "itemId" : "6cf80254-ee4b-49d2-8d77-6181487fa05a",
+            "pricedItem" : {
+                "_id" : null,
+                "category" : "Handrails",
+                "fullName" : "Boarded infill to perimeter openings",
+                "name" : "Boarded infill to perimeter openings",
+                "costs" : [
+                    {
+                        "name" : "Consumable",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Preliminaries",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Labour",
+                        "value" : "1.25"
+                    },
+                    {
+                        "name" : "Plant",
+                        "value" : "0.12"
+                    }
+                ],
+                "children" : [
+
+                ],
+                "breakdown" : [
+                    {
+                        "name" : "Tube Weight",
+                        "quantity" : "1",
+                        "weight" : "16.06"
+                    },
+                    {
+                        "name" : "Boards Weight",
+                        "quantity" : "1",
+                        "weight" : "11.69"
+                    },
+                    {
+                        "name" : "Fittings Weight",
+                        "quantity" : "1",
+                        "weight" : "2.6"
+                    }
+                ],
+                "units" : {
+                    "_id" : ObjectId("67ea73bab10c6ff12e072f8c"),
+                    "teamName" : "framework",
+                    "name" : "Number",
+                    "displayName" : "no"
+                },
+                "strikeRate" : "0",
+                "duty" : "",
+                "profit" : "312.45",
+                "floor" : null,
+                "labour" : "0",
+                "plant" : "0",
+                "consumable" : "0",
+                "weight" : "0",
+                "linear" : false,
+                "strike" : "0",
+                "pricedMaterials" : null,
+                "prelim" : "0",
+                "labourPrelim" : false
+            },
+            "unpricedItem" : null,
+            "quantity" : "5",
+            "quantityFormula" : "5",
+            "start" : NumberInt(0),
+            "end" : NumberInt(6),
+            "strikeRate" : "50",
+            "duty" : "Not Applicable",
+            "floor" : "1st",
+            "narrative" : "1st Floor",
+            "extras" : [
+
+            ],
+            "itemExtras" : [
+
+            ],
+            "priceTotals" : {
+                "totalLabour" : "9.38",
+                "totalPlant" : NumberDecimal("3.6"),
+                "totalConsumable" : NumberDecimal("0"),
+                "totalTransport" : "0",
+                "totalWeight" : NumberDecimal("151.75"),
+                "totalPreliminaries" : NumberDecimal("0"),
+                "totalProfit" : "0",
+                "overhead" : "6.853440000000001",
+                "extraTotal" : "0",
+                "totalPrice" : "81.81",
+                "totalLabourUnadjusted" : "9.38",
+                "totalPlantUnadjusted" : "3.6",
+                "totalConsumableUnadjusted" : "0",
+                "totalTransportUnadjusted" : "0",
+                "totalPreliminariesUnadjusted" : "0",
+                "totalPriceUnadjusted" : "19.833440000000003",
+                "totalErect" : "0",
+                "totalStrike" : "0",
+                "lineProfitPercent" : "0",
+                "lineProfit" : "0",
+                "subTotal" : "0",
+                "adjustedSubtotal" : "0",
+                "companyOverheadMarkup" : "0",
+                "companyProfitMarkup" : "0",
+                "preNegotiatedPrice" : "0",
+                "preAdjustedProfit" : "0",
+                "preAdjustedPriceToClient" : "0",
+                "preGlobalAdjustLabour" : "0",
+                "preGlobalAdjustPlant" : "0",
+                "preGlobalAdjustConsumable" : "0",
+                "preGlobalAdjustTransport" : "0",
+                "preGlobalAdjustPreliminaries" : "0",
+                "preGlobalAdjustProfit" : "0",
+                "preGlobalAdjustSubtotal" : "0",
+                "totalPrelimLabour" : "0",
+                "totalWeightUnadjusted" : "151.75",
+                "overHireRate" : NumberDecimal("0.03"),
+                "weeklyOverHire" : NumberDecimal("2.4543")
+            },
+            "adjustments" : [
+                {
+                    "bracketName" : "Labour",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Plant",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Consumable",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Preliminaries",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Transport",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Profit",
+                    "value" : "0"
+                }
+            ],
+            "globalAdjustments" : null,
+            "profit" : "0",
+            "itemProfitPercentage" : "312.45",
+            "hasSEPhases" : true,
+            "includeTransport" : true,
+            "clientHandover" : false,
+            "createItw" : false,
+            "spreadCost" : false,
+            "internalItem" : false,
+            "complete" : false,
+            "includeProjectDiscount" : true,
+            "isDaywork" : false,
+            "variationForSectionId" : null
+        },
+        {
+            "itemId" : "9c59904d-d4fb-4f24-8722-6bb0bd16fa75",
+            "pricedItem" : {
+                "_id" : null,
+                "category" : "External",
+                "fullName" : "1st Lift Access Scaffold, 1.8-2.4m progressive, 4 + 2 boards",
+                "name" : "4 + 2 boards",
+                "costs" : [
+                    {
+                        "name" : "Consumable",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Preliminaries",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Labour",
+                        "value" : "5.59"
+                    },
+                    {
+                        "name" : "Plant",
+                        "value" : "0.41"
+                    }
+                ],
+                "children" : [
+
+                ],
+                "breakdown" : [
+                    {
+                        "name" : "Tube Weight",
+                        "quantity" : "1",
+                        "weight" : "45.38"
+                    },
+                    {
+                        "name" : "Boards Weight",
+                        "quantity" : "1",
+                        "weight" : "40.21"
+                    },
+                    {
+                        "name" : "Fittings Weight",
+                        "quantity" : "1",
+                        "weight" : "9.93"
+                    }
+                ],
+                "units" : {
+                    "_id" : ObjectId("67ea73bab10c6ff12e072f8a"),
+                    "teamName" : "framework",
+                    "name" : "Metre",
+                    "displayName" : "m"
+                },
+                "strikeRate" : "0",
+                "duty" : "General Purpose",
+                "profit" : "0",
+                "floor" : null,
+                "labour" : "0",
+                "plant" : "0",
+                "consumable" : "0",
+                "weight" : "0",
+                "linear" : false,
+                "strike" : "0",
+                "pricedMaterials" : null,
+                "prelim" : "0",
+                "labourPrelim" : false
+            },
+            "unpricedItem" : null,
+            "quantity" : "6",
+            "quantityFormula" : "6",
+            "start" : NumberInt(0),
+            "end" : NumberInt(6),
+            "strikeRate" : "50",
+            "duty" : "General Purpose",
+            "floor" : "Ground",
+            "narrative" : "Porch Re-Erect",
+            "extras" : [
+
+            ],
+            "itemExtras" : [
+
+            ],
+            "priceTotals" : {
+                "totalLabour" : "50.31",
+                "totalPlant" : NumberDecimal("14.76"),
+                "totalConsumable" : NumberDecimal("0"),
+                "totalTransport" : "0",
+                "totalWeight" : NumberDecimal("573.1200000000001"),
+                "totalPreliminaries" : NumberDecimal("0"),
+                "totalProfit" : "0",
+                "overhead" : "34.35696000000001",
+                "extraTotal" : "0",
+                "totalPrice" : "99.43",
+                "totalLabourUnadjusted" : "50.31",
+                "totalPlantUnadjusted" : "14.76",
+                "totalConsumableUnadjusted" : "0",
+                "totalTransportUnadjusted" : "0",
+                "totalPreliminariesUnadjusted" : "0",
+                "totalPriceUnadjusted" : "99.42696000000001",
+                "totalErect" : "0",
+                "totalStrike" : "0",
+                "lineProfitPercent" : "0",
+                "lineProfit" : "0",
+                "subTotal" : "0",
+                "adjustedSubtotal" : "0",
+                "companyOverheadMarkup" : "0",
+                "companyProfitMarkup" : "0",
+                "preNegotiatedPrice" : "0",
+                "preAdjustedProfit" : "0",
+                "preAdjustedPriceToClient" : "0",
+                "preGlobalAdjustLabour" : "0",
+                "preGlobalAdjustPlant" : "0",
+                "preGlobalAdjustConsumable" : "0",
+                "preGlobalAdjustTransport" : "0",
+                "preGlobalAdjustPreliminaries" : "0",
+                "preGlobalAdjustProfit" : "0",
+                "preGlobalAdjustSubtotal" : "0",
+                "totalPrelimLabour" : "0",
+                "totalWeightUnadjusted" : "573.1200000000001",
+                "overHireRate" : NumberDecimal("0.03"),
+                "weeklyOverHire" : NumberDecimal("2.9829")
+            },
+            "adjustments" : [
+                {
+                    "bracketName" : "Labour",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Plant",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Consumable",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Preliminaries",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Transport",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Profit",
+                    "value" : "0"
+                }
+            ],
+            "globalAdjustments" : null,
+            "profit" : "0",
+            "itemProfitPercentage" : "0",
+            "hasSEPhases" : true,
+            "includeTransport" : true,
+            "clientHandover" : false,
+            "createItw" : false,
+            "spreadCost" : false,
+            "internalItem" : false,
+            "complete" : false,
+            "includeProjectDiscount" : true,
+            "isDaywork" : false,
+            "variationForSectionId" : null
+        },
+        {
+            "itemId" : "47f96ef1-c508-444d-b22d-25f689624172",
+            "pricedItem" : {
+                "_id" : null,
+                "category" : "External",
+                "fullName" : "1st Lift Access Scaffold, 1.8-2.4m progressive, 4 + 2 boards",
+                "name" : "4 + 2 boards",
+                "costs" : [
+                    {
+                        "name" : "Consumable",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Preliminaries",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Labour",
+                        "value" : "5.59"
+                    },
+                    {
+                        "name" : "Plant",
+                        "value" : "0.41"
+                    }
+                ],
+                "children" : [
+
+                ],
+                "breakdown" : [
+                    {
+                        "name" : "Tube Weight",
+                        "quantity" : "1",
+                        "weight" : "45.38"
+                    },
+                    {
+                        "name" : "Boards Weight",
+                        "quantity" : "1",
+                        "weight" : "40.21"
+                    },
+                    {
+                        "name" : "Fittings Weight",
+                        "quantity" : "1",
+                        "weight" : "9.93"
+                    }
+                ],
+                "units" : {
+                    "_id" : ObjectId("67ea73bab10c6ff12e072f8a"),
+                    "teamName" : "framework",
+                    "name" : "Metre",
+                    "displayName" : "m"
+                },
+                "strikeRate" : "0",
+                "duty" : "General Purpose",
+                "profit" : "0",
+                "floor" : null,
+                "labour" : "0",
+                "plant" : "0",
+                "consumable" : "0",
+                "weight" : "0",
+                "linear" : false,
+                "strike" : "0",
+                "pricedMaterials" : null,
+                "prelim" : "0",
+                "labourPrelim" : false
+            },
+            "unpricedItem" : null,
+            "quantity" : "11.88",
+            "quantityFormula" : "11.88",
+            "start" : NumberInt(0),
+            "end" : NumberInt(6),
+            "strikeRate" : "50",
+            "duty" : "General Purpose",
+            "floor" : "Ground",
+            "narrative" : "Render Adaption",
+            "extras" : [
+
+            ],
+            "itemExtras" : [
+
+            ],
+            "priceTotals" : {
+                "totalLabour" : "99.62",
+                "totalPlant" : NumberDecimal("29.23"),
+                "totalConsumable" : NumberDecimal("0"),
+                "totalTransport" : "0",
+                "totalWeight" : NumberDecimal("1134.7776000000001"),
+                "totalPreliminaries" : NumberDecimal("0"),
+                "totalProfit" : "0",
+                "overhead" : "68.0328",
+                "extraTotal" : "0",
+                "totalPrice" : "196.89",
+                "totalLabourUnadjusted" : "99.62",
+                "totalPlantUnadjusted" : "29.23",
+                "totalConsumableUnadjusted" : "0",
+                "totalTransportUnadjusted" : "0",
+                "totalPreliminariesUnadjusted" : "0",
+                "totalPriceUnadjusted" : "196.88279999999997",
+                "totalErect" : "0",
+                "totalStrike" : "0",
+                "lineProfitPercent" : "0",
+                "lineProfit" : "0",
+                "subTotal" : "0",
+                "adjustedSubtotal" : "0",
+                "companyOverheadMarkup" : "0",
+                "companyProfitMarkup" : "0",
+                "preNegotiatedPrice" : "0",
+                "preAdjustedProfit" : "0",
+                "preAdjustedPriceToClient" : "0",
+                "preGlobalAdjustLabour" : "0",
+                "preGlobalAdjustPlant" : "0",
+                "preGlobalAdjustConsumable" : "0",
+                "preGlobalAdjustTransport" : "0",
+                "preGlobalAdjustPreliminaries" : "0",
+                "preGlobalAdjustProfit" : "0",
+                "preGlobalAdjustSubtotal" : "0",
+                "totalPrelimLabour" : "0",
+                "totalWeightUnadjusted" : "1134.7776000000001",
+                "overHireRate" : NumberDecimal("0.03"),
+                "weeklyOverHire" : NumberDecimal("5.9067")
+            },
+            "adjustments" : [
+                {
+                    "bracketName" : "Labour",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Plant",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Consumable",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Preliminaries",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Transport",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Profit",
+                    "value" : "0"
+                }
+            ],
+            "globalAdjustments" : null,
+            "profit" : "0",
+            "itemProfitPercentage" : "0",
+            "hasSEPhases" : true,
+            "includeTransport" : true,
+            "clientHandover" : false,
+            "createItw" : false,
+            "spreadCost" : false,
+            "internalItem" : false,
+            "complete" : false,
+            "includeProjectDiscount" : true,
+            "isDaywork" : false,
+            "variationForSectionId" : null
+        },
+        {
+            "itemId" : "c9d26301-9e98-40d6-b315-42dae8f92666",
+            "pricedItem" : {
+                "_id" : null,
+                "category" : "External",
+                "fullName" : "2nd Lift Access Scaffold, 1.8-2.4m progressive, 4 + 2 boards",
+                "name" : "4 + 2 boards",
+                "costs" : [
+                    {
+                        "name" : "Consumable",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Preliminaries",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Labour",
+                        "value" : "4.27"
+                    },
+                    {
+                        "name" : "Plant",
+                        "value" : "0.25"
+                    }
+                ],
+                "children" : [
+
+                ],
+                "breakdown" : [
+                    {
+                        "name" : "Tube Weight",
+                        "quantity" : "1",
+                        "weight" : "37.63"
+                    },
+                    {
+                        "name" : "Boards Weight",
+                        "quantity" : "1",
+                        "weight" : "0"
+                    },
+                    {
+                        "name" : "Fittings Weight",
+                        "quantity" : "1",
+                        "weight" : "8.42"
+                    }
+                ],
+                "units" : {
+                    "_id" : ObjectId("67ea73bab10c6ff12e072f8a"),
+                    "teamName" : "framework",
+                    "name" : "Metre",
+                    "displayName" : "m"
+                },
+                "strikeRate" : "0",
+                "duty" : "General Purpose",
+                "profit" : "0",
+                "floor" : null,
+                "labour" : "0",
+                "plant" : "0",
+                "consumable" : "0",
+                "weight" : "0",
+                "linear" : false,
+                "strike" : "0",
+                "pricedMaterials" : null,
+                "prelim" : "0",
+                "labourPrelim" : false
+            },
+            "unpricedItem" : null,
+            "quantity" : "11.88",
+            "quantityFormula" : "11.88",
+            "start" : NumberInt(0),
+            "end" : NumberInt(6),
+            "strikeRate" : "50",
+            "duty" : "General Purpose",
+            "floor" : "1st",
+            "narrative" : "Render Adaption",
+            "extras" : [
+                {
+                    "name" : "Extra boarded lift",
+                    "brackets" : [
+                        {
+                            "name" : "Labour",
+                            "value" : "0.72"
+                        },
+                        {
+                            "name" : "Plant",
+                            "value" : "0.25"
+                        }
+                    ]
+                }
+            ],
+            "itemExtras" : [
+
+            ],
+            "priceTotals" : {
+                "totalLabour" : "88.93",
+                "totalPlant" : NumberDecimal("35.64"),
+                "totalConsumable" : NumberDecimal("0"),
+                "totalTransport" : "0",
+                "totalWeight" : NumberDecimal("547.0740000000001"),
+                "totalPreliminaries" : NumberDecimal("0"),
+                "totalProfit" : "0",
+                "overhead" : "65.77296000000001",
+                "extraTotal" : "11.53",
+                "totalPrice" : "190.35",
+                "totalLabourUnadjusted" : "88.93",
+                "totalPlantUnadjusted" : "35.64",
+                "totalConsumableUnadjusted" : "0",
+                "totalTransportUnadjusted" : "0",
+                "totalPreliminariesUnadjusted" : "0",
+                "totalPriceUnadjusted" : "190.34296",
+                "totalErect" : "0",
+                "totalStrike" : "0",
+                "lineProfitPercent" : "0",
+                "lineProfit" : "0",
+                "subTotal" : "0",
+                "adjustedSubtotal" : "0",
+                "companyOverheadMarkup" : "0",
+                "companyProfitMarkup" : "0",
+                "preNegotiatedPrice" : "0",
+                "preAdjustedProfit" : "0",
+                "preAdjustedPriceToClient" : "0",
+                "preGlobalAdjustLabour" : "0",
+                "preGlobalAdjustPlant" : "0",
+                "preGlobalAdjustConsumable" : "0",
+                "preGlobalAdjustTransport" : "0",
+                "preGlobalAdjustPreliminaries" : "0",
+                "preGlobalAdjustProfit" : "0",
+                "preGlobalAdjustSubtotal" : "0",
+                "totalPrelimLabour" : "0",
+                "totalWeightUnadjusted" : "547.0740000000001",
+                "overHireRate" : NumberDecimal("0.03"),
+                "weeklyOverHire" : NumberDecimal("5.7105")
+            },
+            "adjustments" : [
+                {
+                    "bracketName" : "Labour",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Plant",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Consumable",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Preliminaries",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Transport",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Profit",
+                    "value" : "0"
+                }
+            ],
+            "globalAdjustments" : null,
+            "profit" : "0",
+            "itemProfitPercentage" : "0",
+            "hasSEPhases" : true,
+            "includeTransport" : true,
+            "clientHandover" : false,
+            "createItw" : false,
+            "spreadCost" : false,
+            "internalItem" : false,
+            "complete" : false,
+            "includeProjectDiscount" : true,
+            "isDaywork" : false,
+            "variationForSectionId" : null
+        },
+        {
+            "itemId" : "b65a2ba0-008f-4ffa-b6df-db2589f817b6",
+            "pricedItem" : {
+                "_id" : null,
+                "category" : "Birdcage",
+                "fullName" : "1st lift birdcage to GF, > 1.8m progressive, no board config",
+                "name" : "no board config",
+                "costs" : [
+                    {
+                        "name" : "Consumable",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Preliminaries",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Labour",
+                        "value" : "1.69"
+                    },
+                    {
+                        "name" : "Plant",
+                        "value" : "0.27"
+                    }
+                ],
+                "children" : [
+
+                ],
+                "breakdown" : [
+                    {
+                        "name" : "Tube Weight",
+                        "quantity" : "1",
+                        "weight" : "14.17"
+                    },
+                    {
+                        "name" : "Boards Weight",
+                        "quantity" : "1",
+                        "weight" : "72.6"
+                    },
+                    {
+                        "name" : "Fittings Weight",
+                        "quantity" : "1",
+                        "weight" : "2.09"
+                    }
+                ],
+                "units" : {
+                    "_id" : ObjectId("67ea73bab10c6ff12e072f8b"),
+                    "teamName" : "framework",
+                    "name" : "Square Metre",
+                    "displayName" : "m2"
+                },
+                "strikeRate" : "0",
+                "duty" : "General Purpose",
+                "profit" : "155.81",
+                "floor" : null,
+                "labour" : "0",
+                "plant" : "0",
+                "consumable" : "0",
+                "weight" : "0",
+                "linear" : false,
+                "strike" : "0",
+                "pricedMaterials" : null,
+                "prelim" : "0",
+                "labourPrelim" : false
+            },
+            "unpricedItem" : null,
+            "quantity" : "88.12",
+            "quantityFormula" : "88.12",
+            "start" : NumberInt(0),
+            "end" : NumberInt(6),
+            "strikeRate" : "50",
+            "duty" : "General Purpose",
+            "floor" : "Ground",
+            "narrative" : "",
+            "extras" : [
+
+            ],
+            "itemExtras" : [
+
+            ],
+            "priceTotals" : {
+                "totalLabour" : "223.39",
+                "totalPlant" : NumberDecimal("142.76"),
+                "totalConsumable" : NumberDecimal("0"),
+                "totalTransport" : "0",
+                "totalWeight" : NumberDecimal("7830.3432"),
+                "totalPreliminaries" : NumberDecimal("0"),
+                "totalProfit" : "0",
+                "overhead" : "193.3272",
+                "extraTotal" : "0",
+                "totalPrice" : "1431.2",
+                "totalLabourUnadjusted" : "223.39",
+                "totalPlantUnadjusted" : "142.76",
+                "totalConsumableUnadjusted" : "0",
+                "totalTransportUnadjusted" : "0",
+                "totalPreliminariesUnadjusted" : "0",
+                "totalPriceUnadjusted" : "559.4772",
+                "totalErect" : "0",
+                "totalStrike" : "0",
+                "lineProfitPercent" : "0",
+                "lineProfit" : "0",
+                "subTotal" : "0",
+                "adjustedSubtotal" : "0",
+                "companyOverheadMarkup" : "0",
+                "companyProfitMarkup" : "0",
+                "preNegotiatedPrice" : "0",
+                "preAdjustedProfit" : "0",
+                "preAdjustedPriceToClient" : "0",
+                "preGlobalAdjustLabour" : "0",
+                "preGlobalAdjustPlant" : "0",
+                "preGlobalAdjustConsumable" : "0",
+                "preGlobalAdjustTransport" : "0",
+                "preGlobalAdjustPreliminaries" : "0",
+                "preGlobalAdjustProfit" : "0",
+                "preGlobalAdjustSubtotal" : "0",
+                "totalPrelimLabour" : "0",
+                "totalWeightUnadjusted" : "7830.3432",
+                "overHireRate" : NumberDecimal("0.03"),
+                "weeklyOverHire" : NumberDecimal("42.936")
+            },
+            "adjustments" : [
+                {
+                    "bracketName" : "Labour",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Plant",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Consumable",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Preliminaries",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Transport",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Profit",
+                    "value" : "0"
+                }
+            ],
+            "globalAdjustments" : null,
+            "profit" : "0",
+            "itemProfitPercentage" : "155.81",
+            "hasSEPhases" : true,
+            "includeTransport" : true,
+            "clientHandover" : false,
+            "createItw" : false,
+            "spreadCost" : false,
+            "internalItem" : false,
+            "complete" : false,
+            "includeProjectDiscount" : true,
+            "isDaywork" : false,
+            "variationForSectionId" : null
+        },
+        {
+            "itemId" : "041ff3d9-4555-4624-ad72-2974f4be435c",
+            "pricedItem" : {
+                "_id" : null,
+                "category" : "Birdcage",
+                "fullName" : "1st lift birdcage to 1st floor, > 1.8m progressive, no board config",
+                "name" : "no board config",
+                "costs" : [
+                    {
+                        "name" : "Consumable",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Preliminaries",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Labour",
+                        "value" : "1.86"
+                    },
+                    {
+                        "name" : "Plant",
+                        "value" : "0.27"
+                    }
+                ],
+                "children" : [
+
+                ],
+                "breakdown" : [
+                    {
+                        "name" : "Tube Weight",
+                        "quantity" : "1",
+                        "weight" : "14.17"
+                    },
+                    {
+                        "name" : "Boards Weight",
+                        "quantity" : "1",
+                        "weight" : "72.6"
+                    },
+                    {
+                        "name" : "Fittings Weight",
+                        "quantity" : "1",
+                        "weight" : "2.09"
+                    }
+                ],
+                "units" : {
+                    "_id" : ObjectId("67ea73bab10c6ff12e072f8b"),
+                    "teamName" : "framework",
+                    "name" : "Square Metre",
+                    "displayName" : "m2"
+                },
+                "strikeRate" : "0",
+                "duty" : "General Purpose",
+                "profit" : "154.05",
+                "floor" : null,
+                "labour" : "0",
+                "plant" : "0",
+                "consumable" : "0",
+                "weight" : "0",
+                "linear" : false,
+                "strike" : "0",
+                "pricedMaterials" : null,
+                "prelim" : "0",
+                "labourPrelim" : false
+            },
+            "unpricedItem" : null,
+            "quantity" : "88.12",
+            "quantityFormula" : "88.12",
+            "start" : NumberInt(0),
+            "end" : NumberInt(6),
+            "strikeRate" : "50",
+            "duty" : "General Purpose",
+            "floor" : "1st",
+            "narrative" : "",
+            "extras" : [
+
+            ],
+            "itemExtras" : [
+
+            ],
+            "priceTotals" : {
+                "totalLabour" : "245.86",
+                "totalPlant" : NumberDecimal("142.76"),
+                "totalConsumable" : NumberDecimal("0"),
+                "totalTransport" : "0",
+                "totalWeight" : NumberDecimal("7830.3432"),
+                "totalPreliminaries" : NumberDecimal("0"),
+                "totalProfit" : "0",
+                "overhead" : "205.19136",
+                "extraTotal" : "0",
+                "totalPrice" : "1508.58",
+                "totalLabourUnadjusted" : "245.86",
+                "totalPlantUnadjusted" : "142.76",
+                "totalConsumableUnadjusted" : "0",
+                "totalTransportUnadjusted" : "0",
+                "totalPreliminariesUnadjusted" : "0",
+                "totalPriceUnadjusted" : "593.81136",
+                "totalErect" : "0",
+                "totalStrike" : "0",
+                "lineProfitPercent" : "0",
+                "lineProfit" : "0",
+                "subTotal" : "0",
+                "adjustedSubtotal" : "0",
+                "companyOverheadMarkup" : "0",
+                "companyProfitMarkup" : "0",
+                "preNegotiatedPrice" : "0",
+                "preAdjustedProfit" : "0",
+                "preAdjustedPriceToClient" : "0",
+                "preGlobalAdjustLabour" : "0",
+                "preGlobalAdjustPlant" : "0",
+                "preGlobalAdjustConsumable" : "0",
+                "preGlobalAdjustTransport" : "0",
+                "preGlobalAdjustPreliminaries" : "0",
+                "preGlobalAdjustProfit" : "0",
+                "preGlobalAdjustSubtotal" : "0",
+                "totalPrelimLabour" : "0",
+                "totalWeightUnadjusted" : "7830.3432",
+                "overHireRate" : NumberDecimal("0.03"),
+                "weeklyOverHire" : NumberDecimal("45.2574")
+            },
+            "adjustments" : [
+                {
+                    "bracketName" : "Labour",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Plant",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Consumable",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Preliminaries",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Transport",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Profit",
+                    "value" : "0"
+                }
+            ],
+            "globalAdjustments" : null,
+            "profit" : "0",
+            "itemProfitPercentage" : "154.05",
+            "hasSEPhases" : true,
+            "includeTransport" : true,
+            "clientHandover" : false,
+            "createItw" : false,
+            "spreadCost" : false,
+            "internalItem" : false,
+            "complete" : false,
+            "includeProjectDiscount" : true,
+            "isDaywork" : false,
+            "variationForSectionId" : null
+        },
+        {
+            "itemId" : "d8f8ed52-05f2-45ce-ba73-102df0aedcab",
+            "pricedItem" : {
+                "_id" : null,
+                "category" : "Internal",
+                "fullName" : "2nd Lift Access Scaffold, > 1.8m progressive, 4 + 2 boards",
+                "name" : "4 + 2 boards",
+                "costs" : [
+                    {
+                        "name" : "Consumable",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Preliminaries",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Labour",
+                        "value" : "3.3"
+                    },
+                    {
+                        "name" : "Plant",
+                        "value" : "0.24"
+                    }
+                ],
+                "children" : [
+
+                ],
+                "breakdown" : [
+                    {
+                        "name" : "Tube Weight",
+                        "quantity" : "1",
+                        "weight" : "35.65"
+                    },
+                    {
+                        "name" : "Boards Weight",
+                        "quantity" : "1",
+                        "weight" : "0"
+                    },
+                    {
+                        "name" : "Fittings Weight",
+                        "quantity" : "1",
+                        "weight" : "8.42"
+                    }
+                ],
+                "units" : {
+                    "_id" : ObjectId("67ea73bab10c6ff12e072f8a"),
+                    "teamName" : "framework",
+                    "name" : "Metre",
+                    "displayName" : "m"
+                },
+                "strikeRate" : "0",
+                "duty" : "General Purpose",
+                "profit" : "0",
+                "floor" : null,
+                "labour" : "0",
+                "plant" : "0",
+                "consumable" : "0",
+                "weight" : "0",
+                "linear" : false,
+                "strike" : "0",
+                "pricedMaterials" : null,
+                "prelim" : "0",
+                "labourPrelim" : false
+            },
+            "unpricedItem" : null,
+            "quantity" : "12",
+            "quantityFormula" : "12",
+            "start" : NumberInt(0),
+            "end" : NumberInt(6),
+            "strikeRate" : "50",
+            "duty" : "General Purpose",
+            "floor" : "2nd",
+            "narrative" : "Party Wall Scaffold (Both Sides)",
+            "extras" : [
+                {
+                    "name" : "Extra boarded lift",
+                    "brackets" : [
+                        {
+                            "name" : "Labour",
+                            "value" : "0.72"
+                        },
+                        {
+                            "name" : "Plant",
+                            "value" : "0.25"
+                        }
+                    ]
+                }
+            ],
+            "itemExtras" : [
+
+            ],
+            "priceTotals" : {
+                "totalLabour" : "72.36",
+                "totalPlant" : NumberDecimal("35.28"),
+                "totalConsumable" : NumberDecimal("0"),
+                "totalTransport" : "0",
+                "totalWeight" : NumberDecimal("528.84"),
+                "totalPreliminaries" : NumberDecimal("0"),
+                "totalProfit" : "0",
+                "overhead" : "56.833920000000006",
+                "extraTotal" : "11.64",
+                "totalPrice" : "164.48",
+                "totalLabourUnadjusted" : "72.36",
+                "totalPlantUnadjusted" : "35.28",
+                "totalConsumableUnadjusted" : "0",
+                "totalTransportUnadjusted" : "0",
+                "totalPreliminariesUnadjusted" : "0",
+                "totalPriceUnadjusted" : "164.47392000000002",
+                "totalErect" : "0",
+                "totalStrike" : "0",
+                "lineProfitPercent" : "0",
+                "lineProfit" : "0",
+                "subTotal" : "0",
+                "adjustedSubtotal" : "0",
+                "companyOverheadMarkup" : "0",
+                "companyProfitMarkup" : "0",
+                "preNegotiatedPrice" : "0",
+                "preAdjustedProfit" : "0",
+                "preAdjustedPriceToClient" : "0",
+                "preGlobalAdjustLabour" : "0",
+                "preGlobalAdjustPlant" : "0",
+                "preGlobalAdjustConsumable" : "0",
+                "preGlobalAdjustTransport" : "0",
+                "preGlobalAdjustPreliminaries" : "0",
+                "preGlobalAdjustProfit" : "0",
+                "preGlobalAdjustSubtotal" : "0",
+                "totalPrelimLabour" : "0",
+                "totalWeightUnadjusted" : "528.84",
+                "overHireRate" : NumberDecimal("0.03"),
+                "weeklyOverHire" : NumberDecimal("4.9344")
+            },
+            "adjustments" : [
+                {
+                    "bracketName" : "Labour",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Plant",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Consumable",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Preliminaries",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Transport",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Profit",
+                    "value" : "0"
+                }
+            ],
+            "globalAdjustments" : null,
+            "profit" : "0",
+            "itemProfitPercentage" : "0",
+            "hasSEPhases" : true,
+            "includeTransport" : true,
+            "clientHandover" : false,
+            "createItw" : false,
+            "spreadCost" : false,
+            "internalItem" : false,
+            "complete" : false,
+            "includeProjectDiscount" : true,
+            "isDaywork" : false,
+            "variationForSectionId" : null
+        },
+        {
+            "itemId" : "e04b4600-057c-4c50-8a60-ece399b80432",
+            "pricedItem" : {
+                "_id" : null,
+                "category" : "Internal",
+                "fullName" : "3rd Lift Access Scaffold, > 1.8m progressive, 4 + 2 boards",
+                "name" : "4 + 2 boards",
+                "costs" : [
+                    {
+                        "name" : "Consumable",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Preliminaries",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Labour",
+                        "value" : "3.3"
+                    },
+                    {
+                        "name" : "Plant",
+                        "value" : "0.23"
+                    }
+                ],
+                "children" : [
+
+                ],
+                "breakdown" : [
+                    {
+                        "name" : "Tube Weight",
+                        "quantity" : "1",
+                        "weight" : "35.65"
+                    },
+                    {
+                        "name" : "Boards Weight",
+                        "quantity" : "1",
+                        "weight" : "0"
+                    },
+                    {
+                        "name" : "Fittings Weight",
+                        "quantity" : "1",
+                        "weight" : "8.42"
+                    }
+                ],
+                "units" : {
+                    "_id" : ObjectId("67ea73bab10c6ff12e072f8a"),
+                    "teamName" : "framework",
+                    "name" : "Metre",
+                    "displayName" : "m"
+                },
+                "strikeRate" : "0",
+                "duty" : "General Purpose",
+                "profit" : "0",
+                "floor" : null,
+                "labour" : "0",
+                "plant" : "0",
+                "consumable" : "0",
+                "weight" : "0",
+                "linear" : false,
+                "strike" : "0",
+                "pricedMaterials" : null,
+                "prelim" : "0",
+                "labourPrelim" : false
+            },
+            "unpricedItem" : null,
+            "quantity" : "12",
+            "quantityFormula" : "12",
+            "start" : NumberInt(0),
+            "end" : NumberInt(6),
+            "strikeRate" : "50",
+            "duty" : "General Purpose",
+            "floor" : "2nd",
+            "narrative" : "Party Wall Scaffold (Both Sides)",
+            "extras" : [
+
+            ],
+            "itemExtras" : [
+
+            ],
+            "priceTotals" : {
+                "totalLabour" : "59.4",
+                "totalPlant" : NumberDecimal("16.56"),
+                "totalConsumable" : NumberDecimal("0"),
+                "totalTransport" : "0",
+                "totalWeight" : NumberDecimal("528.84"),
+                "totalPreliminaries" : NumberDecimal("0"),
+                "totalProfit" : "0",
+                "overhead" : "40.10688",
+                "extraTotal" : "0",
+                "totalPrice" : "116.07",
+                "totalLabourUnadjusted" : "59.4",
+                "totalPlantUnadjusted" : "16.56",
+                "totalConsumableUnadjusted" : "0",
+                "totalTransportUnadjusted" : "0",
+                "totalPreliminariesUnadjusted" : "0",
+                "totalPriceUnadjusted" : "116.06688",
+                "totalErect" : "0",
+                "totalStrike" : "0",
+                "lineProfitPercent" : "0",
+                "lineProfit" : "0",
+                "subTotal" : "0",
+                "adjustedSubtotal" : "0",
+                "companyOverheadMarkup" : "0",
+                "companyProfitMarkup" : "0",
+                "preNegotiatedPrice" : "0",
+                "preAdjustedProfit" : "0",
+                "preAdjustedPriceToClient" : "0",
+                "preGlobalAdjustLabour" : "0",
+                "preGlobalAdjustPlant" : "0",
+                "preGlobalAdjustConsumable" : "0",
+                "preGlobalAdjustTransport" : "0",
+                "preGlobalAdjustPreliminaries" : "0",
+                "preGlobalAdjustProfit" : "0",
+                "preGlobalAdjustSubtotal" : "0",
+                "totalPrelimLabour" : "0",
+                "totalWeightUnadjusted" : "528.84",
+                "overHireRate" : NumberDecimal("0.03"),
+                "weeklyOverHire" : NumberDecimal("3.4821")
+            },
+            "adjustments" : [
+                {
+                    "bracketName" : "Labour",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Plant",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Consumable",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Preliminaries",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Transport",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Profit",
+                    "value" : "0"
+                }
+            ],
+            "globalAdjustments" : null,
+            "profit" : "0",
+            "itemProfitPercentage" : "0",
+            "hasSEPhases" : true,
+            "includeTransport" : true,
+            "clientHandover" : false,
+            "createItw" : false,
+            "spreadCost" : false,
+            "internalItem" : false,
+            "complete" : false,
+            "includeProjectDiscount" : true,
+            "isDaywork" : false,
+            "variationForSectionId" : null
+        },
+        {
+            "itemId" : "d70d6f75-5616-4d61-ac03-39834643abbc",
+            "pricedItem" : {
+                "_id" : null,
+                "category" : "Internal",
+                "fullName" : "4th Lift Access Scaffold, > 1.8m progressive, 4 + 2 boards",
+                "name" : "4 + 2 boards",
+                "costs" : [
+                    {
+                        "name" : "Consumable",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Preliminaries",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Labour",
+                        "value" : "3.3"
+                    },
+                    {
+                        "name" : "Plant",
+                        "value" : "0.24"
+                    }
+                ],
+                "children" : [
+
+                ],
+                "breakdown" : [
+                    {
+                        "name" : "Tube Weight",
+                        "quantity" : "1",
+                        "weight" : "35.65"
+                    },
+                    {
+                        "name" : "Boards Weight",
+                        "quantity" : "1",
+                        "weight" : "0"
+                    },
+                    {
+                        "name" : "Fittings Weight",
+                        "quantity" : "1",
+                        "weight" : "8.42"
+                    }
+                ],
+                "units" : {
+                    "_id" : ObjectId("67ea73bab10c6ff12e072f8a"),
+                    "teamName" : "framework",
+                    "name" : "Metre",
+                    "displayName" : "m"
+                },
+                "strikeRate" : "0",
+                "duty" : "General Purpose",
+                "profit" : "0",
+                "floor" : null,
+                "labour" : "0",
+                "plant" : "0",
+                "consumable" : "0",
+                "weight" : "0",
+                "linear" : false,
+                "strike" : "0",
+                "pricedMaterials" : null,
+                "prelim" : "0",
+                "labourPrelim" : false
+            },
+            "unpricedItem" : null,
+            "quantity" : "12",
+            "quantityFormula" : "12",
+            "start" : NumberInt(0),
+            "end" : NumberInt(6),
+            "strikeRate" : "50",
+            "duty" : "General Purpose",
+            "floor" : "2nd",
+            "narrative" : "Party Wall Scaffold (Both Sides)",
+            "extras" : [
+
+            ],
+            "itemExtras" : [
+
+            ],
+            "priceTotals" : {
+                "totalLabour" : "59.4",
+                "totalPlant" : NumberDecimal("17.28"),
+                "totalConsumable" : NumberDecimal("0"),
+                "totalTransport" : "0",
+                "totalWeight" : NumberDecimal("528.84"),
+                "totalPreliminaries" : NumberDecimal("0"),
+                "totalProfit" : "0",
+                "overhead" : "40.48704000000001",
+                "extraTotal" : "0",
+                "totalPrice" : "117.17",
+                "totalLabourUnadjusted" : "59.4",
+                "totalPlantUnadjusted" : "17.28",
+                "totalConsumableUnadjusted" : "0",
+                "totalTransportUnadjusted" : "0",
+                "totalPreliminariesUnadjusted" : "0",
+                "totalPriceUnadjusted" : "117.16704000000001",
+                "totalErect" : "0",
+                "totalStrike" : "0",
+                "lineProfitPercent" : "0",
+                "lineProfit" : "0",
+                "subTotal" : "0",
+                "adjustedSubtotal" : "0",
+                "companyOverheadMarkup" : "0",
+                "companyProfitMarkup" : "0",
+                "preNegotiatedPrice" : "0",
+                "preAdjustedProfit" : "0",
+                "preAdjustedPriceToClient" : "0",
+                "preGlobalAdjustLabour" : "0",
+                "preGlobalAdjustPlant" : "0",
+                "preGlobalAdjustConsumable" : "0",
+                "preGlobalAdjustTransport" : "0",
+                "preGlobalAdjustPreliminaries" : "0",
+                "preGlobalAdjustProfit" : "0",
+                "preGlobalAdjustSubtotal" : "0",
+                "totalPrelimLabour" : "0",
+                "totalWeightUnadjusted" : "528.84",
+                "overHireRate" : NumberDecimal("0.03"),
+                "weeklyOverHire" : NumberDecimal("3.5151")
+            },
+            "adjustments" : [
+                {
+                    "bracketName" : "Labour",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Plant",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Consumable",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Preliminaries",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Transport",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Profit",
+                    "value" : "0"
+                }
+            ],
+            "globalAdjustments" : null,
+            "profit" : "0",
+            "itemProfitPercentage" : "0",
+            "hasSEPhases" : true,
+            "includeTransport" : true,
+            "clientHandover" : false,
+            "createItw" : false,
+            "spreadCost" : false,
+            "internalItem" : false,
+            "complete" : false,
+            "includeProjectDiscount" : true,
+            "isDaywork" : false,
+            "variationForSectionId" : null
+        },
+        {
+            "itemId" : "7ca58daf-aef8-471f-901d-d315833dd8ed",
+            "pricedItem" : {
+                "_id" : null,
+                "category" : "Sundries",
+                "fullName" : "Propping of floor (crash decks present)",
+                "name" : "Propping of floor (crash decks present)",
+                "costs" : [
+                    {
+                        "name" : "Consumable",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Preliminaries",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Labour",
+                        "value" : "1.8"
+                    },
+                    {
+                        "name" : "Plant",
+                        "value" : "0.05"
+                    }
+                ],
+                "children" : [
+
+                ],
+                "breakdown" : [
+                    {
+                        "name" : "Tube Weight",
+                        "quantity" : "1",
+                        "weight" : "8.48"
+                    },
+                    {
+                        "name" : "Boards Weight",
+                        "quantity" : "1",
+                        "weight" : "0"
+                    },
+                    {
+                        "name" : "Fittings Weight",
+                        "quantity" : "1",
+                        "weight" : "1.87"
+                    }
+                ],
+                "units" : {
+                    "_id" : ObjectId("67ea73bab10c6ff12e072f8c"),
+                    "teamName" : "framework",
+                    "name" : "Number",
+                    "displayName" : "no"
+                },
+                "strikeRate" : "0",
+                "duty" : "General Purpose",
+                "profit" : "216.32",
+                "floor" : null,
+                "labour" : "0",
+                "plant" : "0",
+                "consumable" : "0",
+                "weight" : "0",
+                "linear" : false,
+                "strike" : "0",
+                "pricedMaterials" : null,
+                "prelim" : "0",
+                "labourPrelim" : false
+            },
+            "unpricedItem" : null,
+            "quantity" : "46",
+            "quantityFormula" : "46",
+            "start" : NumberInt(0),
+            "end" : NumberInt(6),
+            "strikeRate" : "50",
+            "duty" : "General Purpose",
+            "floor" : "Ground",
+            "narrative" : "",
+            "extras" : [
+
+            ],
+            "itemExtras" : [
+
+            ],
+            "priceTotals" : {
+                "totalLabour" : "124.2",
+                "totalPlant" : NumberDecimal("13.8"),
+                "totalConsumable" : NumberDecimal("0"),
+                "totalTransport" : "0",
+                "totalWeight" : NumberDecimal("476.1000000000001"),
+                "totalPreliminaries" : NumberDecimal("0"),
+                "totalProfit" : "0",
+                "overhead" : "72.864",
+                "extraTotal" : "0",
+                "totalPrice" : "667.01",
+                "totalLabourUnadjusted" : "124.2",
+                "totalPlantUnadjusted" : "13.8",
+                "totalConsumableUnadjusted" : "0",
+                "totalTransportUnadjusted" : "0",
+                "totalPreliminariesUnadjusted" : "0",
+                "totalPriceUnadjusted" : "210.864",
+                "totalErect" : "0",
+                "totalStrike" : "0",
+                "lineProfitPercent" : "0",
+                "lineProfit" : "0",
+                "subTotal" : "0",
+                "adjustedSubtotal" : "0",
+                "companyOverheadMarkup" : "0",
+                "companyProfitMarkup" : "0",
+                "preNegotiatedPrice" : "0",
+                "preAdjustedProfit" : "0",
+                "preAdjustedPriceToClient" : "0",
+                "preGlobalAdjustLabour" : "0",
+                "preGlobalAdjustPlant" : "0",
+                "preGlobalAdjustConsumable" : "0",
+                "preGlobalAdjustTransport" : "0",
+                "preGlobalAdjustPreliminaries" : "0",
+                "preGlobalAdjustProfit" : "0",
+                "preGlobalAdjustSubtotal" : "0",
+                "totalPrelimLabour" : "0",
+                "totalWeightUnadjusted" : "476.1000000000001",
+                "overHireRate" : NumberDecimal("0.03"),
+                "weeklyOverHire" : NumberDecimal("20.0103")
+            },
+            "adjustments" : [
+                {
+                    "bracketName" : "Labour",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Plant",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Consumable",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Preliminaries",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Transport",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Profit",
+                    "value" : "0"
+                }
+            ],
+            "globalAdjustments" : null,
+            "profit" : "0",
+            "itemProfitPercentage" : "216.32",
+            "hasSEPhases" : true,
+            "includeTransport" : true,
+            "clientHandover" : false,
+            "createItw" : false,
+            "spreadCost" : false,
+            "internalItem" : false,
+            "complete" : false,
+            "includeProjectDiscount" : true,
+            "isDaywork" : false,
+            "variationForSectionId" : null
+        },
+        {
+            "itemId" : "0ffb74e1-dd36-4830-a10d-a454d369e05c",
+            "pricedItem" : {
+                "_id" : null,
+                "category" : "Sundries",
+                "fullName" : "Reinstate access scaffold",
+                "name" : "Reinstate access scaffold",
+                "costs" : [
+                    {
+                        "name" : "Consumable",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Preliminaries",
+                        "value" : "0"
+                    },
+                    {
+                        "name" : "Labour",
+                        "value" : "0.75"
+                    },
+                    {
+                        "name" : "Plant",
+                        "value" : "0"
+                    }
+                ],
+                "children" : [
+
+                ],
+                "breakdown" : [
+                    {
+                        "name" : "Tube Weight",
+                        "quantity" : "1",
+                        "weight" : "0"
+                    },
+                    {
+                        "name" : "Boards Weight",
+                        "quantity" : "1",
+                        "weight" : "0"
+                    },
+                    {
+                        "name" : "Fittings Weight",
+                        "quantity" : "1",
+                        "weight" : "0"
+                    }
+                ],
+                "units" : {
+                    "_id" : ObjectId("67ea73bab10c6ff12e072f8a"),
+                    "teamName" : "framework",
+                    "name" : "Metre",
+                    "displayName" : "m"
+                },
+                "strikeRate" : "0",
+                "duty" : "",
+                "profit" : "218.15",
+                "floor" : null,
+                "labour" : "0",
+                "plant" : "0",
+                "consumable" : "0",
+                "weight" : "0",
+                "linear" : false,
+                "strike" : "0",
+                "pricedMaterials" : null,
+                "prelim" : "0",
+                "labourPrelim" : false
+            },
+            "unpricedItem" : null,
+            "quantity" : "50.88",
+            "quantityFormula" : "50.88",
+            "start" : NumberInt(0),
+            "end" : NumberInt(0),
+            "strikeRate" : "0",
+            "duty" : "Not Applicable",
+            "floor" : "1st",
+            "narrative" : "Reinstate 2nd Lift",
+            "extras" : [
+
+            ],
+            "itemExtras" : [
+
+            ],
+            "priceTotals" : {
+                "totalLabour" : "38.16",
+                "totalPlant" : NumberDecimal("0"),
+                "totalConsumable" : NumberDecimal("0"),
+                "totalTransport" : "0",
+                "totalWeight" : NumberDecimal("0"),
+                "totalPreliminaries" : NumberDecimal("0"),
+                "totalProfit" : "0",
+                "overhead" : "20.14848",
+                "extraTotal" : "0",
+                "totalPrice" : "185.51",
+                "totalLabourUnadjusted" : "38.16",
+                "totalPlantUnadjusted" : "0",
+                "totalConsumableUnadjusted" : "0",
+                "totalTransportUnadjusted" : "0",
+                "totalPreliminariesUnadjusted" : "0",
+                "totalPriceUnadjusted" : "58.308479999999996",
+                "totalErect" : "0",
+                "totalStrike" : "0",
+                "lineProfitPercent" : "0",
+                "lineProfit" : "0",
+                "subTotal" : "0",
+                "adjustedSubtotal" : "0",
+                "companyOverheadMarkup" : "0",
+                "companyProfitMarkup" : "0",
+                "preNegotiatedPrice" : "0",
+                "preAdjustedProfit" : "0",
+                "preAdjustedPriceToClient" : "0",
+                "preGlobalAdjustLabour" : "0",
+                "preGlobalAdjustPlant" : "0",
+                "preGlobalAdjustConsumable" : "0",
+                "preGlobalAdjustTransport" : "0",
+                "preGlobalAdjustPreliminaries" : "0",
+                "preGlobalAdjustProfit" : "0",
+                "preGlobalAdjustSubtotal" : "0",
+                "totalPrelimLabour" : "0",
+                "totalWeightUnadjusted" : "0",
+                "overHireRate" : NumberDecimal("0.03"),
+                "weeklyOverHire" : NumberDecimal("5.5653")
+            },
+            "adjustments" : [
+                {
+                    "bracketName" : "Labour",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Plant",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Consumable",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Preliminaries",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Transport",
+                    "value" : "0"
+                },
+                {
+                    "bracketName" : "Profit",
+                    "value" : "0"
+                }
+            ],
+            "globalAdjustments" : null,
+            "profit" : "0",
+            "itemProfitPercentage" : "218.15",
+            "hasSEPhases" : false,
+            "includeTransport" : true,
+            "clientHandover" : false,
+            "createItw" : false,
+            "spreadCost" : false,
+            "internalItem" : false,
+            "complete" : false,
+            "includeProjectDiscount" : true,
+            "isDaywork" : false,
+            "variationForSectionId" : null
+        }
+    ],
+    "displayPosition" : NumberInt(0),
+    "archived" : false,
+    "state" : "Active",
+    "sectionSecuredMetadata" : {
+        "secureDate" : ISODate("2021-05-29T09:13:43.088+0000")
+    },
+    "operationalGroups" : [
+        {
+            "_id" : "3fd113bf-e643-4e33-80bc-a2a775782b6a",
+            "name" : "Erect 1st Lift",
+            "items" : [
+                {
+                    "_id" : "506b6b56-6b4c-4e31-8e0a-ed37f8822c30",
+                    "phase" : "Erect"
+                },
+                {
+                    "_id" : "8ba7eaf5-97ca-4b82-92c1-05c0d6fb3c21",
+                    "phase" : "Erect"
+                },
+                {
+                    "_id" : "84c704d4-e549-43e9-86de-fc5f3bdfd217",
+                    "phase" : "Erect"
+                },
+                {
+                    "_id" : "b65a2ba0-008f-4ffa-b6df-db2589f817b6",
+                    "phase" : "Erect"
+                }
+            ],
+            "percentComplete" : NumberInt(100),
+            "value" : "1306.54",
+            "progressType" : "Binary",
+            "linearTotal" : "0",
+            "linearCompleted" : "0",
+            "linearAssigned" : "0",
+            "linearUnits" : null,
+            "oGNumber" : NumberInt(0),
+            "variationName" : null,
+            "variationSequence" : NumberInt(0)
+        },
+        {
+            "_id" : "0c4f287f-bb33-4528-812b-8af48e2a7062",
+            "name" : "Erect 2nd Lift",
+            "items" : [
+                {
+                    "_id" : "49d9d052-981b-4413-9fb0-9d086daf242e",
+                    "phase" : "Erect"
+                },
+                {
+                    "_id" : "902bcd21-7cb2-4a2f-939a-7dc9f979fbdc",
+                    "phase" : "Erect"
+                }
+            ],
+            "percentComplete" : NumberInt(100),
+            "value" : "346.88",
+            "progressType" : "Binary",
+            "linearTotal" : "0",
+            "linearCompleted" : "0",
+            "linearAssigned" : "0",
+            "linearUnits" : null,
+            "oGNumber" : NumberInt(0),
+            "variationName" : null,
+            "variationSequence" : NumberInt(0)
+        },
+        {
+            "_id" : "91b90a94-1b36-47e0-baee-f7886f9f9b37",
+            "name" : "Erect 4th Lift",
+            "items" : [
+                {
+                    "_id" : "268f4231-49d5-47ee-940f-9eb4e8f24a23",
+                    "phase" : "Erect"
+                },
+                {
+                    "_id" : "1ce47970-6e1d-4cfa-8b28-94d65835c4aa",
+                    "phase" : "Erect"
+                }
+            ],
+            "percentComplete" : NumberInt(0),
+            "value" : "302.58",
+            "progressType" : "Binary",
+            "linearTotal" : "0",
+            "linearCompleted" : "0",
+            "linearAssigned" : "0",
+            "linearUnits" : null,
+            "oGNumber" : NumberInt(0),
+            "variationName" : null,
+            "variationSequence" : NumberInt(0)
+        },
+        {
+            "_id" : "fd8adbfe-46f5-4e67-82c3-3fc2301bf8c3",
+            "name" : "Erect Blocking Lift",
+            "items" : [
+                {
+                    "_id" : "bf6af6f2-bffe-4614-a82b-aa51a3beeefb",
+                    "phase" : "Erect"
+                }
+            ],
+            "percentComplete" : NumberInt(100),
+            "value" : "565.65",
+            "progressType" : "Binary",
+            "linearTotal" : "0",
+            "linearCompleted" : "0",
+            "linearAssigned" : "0",
+            "linearUnits" : null,
+            "oGNumber" : NumberInt(0),
+            "variationName" : null,
+            "variationSequence" : NumberInt(0)
+        },
+        {
+            "_id" : "56d0e733-787c-4d33-9620-a8ba3e99a3fb",
+            "name" : "Erect Porch Scaffold",
+            "items" : [
+                {
+                    "_id" : "9c59904d-d4fb-4f24-8722-6bb0bd16fa75",
+                    "phase" : "Erect"
+                }
+            ],
+            "percentComplete" : NumberInt(100),
+            "value" : "49.72",
+            "progressType" : "Linear",
+            "linearTotal" : "6",
+            "linearCompleted" : "6",
+            "linearAssigned" : "6",
+            "linearUnits" : "m",
+            "oGNumber" : NumberInt(0),
+            "variationName" : null,
+            "variationSequence" : NumberInt(0)
+        },
+        {
+            "_id" : "a82d6e0d-bd41-438f-ab17-61fae524fc27",
+            "name" : "Strike Blocking Lift",
+            "items" : [
+                {
+                    "_id" : "bf6af6f2-bffe-4614-a82b-aa51a3beeefb",
+                    "phase" : "Strike"
+                }
+            ],
+            "percentComplete" : NumberInt(0),
+            "value" : "565.65",
+            "progressType" : "Linear",
+            "linearTotal" : "50.88",
+            "linearCompleted" : "0",
+            "linearAssigned" : "0",
+            "linearUnits" : "m",
+            "oGNumber" : NumberInt(0),
+            "variationName" : null,
+            "variationSequence" : NumberInt(0)
+        },
+        {
+            "_id" : "59711a30-2f7e-4f9b-8682-97dcc21015e5",
+            "name" : "Strike GF Birdcages & Prop Floor",
+            "items" : [
+                {
+                    "_id" : "84c704d4-e549-43e9-86de-fc5f3bdfd217",
+                    "phase" : "Strike"
+                },
+                {
+                    "_id" : "b65a2ba0-008f-4ffa-b6df-db2589f817b6",
+                    "phase" : "Strike"
+                },
+                {
+                    "_id" : "7ca58daf-aef8-471f-901d-d315833dd8ed",
+                    "phase" : "Erect"
+                }
+            ],
+            "percentComplete" : NumberInt(0),
+            "value" : "1090.02",
+            "progressType" : "Binary",
+            "linearTotal" : "0",
+            "linearCompleted" : "0",
+            "linearAssigned" : "0",
+            "linearUnits" : null,
+            "oGNumber" : NumberInt(0),
+            "variationName" : null,
+            "variationSequence" : NumberInt(0)
+        },
+        {
+            "_id" : "728cc88f-32be-44a0-825e-c8d0e479be00",
+            "name" : "Strike Internals",
+            "items" : [
+                {
+                    "_id" : "6cf80254-ee4b-49d2-8d77-6181487fa05a",
+                    "phase" : "Strike"
+                },
+                {
+                    "_id" : "041ff3d9-4555-4624-ad72-2974f4be435c",
+                    "phase" : "Strike"
+                },
+                {
+                    "_id" : "7ca58daf-aef8-471f-901d-d315833dd8ed",
+                    "phase" : "Strike"
+                }
+            ],
+            "percentComplete" : NumberInt(0),
+            "value" : "1128.71",
+            "progressType" : "Binary",
+            "linearTotal" : "0",
+            "linearCompleted" : "0",
+            "linearAssigned" : "0",
+            "linearUnits" : null,
+            "oGNumber" : NumberInt(0),
+            "variationName" : null,
+            "variationSequence" : NumberInt(0)
+        },
+        {
+            "_id" : "8b4624f3-af20-4507-b6da-7b4b91bf1143",
+            "name" : "Strike Porch Scaffold",
+            "items" : [
+                {
+                    "_id" : "9c59904d-d4fb-4f24-8722-6bb0bd16fa75",
+                    "phase" : "Strike"
+                }
+            ],
+            "percentComplete" : NumberInt(0),
+            "value" : "49.72",
+            "progressType" : "Linear",
+            "linearTotal" : "6",
+            "linearCompleted" : "0",
+            "linearAssigned" : "0",
+            "linearUnits" : "m",
+            "oGNumber" : NumberInt(0),
+            "variationName" : null,
+            "variationSequence" : NumberInt(0)
+        },
+        {
+            "_id" : "d2e0ea3e-bdc6-47e2-baca-db5063bd44cb",
+            "name" : "Strike Scaffold for Render",
+            "items" : [
+                {
+                    "_id" : "47f96ef1-c508-444d-b22d-25f689624172",
+                    "phase" : "Strike"
+                },
+                {
+                    "_id" : "c9d26301-9e98-40d6-b315-42dae8f92666",
+                    "phase" : "Strike"
+                }
+            ],
+            "percentComplete" : NumberInt(0),
+            "value" : "193.63",
+            "progressType" : "Linear",
+            "linearTotal" : "11.88",
+            "linearCompleted" : "0",
+            "linearAssigned" : "0",
+            "linearUnits" : "m",
+            "oGNumber" : NumberInt(0),
+            "variationName" : null,
+            "variationSequence" : NumberInt(0)
+        },
+        {
+            "_id" : "73e63749-1841-48de-8e6c-2fec19af0364",
+            "name" : "Reinstate Scaffold Test MC",
+            "items" : [
+                {
+                    "_id" : "0ffb74e1-dd36-4830-a10d-a454d369e05c",
+                    "phase" : "Preliminary"
+                }
+            ],
+            "percentComplete" : NumberInt(0),
+            "value" : "185.51",
+            "progressType" : "Linear",
+            "linearTotal" : "50.88",
+            "linearCompleted" : "0",
+            "linearAssigned" : "0",
+            "linearUnits" : "m",
+            "oGNumber" : NumberInt(0),
+            "variationName" : null,
+            "variationSequence" : NumberInt(0)
+        },
+        {
+            "_id" : "07d12515-483b-4d70-9b46-478848eb6eb9",
+            "name" : "test",
+            "items" : [
+                {
+                    "_id" : "8959829c-d6b7-4c52-8b4d-e5d768b29646",
+                    "phase" : "Erect"
+                },
+                {
+                    "_id" : "d0967306-a661-4c87-bc6a-dcb466bb4fc9",
+                    "phase" : "Erect"
+                },
+                {
+                    "_id" : "4475c1b2-f860-40f0-a2de-e1bae8164d2d",
+                    "phase" : "Erect"
+                }
+            ],
+            "percentComplete" : NumberInt(100),
+            "value" : "320.9",
+            "progressType" : "Binary",
+            "linearTotal" : "0",
+            "linearCompleted" : "0",
+            "linearAssigned" : "0",
+            "linearUnits" : null,
+            "oGNumber" : NumberInt(0),
+            "variationName" : null,
+            "variationSequence" : NumberInt(0)
+        },
+        {
+            "_id" : "b69c5477-b7b5-4faf-9c9d-dba206028e83",
+            "name" : "Default",
+            "items" : [
+                {
+                    "_id" : "d8f8ed52-05f2-45ce-ba73-102df0aedcab",
+                    "phase" : "Erect"
+                },
+                {
+                    "_id" : "d8f8ed52-05f2-45ce-ba73-102df0aedcab",
+                    "phase" : "Strike"
+                },
+                {
+                    "_id" : "e04b4600-057c-4c50-8a60-ece399b80432",
+                    "phase" : "Erect"
+                },
+                {
+                    "_id" : "e04b4600-057c-4c50-8a60-ece399b80432",
+                    "phase" : "Strike"
+                },
+                {
+                    "_id" : "d70d6f75-5616-4d61-ac03-39834643abbc",
+                    "phase" : "Erect"
+                },
+                {
+                    "_id" : "d70d6f75-5616-4d61-ac03-39834643abbc",
+                    "phase" : "Strike"
+                },
+                {
+                    "_id" : "b5d835d6-955c-406b-b778-3433afbef0fc",
+                    "phase" : "Erect"
+                },
+                {
+                    "_id" : "6cf80254-ee4b-49d2-8d77-6181487fa05a",
+                    "phase" : "Erect"
+                },
+                {
+                    "_id" : "041ff3d9-4555-4624-ad72-2974f4be435c",
+                    "phase" : "Erect"
+                },
+                {
+                    "_id" : "47f96ef1-c508-444d-b22d-25f689624172",
+                    "phase" : "Erect"
+                },
+                {
+                    "_id" : "c9d26301-9e98-40d6-b315-42dae8f92666",
+                    "phase" : "Erect"
+                },
+                {
+                    "_id" : "506b6b56-6b4c-4e31-8e0a-ed37f8822c30",
+                    "phase" : "Strike"
+                },
+                {
+                    "_id" : "49d9d052-981b-4413-9fb0-9d086daf242e",
+                    "phase" : "Strike"
+                },
+                {
+                    "_id" : "8959829c-d6b7-4c52-8b4d-e5d768b29646",
+                    "phase" : "Strike"
+                },
+                {
+                    "_id" : "268f4231-49d5-47ee-940f-9eb4e8f24a23",
+                    "phase" : "Strike"
+                },
+                {
+                    "_id" : "d0967306-a661-4c87-bc6a-dcb466bb4fc9",
+                    "phase" : "Strike"
+                },
+                {
+                    "_id" : "4475c1b2-f860-40f0-a2de-e1bae8164d2d",
+                    "phase" : "Strike"
+                },
+                {
+                    "_id" : "8ba7eaf5-97ca-4b82-92c1-05c0d6fb3c21",
+                    "phase" : "Strike"
+                },
+                {
+                    "_id" : "902bcd21-7cb2-4a2f-939a-7dc9f979fbdc",
+                    "phase" : "Strike"
+                },
+                {
+                    "_id" : "b5d835d6-955c-406b-b778-3433afbef0fc",
+                    "phase" : "Strike"
+                },
+                {
+                    "_id" : "1ce47970-6e1d-4cfa-8b28-94d65835c4aa",
+                    "phase" : "Strike"
+                }
+            ],
+            "percentComplete" : NumberInt(0),
+            "value" : "3022.2799999999997",
+            "progressType" : "Binary",
+            "linearTotal" : "0",
+            "linearCompleted" : "0",
+            "linearAssigned" : "0",
+            "linearUnits" : null,
+            "oGNumber" : NumberInt(0),
+            "variationName" : null,
+            "variationSequence" : NumberInt(0)
+        }
+    ],
+    "priceTotals" : {
+        "totalLabour" : "2644.0200000000004",
+        "totalPlant" : NumberDecimal("1239.4599999999998"),
+        "totalConsumable" : NumberDecimal("0"),
+        "totalTransport" : "0",
+        "totalWeight" : NumberDecimal("35960.518399999986"),
+        "totalPreliminaries" : NumberDecimal("0"),
+        "totalProfit" : "0",
+        "overhead" : "2050.4774400000006",
+        "extraTotal" : "23.17",
+        "totalPrice" : "9127.640000000001",
+        "totalLabourUnadjusted" : "2644.0200000000004",
+        "totalPlantUnadjusted" : "1239.4599999999998",
+        "totalConsumableUnadjusted" : "0",
+        "totalTransportUnadjusted" : "0",
+        "totalPreliminariesUnadjusted" : "0",
+        "totalPriceUnadjusted" : "5933.95744",
+        "totalErect" : "0",
+        "totalStrike" : "0",
+        "lineProfitPercent" : "0",
+        "lineProfit" : "0",
+        "subTotal" : "0",
+        "adjustedSubtotal" : "0",
+        "companyOverheadMarkup" : "0",
+        "companyProfitMarkup" : "0",
+        "preNegotiatedPrice" : "0",
+        "preAdjustedProfit" : "0",
+        "preAdjustedPriceToClient" : "0",
+        "preGlobalAdjustLabour" : "0",
+        "preGlobalAdjustPlant" : "0",
+        "preGlobalAdjustConsumable" : "0",
+        "preGlobalAdjustTransport" : "0",
+        "preGlobalAdjustPreliminaries" : "0",
+        "preGlobalAdjustProfit" : "0",
+        "preGlobalAdjustSubtotal" : "0",
+        "totalPrelimLabour" : "0",
+        "totalWeightUnadjusted" : "35960.5184",
+        "overHireRate" : NumberDecimal("0.03"),
+        "weeklyOverHire" : NumberDecimal("273.829200000000")
+    },
+    "percentComplete" : "28",
+    "pricedVariation" : false,
+    "pricedUnsecuredVariation" : false,
+    "variationForSectionId" : null,
+    "snapshotSectionId" : null,
+    "snapshotSequence" : NumberInt(0),
+    "contractedSnapshot" : false,
+    "securedBy" : null,
+    "secureDate" : null,
+    "prelimSection" : false,
+    "excludePricing" : false,
+    "isUnpricedVariation" : false,
+    "isAttendance" : false,
+    "contractHirePeriod" : NumberInt(12)
+}

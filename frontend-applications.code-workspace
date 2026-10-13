@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "Frontend"
+		},
+		{
+			"path": "InspectionsApp"
+		},
+		{
+			"path": "HandoverApp"
+		}
+	],
+	"settings": {
+		"angular.enable-strict-mode-prompt": false
+	}
+}

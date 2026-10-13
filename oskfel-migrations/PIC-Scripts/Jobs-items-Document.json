@@ -1,0 +1,149 @@
+{
+    "_id" : ObjectId("652fe24dbd1c775143e5b440"),
+    "teamName" : "default",
+    "name" : "Independent Blocking Lift Access Scaffold Upto 1.8m in Height 4 + 2 Boards",
+    "units" : {
+        "_id" : ObjectId("699fae8a86c4636f557a7076"),
+        "teamName" : "default",
+        "name" : "m",
+        "displayName" : "m"
+    },
+    "category" : "External/Internal Access Scaffold",
+    "pricedMaterials" : [
+        {
+            "_id" : "9906b29d-e069-4a85-ba97-71dc0bcd8536",
+            "material" : {
+                "_id" : ObjectId("652fe083a339c753713049df"),
+                "teamName" : null,
+                "name" : "Brickguard (No)",
+                "weight" : "1.1",
+                "cost" : "6.8",
+                "returnWeeks" : "104",
+                "jobAllocation" : "0",
+                "units" : "No",
+                "hire" : true,
+                "consumable" : false,
+                "orderMaterialId" : null,
+                "extraHire" : true,
+                "extraHirePercent" : "150"
+            },
+            "quantity" : "0.83"
+        },
+        {
+            "_id" : "6bca55fe-caa2-447a-9645-9e6e116f063d",
+            "material" : {
+                "_id" : ObjectId("652fe083a339c753713049ce"),
+                "teamName" : null,
+                "name" : "Double (No)",
+                "weight" : "1.02",
+                "cost" : "1.6",
+                "returnWeeks" : "104",
+                "jobAllocation" : "0",
+                "units" : "No",
+                "hire" : true,
+                "consumable" : false,
+                "orderMaterialId" : null,
+                "extraHire" : true,
+                "extraHirePercent" : "150"
+            },
+            "quantity" : "3.89"
+        },
+        {
+            "_id" : "a299e4c6-f1cb-466c-b372-bb37689ada70",
+            "material" : {
+                "_id" : ObjectId("652fe083a339c753713049cf"),
+                "teamName" : null,
+                "name" : "Single (No)",
+                "weight" : "0.65",
+                "cost" : "1",
+                "returnWeeks" : "104",
+                "jobAllocation" : "0",
+                "units" : "No",
+                "hire" : true,
+                "consumable" : false,
+                "orderMaterialId" : null,
+                "extraHire" : true,
+                "extraHirePercent" : "150"
+            },
+            "quantity" : "2.78"
+        },
+        {
+            "_id" : "27fcd3b7-527d-428f-a69f-b068df05ad10",
+            "material" : {
+                "_id" : ObjectId("652fe083a339c753713049d1"),
+                "teamName" : null,
+                "name" : "Sleeve (No)",
+                "weight" : "1.07",
+                "cost" : "1.5",
+                "returnWeeks" : "104",
+                "jobAllocation" : "0",
+                "units" : "No",
+                "hire" : true,
+                "consumable" : false,
+                "orderMaterialId" : null,
+                "extraHire" : true,
+                "extraHirePercent" : "150"
+            },
+            "quantity" : "1.27"
+        },
+        {
+            "_id" : "1d53a133-0dfd-48c3-aeac-3902932455f0",
+            "material" : {
+                "_id" : ObjectId("652fe083a339c753713049d0"),
+                "teamName" : null,
+                "name" : "Swivel (No)",
+                "weight" : "1.15",
+                "cost" : "1.75",
+                "returnWeeks" : "104",
+                "jobAllocation" : "0",
+                "units" : "No",
+                "hire" : true,
+                "consumable" : false,
+                "orderMaterialId" : null,
+                "extraHire" : true,
+                "extraHirePercent" : "150"
+            },
+            "quantity" : "0.53"
+        },
+        {
+            "_id" : "d5d56298-4410-4a91-84e2-a9ee357641b5",
+            "material" : {
+                "_id" : ObjectId("652fe083a339c753713049c7"),
+                "teamName" : null,
+                "name" : "Tube (Ft)",
+                "weight" : "1.3381",
+                "cost" : "1.28",
+                "returnWeeks" : "104",
+                "jobAllocation" : "0",
+                "units" : "Ft",
+                "hire" : true,
+                "consumable" : false,
+                "orderMaterialId" : null,
+                "extraHire" : true,
+                "extraHirePercent" : "150"
+            },
+            "quantity" : "13.5"
+        }
+    ],
+    "duty" : "General Purpose",
+    "weight" : 26.73,
+    "labour" : 3.63,
+    "plant" : 0.34,
+    "prelim" : 0.0,
+    "labourPrelim" : false,
+    "consumable" : 0.0,
+    "linear" : false,
+    "profit" : 0.0,
+    "strike" : 40.0,
+    "catalogue" : {
+        "_id" : ObjectId("68ef6a389bd4c483bf30c375"),
+        "name" : "Tube & Fitting"
+    },
+    "createdDate" : ISODate("2025-10-29T15:04:20.253+0000"),
+    "creator" : null,
+    "deletedByUser" : null,
+    "deletedDate" : null,
+    "isDeleted" : false,
+    "lastUpdatedDate" : null,
+    "updater" : null
+}

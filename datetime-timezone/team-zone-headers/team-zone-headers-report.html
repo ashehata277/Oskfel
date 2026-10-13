@@ -1,0 +1,532 @@
+<title>Team Zone Headers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#f6f7f4;--surface:#ffffff;--sunk:#eef0ea;--fg:#1d211c;--muted:#5d6559;--line:#d9ddd3;
+  --accent:#1f6f5c;--accent-soft:#dcefe8;--warn:#9a5b00;--warn-soft:#fbefd9;--risk:#a33a2b;--risk-soft:#f8e1dc;
+  --open:#3a5ba0;--open-soft:#e2e9f7;--bar:#1f6f5c;--bar-2:#7fb3a4;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#141714;--surface:#1b1f1b;--sunk:#222722;--fg:#e4e8e1;--muted:#9aa396;--line:#323832;
+  --accent:#6cc4a9;--accent-soft:#1f3a32;--warn:#e6b25c;--warn-soft:#3a2f1a;--risk:#ef8f7f;--risk-soft:#3d221d;
+  --open:#93b0ea;--open-soft:#1f2a42;--bar:#6cc4a9;--bar-2:#3f7a69;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#141714;--surface:#1b1f1b;--sunk:#222722;--fg:#e4e8e1;--muted:#9aa396;--line:#323832;
+  --accent:#6cc4a9;--accent-soft:#1f3a32;--warn:#e6b25c;--warn-soft:#3a2f1a;--risk:#ef8f7f;--risk-soft:#3d221d;
+  --open:#93b0ea;--open-soft:#1f2a42;--bar:#6cc4a9;--bar-2:#3f7a69;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:15px/1.6 "IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:32px 64px;display:grid;gap:40px}
+h1,h2,h3{text-wrap:balance;line-height:1.25;margin:0}
+h1{font-size:2rem;font-weight:700;letter-spacing:-.01em}
+h2{font-size:1.35rem;font-weight:600;padding-bottom:8px;border-bottom:1px solid var(--line)}
+h3{font-size:1.02rem;font-weight:600}
+p{margin:0;max-width:68ch}
+code,.mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em}
+code{background:var(--sunk);padding:1px 5px;border-radius:4px}
+.label{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600}
+section{display:grid;gap:16px;scroll-margin-top:16px}
+header.top{display:grid;gap:12px}
+.meta{display:flex;flex-wrap:wrap;gap:8px 20px;color:var(--muted);font-size:.88rem}
+.lede{font-size:1.08rem;max-width:70ch}
+nav.toc{display:flex;flex-wrap:wrap;gap:6px}
+nav.toc a{font-size:.82rem;color:var(--fg);text-decoration:none;padding:4px 10px;border:1px solid var(--line);border-radius:999px;background:var(--surface)}
+nav.toc a:hover{border-color:var(--accent);color:var(--accent)}
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.rule{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:grid;gap:6px;align-content:start}
+.rule b{color:var(--accent);font-family:"IBM Plex Mono",monospace;font-size:.85rem}
+.example{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+@media (max-width:760px){.example{grid-template-columns:minmax(0,1fr)}}
+.field{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;display:grid;gap:10px;align-content:start}
+.field .input{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1.5px solid var(--accent);border-radius:6px;padding:10px 12px;font-family:"IBM Plex Mono",monospace;font-size:1.1rem}
+.field .input span{font-size:.75rem;color:var(--muted);font-family:"IBM Plex Sans",sans-serif}
+.warnbox{background:var(--warn-soft);color:var(--warn);border-radius:6px;padding:8px 12px;font-size:.86rem;display:flex;gap:8px}
+.trace{list-style:none;margin:0;padding:0;display:grid;gap:0;background:var(--surface);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.trace li{display:grid;grid-template-columns:150px minmax(0,1fr);gap:12px;padding:9px 14px;border-top:1px solid var(--line);font-size:.9rem}
+.trace li:first-child{border-top:0}
+.trace li>span:first-child{color:var(--muted)}
+.trace li>span:last-child{font-family:"IBM Plex Mono",monospace;font-size:.82rem;overflow-wrap:anywhere}
+@media (max-width:520px){.trace li{grid-template-columns:minmax(0,1fr);gap:2px}}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.88rem}
+th,td{text-align:left;vertical-align:top;padding:9px 12px;border-top:1px solid var(--line)}
+thead th{border-top:0;background:var(--sunk);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600}
+td:first-child{white-space:nowrap;font-weight:600}
+.tag{display:inline-block;font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.t-done{background:var(--accent-soft);color:var(--accent)}
+.t-rec{background:var(--warn-soft);color:var(--warn)}
+.t-open{background:var(--open-soft);color:var(--open)}
+.t-risk{background:var(--risk-soft);color:var(--risk)}
+pre{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;overflow-x:auto;font-family:"IBM Plex Mono",monospace;font-size:.8rem;line-height:1.5}
+.flow{display:grid;gap:8px}
+.flow .node{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:6px;padding:10px 14px;display:grid;gap:2px}
+.flow .node small{color:var(--muted);font-size:.82rem}
+.flow .arrow{color:var(--muted);font-family:"IBM Plex Mono",monospace;padding-left:18px;font-size:.85rem}
+.branches{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px}
+.branches .node{border-left-color:var(--bar-2)}
+.hdrs{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.hdr{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:grid;gap:4px;align-content:start}
+.hdr code{background:none;padding:0;font-weight:500;color:var(--accent);overflow-wrap:anywhere}
+.hdr small{color:var(--muted)}
+.net{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.net .rule b{color:var(--fg)}
+.phases{display:grid;gap:14px}
+.phase{background:var(--surface);border:1px solid var(--line);border-radius:8px;display:grid;grid-template-columns:64px minmax(0,1fr)}
+.phase .num{background:var(--sunk);display:grid;place-items:start center;padding-top:14px;font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:1.25rem;color:var(--accent);border-radius:8px 0 0 8px}
+.phase .body{padding:14px 18px;display:grid;gap:8px;min-width:0}
+.phase ul{margin:0;padding-left:18px;display:grid;gap:4px;font-size:.9rem}
+.phase li{overflow-wrap:anywhere}
+.phase .goal{color:var(--muted);font-size:.9rem}
+.done{font-size:.86rem;border-top:1px dashed var(--line);padding-top:8px}
+.done b{color:var(--accent)}
+.side{display:flex;flex-wrap:wrap;gap:6px}
+.chart{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;display:grid;gap:6px}
+.row{display:grid;grid-template-columns:120px minmax(0,1fr) 32px;gap:10px;align-items:center;font-size:.85rem}
+.row .track{height:12px;background:var(--sunk);border-radius:3px;overflow:hidden}
+.row .fill{height:100%;background:var(--bar);border-radius:3px}
+.row .fill.lite{background:var(--bar-2)}
+.row .n{text-align:right;font-variant-numeric:tabular-nums;font-family:"IBM Plex Mono",monospace;font-size:.8rem}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+@media (max-width:760px){.two{grid-template-columns:minmax(0,1fr)}}
+.qs{display:grid;gap:10px;counter-reset:q}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 16px;display:grid;grid-template-columns:44px minmax(0,1fr);gap:10px}
+.q b{font-family:"IBM Plex Mono",monospace;color:var(--open)}
+.q small{color:var(--muted);display:block}
+.note{font-size:.84rem;color:var(--muted)}
+footer{font-size:.82rem;color:var(--muted);border-top:1px solid var(--line);padding-top:16px}
+</style>
+
+<div class="wrap">
+
+<header class="top">
+  <span class="label">Date &amp; time plan 3 of 3 · plan only, no code changed</span>
+  <h1>Team Zone via Request Headers</h1>
+  <p class="lede">Dates stay UTC in the database and on the wire. Gateway sends each team's time zone with every request. Only the edges use it: one shared date/time control and two pipes in the apps, and the backend code that decides days, "now", day queries and printed times.</p>
+  <div class="meta">
+    <span>Written 7 Oct 2026 · answers Q1–Q7 applied · risk review applied</span>
+    <span>Branch <code>feature/1.6.0/team-zone-headers</code></span>
+    <span>18 repos · 179 plan steps · 12 phases</span>
+    <span>No data migration · one-step go-live</span>
+  </div>
+  <nav class="toc" aria-label="Sections">
+    <a href="#goal">Goal</a><a href="#example">Toronto example</a><a href="#decisions">Decisions</a><a href="#design">Design</a><a href="#safety">Safety net</a><a href="#phases">Phases</a><a href="#size">Size</a><a href="#compare">Compared</a><a href="#gaps">Gaps</a><a href="#questions">Questions</a>
+  </nav>
+</header>
+
+<section id="goal">
+  <h2>The goal on one page</h2>
+  <div class="rules">
+    <div class="rule"><b>G1 · Storage</b><p>Every stored date stays UTC. Nothing is rewritten.</p><span class="note">Proof: no migration script; S.5 shows the same wages, apart from the signed-off day-boundary list.</span></div>
+    <div class="rule"><b>G2 · Edges only</b><p>The team zone is used only in the control and pipes, and in backend day, "now", query and print logic.</p><span class="note">Proof: ESLint and grep gates (S.7).</span></div>
+    <div class="rule"><b>G3 · From the request</b><p>Zone from Gateway headers. Without a team request (jobs, events, customers, hub) from the team that owns the data, then London.</p><span class="note">Proof: contract tests (S.3), fallback counter (S.4).</span></div>
+    <div class="rule"><b>G4 · No hard-coded zone or UTC day</b><p>No <code>Europe/London</code> outside the kit, and no <code>.Date</code> or <code>UtcNow.Date</code> in a day filter.</p><span class="note">Proof: grep gates (S.7, 6.9).</span></div>
+  </div>
+  <div class="tbl"><table>
+    <thead><tr><th>Who</th><th>Today</th><th>After</th></tr></thead>
+    <tbody>
+      <tr><td>Users</td><td>Dates typed and shown in the device's zone; a user abroad sees shifted times</td><td>Every date in the <b>team's</b> zone, with a warning in the input control when the device differs</td></tr>
+      <tr><td>Customer users</td><td>Device zone</td><td>Each record's dates in the zone of the team that owns it</td></tr>
+      <tr><td>Backend</td><td>London hard-coded in 118 places; <code>.Date</code> and <code>UtcNow.Date</code> in day filters</td><td><code>IRequestInfo</code> gives team and zone; <code>IDateTimeProvider</code> gives "now", "today", day windows and conversions</td></tr>
+      <tr><td>Frontend</td><td><code>mat-datepicker</code>, native inputs, <code>toISOString()</code>, device-local maths</td><td><code>&lt;app-date-time-field&gt;</code>, <code>teamDate</code>, <code>calendarDate</code>, helpers in <code>shared/time/</code></td></tr>
+      <tr><td>Gateway</td><td>Sends <code>Intowork.TeamName</code> and user headers</td><td>Also sends zone, offset, date format, time format</td></tr>
+      <tr><td>Database</td><td>UTC</td><td><b>Unchanged.</b> Three optional team fields, no backfill</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="example">
+  <h2>Worked example: Toronto device, London team</h2>
+  <p>A user in Toronto (device UTC−4) on a London team (BST, UTC+1) records a clock-in at 08:00 on 15 July 2026.</p>
+  <div class="example">
+    <div class="field">
+      <span class="label">What the user sees in the control</span>
+      <div class="input">15/07/2026 08:00 <span>London time</span></div>
+      <div class="warnbox" role="note"><span aria-hidden="true">⚠</span><span>Your device is on Toronto time (UTC−4). Times here are in London time (UTC+1).</span></div>
+      <p class="note">The value means 08:00 in London. Converting to UTC removes only London's offset, never the device's. The warning shows only in input controls.</p>
+    </div>
+    <ol class="trace">
+      <li><span>Form value</span><span>2026-07-15T07:00:00.000Z</span></li>
+      <li><span>Gateway adds</span><span>Intowork.TeamTimeZone: Europe/London</span></li>
+      <li><span>Stored in MongoDB</span><span>2026-07-15T07:00:00Z (UTC, as today)</span></li>
+      <li><span>Backend "which day"</span><span>clock.DayOf(v) → 15 Jul</span></li>
+      <li><span>Day query</span><span>clock.DayRangeUtc(15 Jul) → [14 Jul 23:00Z, 15 Jul 23:00Z)</span></li>
+      <li><span>Shown again</span><span>teamDate → 15/07/2026 08:00 on any device</span></li>
+    </ol>
+  </div>
+</section>
+
+<section id="decisions">
+  <h2>Decisions</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>#</th><th>Question</th><th>Answer used by this plan</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>Z1</td><td>How are dates stored?</td><td>UTC in MongoDB, exactly as today.</td><td><span class="tag t-done">decided</span></td></tr>
+      <tr><td>Z2</td><td>Are old dates rewritten?</td><td>No. No data migration.</td><td><span class="tag t-done">decided</span></td></tr>
+      <tr><td>Z3</td><td>What is a picked day?</td><td>The team's midnight stored as UTC: Mon 6 July (London) is <code>2026-07-05T23:00Z</code> in summer, <code>…06T00:00Z</code> in winter. Read back with the team zone.</td><td><span class="tag t-done">decided</span></td></tr>
+      <tr><td>Z4</td><td>What does Gateway send?</td><td>Zone id (authoritative), current offset ("now" and logs only), date format, time format. The offset never converts another date.</td><td><span class="tag t-done">decided</span></td></tr>
+      <tr><td>Z5</td><td>Where does the zone come from?</td><td>Optional <code>TimeZone</code>, <code>DateFormat</code>, <code>TimeFormat</code> on the ProjectService Team. Missing = London, <code>dd/MM/yyyy</code>, <code>HH:mm</code>.</td><td><span class="tag t-done">decided</span></td></tr>
+      <tr><td>Z6</td><td>Work without a request?</td><td>Zone of the team the work is for, from the service's team copy, then London.</td><td><span class="tag t-done">decided</span></td></tr>
+      <tr><td>Z7</td><td>How does the control work?</td><td>Shows and accepts team time, gives UTC, warns when the device zone differs. Warning in input controls only (Q6).</td><td><span class="tag t-done">decided</span></td></tr>
+      <tr><td>Z8</td><td>Request team ≠ data team?</td><td>Code on another team's data uses that team's zone (resolver).</td><td><span class="tag t-done">decided</span></td></tr>
+      <tr><td>Z9</td><td>Where does the backend kit live?</td><td>Copied per repo under <code>Time/</code>, sync script and drift check (Q3).</td><td><span class="tag t-done">decided</span></td></tr>
+      <tr><td>Z10</td><td>Who sets the zone; can it change?</td><td>Team admin. <b>Zone set once at creation, never changed.</b> Formats can change any time. Existing teams stay London unless support sets the zone once before go-live (Q4, Q8). The create screen asks for confirmation.</td><td><span class="tag t-open">Q8 open</span></td></tr>
+      <tr><td>Z11</td><td>How does it go live?</td><td><b>One step</b>, in one release window (Q1). Only the readers of the new event fields ship earlier ("Release 0").</td><td><span class="tag t-done">decided</span></td></tr>
+      <tr><td>Z12</td><td>Are UTC-day query bugs fixed?</td><td><b>Yes</b>, in Phase 6 (Q2). London's "today" then starts at London midnight: 1 h earlier in summer.</td><td><span class="tag t-done">decided</span></td></tr>
+      <tr><td>Z13</td><td>Customer users and the hub?</td><td><b>Team zone</b> (Q5): the zone of the team that owns each record; responses carry <code>teamTimeZone</code>. The hub resolves the token team's zone.</td><td><span class="tag t-done">decided</span></td></tr>
+      <tr><td>Z14</td><td>In the plan comparison?</td><td>Yes, as a third plan (Q7).</td><td><span class="tag t-done">decided</span></td></tr>
+      <tr><td>Z15</td><td>When may production get a non-London team?</td><td>Not before one stable payroll cycle after go-live, so a rollback stays a plain redeploy.</td><td><span class="tag t-rec">recommended</span></td></tr>
+      <tr><td>Z16</td><td>Is there a kill switch?</td><td>No. The team zone is always applied; there is no <code>Time:TeamZoneEnabled</code> setting.</td><td><span class="tag t-done">decided</span></td></tr>
+      <tr><td>Z17</td><td>Outside a request?</td><td>Nothing throws. Background code gets its team's zone from <code>ITeamClocks</code>; a bare clock without a request is London, counted as <code>no-context</code>.</td><td><span class="tag t-done">decided</span></td></tr>
+      <tr><td>Z18</td><td>Internal service calls?</td><td>A kit handler copies the four team headers onto them.</td><td><span class="tag t-done">decided</span></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="design">
+  <h2>Target design</h2>
+  <h3>Header flow</h3>
+  <div class="flow">
+    <div class="node"><b>Team created (zone set once) or edited (formats only)</b><small>London defaults</small></div>
+    <div class="arrow">↓</div>
+    <div class="node"><b>ProjectService · Team</b><small>Publishes <code>TeamCreated</code> / <code>TeamUpdated</code> with three optional fields</small></div>
+    <div class="arrow">↓ fans out to</div>
+    <div class="branches">
+      <div class="node"><b>Gateway read model</b><small>Mongo + Redis (60 min). <code>IntoworkAuthInjector</code> adds three claims; Ocelot <code>AddHeadersToRequest</code> turns them into headers on every authenticated request</small></div>
+      <div class="node"><b>Team copies in 7 services</b><small>ActiveWork, Attendance, Handover, Inspections, Materials, Resources, and new in Notification. Used by <code>ITeamZoneResolver</code> for jobs, events, customers and the hub</small></div>
+      <div class="node"><b><code>GET /teamsettings</code></b><small>Read by <code>TeamTimeService</code> in Frontend, HandoverApp and InspectionsApp</small></div>
+    </div>
+  </div>
+  <h3>Headers on every authenticated downstream request</h3>
+  <div class="hdrs">
+    <div class="hdr"><code>Intowork.TeamTimeZone</code><span class="mono">Europe/London</span><small>Authoritative. Every conversion uses it.</small></div>
+    <div class="hdr"><code>Intowork.TeamDateFormat</code><span class="mono">dd/MM/yyyy</span><small>PDFs and e-mails made in the request.</small></div>
+    <div class="hdr"><code>Intowork.TeamTimeFormat</code><span class="mono">HH:mm</span><small>Same.</small></div>
+  </div>
+  <div class="two">
+    <div class="rule"><b>Customer-portal users</b><p>A customer has no team (no claim, no field on <code>BatonCustomer</code>) and can work with several teams. Gateway sends London defaults; the service uses the zone of the team that owns each record and returns <code>teamTimeZone</code> with it (7.6).</p></div>
+    <div class="rule"><b>SignalR hub</b><p>The Gateway route is anonymous because <code>NotificationHub</code> checks the token itself. On connect it reads <code>extension_Team</code>, resolves the zone and keeps it for the connection. Payload dates stay UTC (7.7).</p></div>
+  </div>
+
+  <div class="two">
+    <div style="display:grid;gap:10px;min-width:0">
+      <h3>Backend kit (each service, <code>Time/</code>)</h3>
+      <div class="tbl"><table>
+        <thead><tr><th>Part</th><th>Job</th></tr></thead>
+        <tbody>
+          <tr><td>IRequestInfo</td><td>Team, zone and formats for the request; the one place that reads <code>Intowork.*</code></td></tr>
+          <tr><td>IDateTimeProvider</td><td><code>UtcNow</code>, <code>TeamNow</code>, <code>TeamToday</code>, <code>ToTeamTime</code>, <code>ToUtc</code>, <code>DayOf</code>, <code>DayRangeUtc</code>, <code>ForZone</code></td></tr>
+          <tr><td>ITeamZoneResolver</td><td>Team name → zone from the team copy, then London</td></tr>
+          <tr><td>TeamZones.Resolve</td><td>London plus counter on missing, invalid, customer or switched off</td></tr>
+          <tr><td>MongoDateParts</td><td>Mongo date-part operators, always with <code>timezone</code></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <div style="display:grid;gap:10px;min-width:0">
+      <h3>Frontend kit (each app, <code>shared/time/</code>)</h3>
+      <div class="tbl"><table>
+        <thead><tr><th>Part</th><th>Job</th></tr></thead>
+        <tbody>
+          <tr><td>&lt;app-date-time-field&gt;</td><td>Modes <code>dateTime</code>, <code>date</code>, <code>time</code>; optional <code>[zone]</code>; gives UTC; warning inside</td></tr>
+          <tr><td>teamDate</td><td>Instants in team zone and format; optional zone argument</td></tr>
+          <tr><td>calendarDate</td><td>Picked days as the team's day</td></tr>
+          <tr><td>TeamTimeService</td><td>Zone and formats from <code>/teamsettings</code>; London until loaded</td></tr>
+          <tr><td>time-core.ts</td><td>Byte-identical in all three apps, drift-checked</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+
+  <h3>The query rule (Phase 6)</h3>
+  <pre>                 every row for D, old and new: the team's midnight (Z3)
+                        │        end-of-day row for D
+                        │                 │
+ ───────────────────────●─────────────────●──────────────────────────●─────►  time (UTC)
+                    D-1 23:00Z         D 22:59Z                   D 23:00Z
+                        ▲                                            ▲
+                   window.From                                  window.To
+                        └─────────── clock.DayRangeUtc(D) ───────────┘
+
+ on day D       Date >= window.From  &amp;&amp;  Date &lt; window.To
+ before D       Date &lt;  window.From
+ D or later     Date >= window.From
+ after D        Date >= window.To
+ covers D       Start &lt; window.To  &amp;&amp;  End >= window.From</pre>
+  <p class="note">The handler works out the team's day once and passes a <code>DateOnly</code> down. A repository never calls <code>.Date</code>, <code>UtcNow</code> or <code>UtcNow.Date</code> in a filter.</p>
+
+  <div class="two">
+    <div class="chart" aria-label="Hard-coded London sites per repo">
+      <span class="label">Hard-coded London sites · 118</span>
+      <div class="row"><span>Attendance</span><div class="track"><div class="fill" style="width:100%"></div></div><span class="n">54</span></div>
+      <div class="row"><span>Report.API</span><div class="track"><div class="fill" style="width:46.3%"></div></div><span class="n">25</span></div>
+      <div class="row"><span>Materials</span><div class="track"><div class="fill" style="width:18.5%"></div></div><span class="n">10</span></div>
+      <div class="row"><span>Handover</span><div class="track"><div class="fill" style="width:16.7%"></div></div><span class="n">9</span></div>
+      <div class="row"><span>Resources</span><div class="track"><div class="fill" style="width:16.7%"></div></div><span class="n">9</span></div>
+      <div class="row"><span>ActiveWork</span><div class="track"><div class="fill" style="width:13%"></div></div><span class="n">7</span></div>
+      <div class="row"><span>Inspections</span><div class="track"><div class="fill" style="width:7.4%"></div></div><span class="n">4</span></div>
+    </div>
+    <div class="chart" aria-label="Day-query points per service">
+      <span class="label">Day-query points (audit) · 20</span>
+      <div class="row"><span>Attendance</span><div class="track"><div class="fill lite" style="width:100%"></div></div><span class="n">6</span></div>
+      <div class="row"><span>Report.API</span><div class="track"><div class="fill lite" style="width:83.3%"></div></div><span class="n">5</span></div>
+      <div class="row"><span>Materials</span><div class="track"><div class="fill lite" style="width:66.7%"></div></div><span class="n">4</span></div>
+      <div class="row"><span>ActiveWork</span><div class="track"><div class="fill lite" style="width:50%"></div></div><span class="n">3</span></div>
+      <div class="row"><span>Resources</span><div class="track"><div class="fill lite" style="width:33.3%"></div></div><span class="n">2</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="safety">
+  <h2>Safety net (Phase 1, before any change)</h2>
+  <p>Today's London behaviour is pinned and watched, so any difference shows up at once.</p>
+  <div class="net">
+    <div class="rule"><b>S.1 Characterization tests</b><p><code>Current_</code> tests at every London site and audit point: summer, winter, 25 Oct 2026 and 28 Mar 2027.</p></div>
+    <div class="rule"><b>S.2 TZ matrix in CI</b><p>Tests run under UTC, London, Los Angeles and Auckland process zones; results must match.</p></div>
+    <div class="rule"><b>S.3 Gateway contract tests</b><p>Header names stable; three headers on authenticated routes, no offset header, London defaults for customers and when the switch is off, none on anonymous; spoofed headers stripped.</p></div>
+    <div class="rule"><b>S.4 Runtime guards</b><p>Counter <code>time.zone.fallback</code> (<code>missing</code>, <code>invalid</code>, <code>customer</code>, <code>no-context</code>), <code>ITeamClocks</code> in every service, Gateway refuses unknown zones.</p></div>
+    <div class="rule"><b>S.5 Attendance shadow compare</b><p>Recalculate 26 weeks for every team. <b>Zero difference for London</b> outside the signed-off 6.3 day-boundary list.</p></div>
+    <div class="rule"><b>S.6 Frontend zone tests</b><p>Control, pipe and helper tests under <code>TZ</code> Toronto, Auckland and London, with clock-change fixtures.</p></div>
+    <div class="rule"><b>S.7 Gates</b><p>Grep for zone literals, UTC-day filters and Mongo date-part literals; ESLint bans on datepicker, native inputs, <code>| date</code>, <code>toISOString()</code>. Warn now, error in Phase 11.</p></div>
+  </div>
+</section>
+
+<section id="phases">
+  <h2>Phases</h2>
+  <p class="note">Branches first in all 18 repos, each in its own worktree: <code>git fetch origin main</code>, then <code>git worktree add ../&lt;repo&gt;-team-zone-headers -b feature/1.6.0/team-zone-headers origin/main</code>. Nothing is discarded, and NotificationService stays on <code>stage</code>. After Phase 3, backend (4–7) and frontend (8–9) run side by side.</p>
+  <div class="phases">
+
+    <article class="phase"><div class="num">0</div><div class="body">
+      <h3>Decisions and discovery</h3>
+      <p class="goal">Every decision recorded and every site listed before code changes.</p>
+      <ul>
+        <li><b>0.1</b> Record Z1–Z14 and Z16–Z18, confirm Z15; close Q8–Q11.</li>
+        <li><b>0.2</b> Table of the 118 London sites by repo, file:line, kind and step.</li>
+        <li><b>0.3</b> Every frontend date input and display, marked instant or calendar date, customer-portal screens included.</li>
+        <li><b>0.4</b> Every background entry point and where its team comes from.</li>
+        <li><b>0.5</b> Zone library: <code>Intl</code> or <code>date-fns-tz</code> 2. <b>0.6</b> Warning text and translation keys.</li>
+        <li><b>0.7</b> Customer-portal endpoints with dates and the team field of each record; SignalR payloads with dates.</li>
+        <li><b>0.8</b> Every service-to-service HTTP call and every route reachable without Gateway.</li>
+      </ul>
+      <p class="done"><b>Done when</b> 0.1–0.8 are signed off.</p>
+    </div></article>
+
+    <article class="phase"><div class="num">1</div><div class="body">
+      <h3>Safety net</h3>
+      <p class="goal">S.1–S.7 above, on today's code.</p>
+      <p class="done"><b>Done when</b> S.1–S.3 and S.6 are green on today's code, and the S.5 tool reproduces the stored wages.</p>
+    </div></article>
+
+    <article class="phase"><div class="num">2</div><div class="body">
+      <h3>Team settings (ProjectService)</h3>
+      <p class="goal">Each team has a zone and formats; every service and app can learn them.</p>
+      <ul>
+        <li><b>2.1</b> Nullable <code>TimeZone</code>, <code>DateFormat</code>, <code>TimeFormat</code> on <code>Team.cs</code>; null reads as London.</li>
+        <li><b>2.2</b> Validation: real zone id; date formats <code>dd/MM/yyyy</code>, <code>MM/dd/yyyy</code>, <code>yyyy-MM-dd</code>, <code>dd.MM.yyyy</code>; time <code>HH:mm</code>, <code>h:mm a</code>.</li>
+        <li><b>2.3</b> Zone set once at creation; a change is refused (<code>TEAM_TIME_ZONE_FIXED</code>); formats can change. Pending Q8: a support-only, audited, once-only set for teams with no zone, closed at go-live.</li>
+        <li><b>2.4</b> <code>TeamCreated</code> / <code>TeamUpdated</code> carry the fields; readers ship before the publisher, as "Release 0" ahead of the window.</li>
+        <li><b>2.5</b> Team copies in 7 services, a new one in NotificationService; Report.API model change only.</li>
+        <li><b>2.6</b> <code>/teamsettings</code> returns them. <b>2.7</b> Zone picker on create with a confirmation, read-only after; formats editable.</li>
+      </ul>
+      <p class="done"><b>Done when</b> a staging team created with <code>America/Toronto</code> shows it everywhere, and a change is refused.</p>
+    </div></article>
+
+    <article class="phase"><div class="num">3</div><div class="body">
+      <h3>Gateway headers</h3>
+      <p class="goal">Every authenticated downstream request carries the team's zone and formats.</p>
+      <ul>
+        <li><b>3.1</b> Gateway <code>Team</code>, <code>TeamsRepo</code>, event handlers store the fields; Redis cleared on update.</li>
+        <li><b>3.2</b> <code>IntoworkAuthInjector</code> adds three claims on the default and <code>X-Selected-Team</code> paths, London defaults on the customer path; added to <code>HeaderMappedClaims</code>, <code>AddMissingHeaderClaims</code> and preflight dummies.</li>
+        <li><b>3.3</b> Three <code>AddHeadersToRequest</code> entries in <code>Ingress.cs:82-117</code>, authenticated routes only.</li>
+        <li><b>3.4</b> Invalid stored zone → logged, London sent. <b>3.5</b> Contract tests and the <code>working.json</code> snapshot.</li>
+        <li><b>3.6</b> Headers are harmless before services read them, so they can reach staging first; production waits for 10.5.</li>
+      </ul>
+      <p class="done"><b>Done when</b> a request for the staging Toronto team reaches every service with <code>Intowork.TeamTimeZone: America/Toronto</code>.</p>
+    </div></article>
+
+    <article class="phase"><div class="num">4</div><div class="body">
+      <h3>Backend time kit</h3>
+      <p class="goal">One small kit in every service, with no behaviour change yet.</p>
+      <ul>
+        <li><b>4.1</b> Master copy in AttendanceService <code>Time/</code>; tests over London, Toronto, New York, Riyadh, Kolkata, Auckland, UTC and both clock-change days.</li>
+        <li><b>4.2</b> <code>scripts/sync-time-kit.sh</code> into the other 13 services, with a CI drift check.</li>
+        <li><b>4.3</b> <code>AddTeamTime</code> in API and Background hosts; an <code>ITeamCopyReader</code> per service; the forwarding handler on each internal <code>HttpClient</code>.</li>
+        <li><b>4.4</b> Inject only where dates are worked out; controllers and ProjectService <code>CurrentUser</code> stay.</li>
+      </ul>
+      <p class="done"><b>Done when</b> the kit is in all 14 services, the drift check is green, and S.1 and S.2 are still green.</p>
+    </div></article>
+
+    <article class="phase"><div class="num">5</div><div class="body">
+      <h3>Replace hard-coded London</h3>
+      <p class="goal">Fewest sites first; London results identical (S.1).</p>
+      <ul>
+        <li><b>5.1</b> Inspections (4): PDF dates.</li>
+        <li><b>5.2</b> ActiveWork (7): reminders, delete <code>TimeZoneProvider</code>. <span class="tag t-risk">behaviour change</span> the PDF prints raw UTC today and will print team time (Q11).</li>
+        <li><b>5.3</b> Handover (9): PDF; zone logic moves out of <code>HandoverNotification</code>.</li>
+        <li><b>5.4</b> Resources (9): <code>ResourcesController</code> range conversion.</li>
+        <li><b>5.5</b> Materials (10): <code>nowInLondon</code> → <code>clock.TeamNow</code>.</li>
+        <li><b>5.6</b> Report.API (25): <code>ReportingCalendar</code>, <code>LabourSummaryService</code>, Mongo pipelines; outputs compared on staging.</li>
+        <li><b>5.7</b> Attendance (54), last, behind S.5: <b>a</b> wage start/finish · <b>b</b> week commencing · <b>c</b> clock in/out · <b>d</b> reminder window. <code>WageHelperLegacy</code> stays frozen.</li>
+      </ul>
+      <p class="done"><b>Done when</b> S.1 is green everywhere, S.5 shows zero difference, and S.7 finds no zone literal outside <code>Time/</code>.</p>
+    </div></article>
+
+    <article class="phase"><div class="num">6</div><div class="body">
+      <h3>Day queries: UTC day → team day <span class="tag t-open">new · Q2</span></h3>
+      <p class="goal">Every "which day" filter uses the team's day window. Starts from the 20-point audit in <code>utc-time-zone/DATABASE_DATE_QUERY_AUDIT.md</code>.</p>
+      <ul>
+        <li><b>6.1</b> Kit: <code>DayOf</code>, <code>StartOfDayUtc</code>, <code>DayRangeUtc</code>, <code>MongoDateParts</code>.</li>
+        <li><b>6.2</b> Refresh the audit with fresh greps in all 14 services.</li>
+        <li><b>6.3</b> Owner rules (Q9, Q10), check <code>CPPrelimRepository:54</code>, and sign off every fix that changes a London answer.</li>
+        <li><b>6.4</b> Attendance (6): <code>UserAttendanceRepo:30</code>, <code>StaffAssignmentRepo:75</code>, <code>ResourceAllocationRepo:35</code>, <code>WageRecordsRepo:128,200</code>, in-memory <code>.Date</code>.</li>
+        <li><b>6.5</b> Materials (4): <code>VehiclesRepo:296,300</code>, <code>VehicleUnAvailabilityRepo:46,55-60</code>.</li>
+        <li><b>6.6</b> ActiveWork (3): window edges, reminder <code>:171</code>, <code>ActiveWorkRepo:351</code>.</li>
+        <li><b>6.7</b> Resources (2): future absences, month count <code>StaffMemberRepo:415</code>.</li>
+        <li><b>6.8</b> Report.API (5): <code>CPPlantRepository:863-871</code>, <code>CPPrelimRepository:54</code>, week step check; delete dead Dublin pipeline code.</li>
+        <li><b>6.9</b> Day-filter and Mongo-operator gates in every service.</li>
+      </ul>
+      <p class="done"><b>Done when</b> every audit point is fixed or deleted, the 6.3 list is signed off, and S.5 shows no difference outside it.</p>
+    </div></article>
+
+    <article class="phase"><div class="num">7</div><div class="body">
+      <h3>Work without a team request</h3>
+      <p class="goal">Jobs, events, customer requests and the hub use the zone of the team that owns the data.</p>
+      <ul>
+        <li><b>7.1</b> Service Bus handlers: <code>resolver.ZoneForAsync(event.TeamName)</code>. <b>7.2</b> Hosted services: zone per item.</li>
+        <li><b>7.3</b> <code>HRJobScheduler</code>: team zone per team job; bank holidays stay London.</li>
+        <li><b>7.4</b> Attendance reminders: one job per zone in use, at 08:00 and 16:00 team time. <b>7.5</b> Background PDFs.</li>
+        <li><b>7.6</b> <span class="tag t-open">Q5</span> Customer endpoints: zone of each record's team; responses carry <code>teamTimeZone</code>.</li>
+        <li><b>7.7</b> <span class="tag t-open">Q5</span> <code>NotificationHub</code>: zone of the token's team on connect; payload dates stay UTC.</li>
+      </ul>
+      <p class="done"><b>Done when</b> the Toronto team gets reminders at its own 08:00, its PDFs and a customer's view show Toronto times, and <code>customer</code> fallbacks appear only on listed routes.</p>
+    </div></article>
+
+    <article class="phase"><div class="num">8</div><div class="body">
+      <h3>Frontend time kit</h3>
+      <p class="goal">One control and two pipes that work in the team zone on any device.</p>
+      <ul>
+        <li><b>8.0</b> Spike first, per Angular version: a <code>TeamZoneDateAdapter</code> so Material's picker, its "today" highlight and typed text use the team zone; fallback is our own calendar popup.</li>
+        <li><b>8.1</b> <code>time-core.ts</code>, same vectors as the backend kit. <b>8.2</b> <code>TeamTimeService</code>; reload on team switch; offline cache in the mobile apps.</li>
+        <li><b>8.3</b> <code>&lt;app-date-time-field&gt;</code> with optional <code>[zone]</code>: spring gap moves forward, autumn hour takes the first, each with a hint.</li>
+        <li><b>8.4</b> Warning inside input controls only. <b>8.5</b> Pipes with an optional zone. <b>8.6</b> <code>teamCalendar</code>, <code>utcRange</code>.</li>
+        <li><b>8.7</b> Standalone in Frontend (Angular 19); NgModule in the Angular 16 apps.</li>
+      </ul>
+      <p class="done"><b>Done when</b> the kit is in all three apps and the S.6 tests are green.</p>
+    </div></article>
+
+    <article class="phase"><div class="num">9</div><div class="body">
+      <h3>Frontend screens</h3>
+      <p class="goal">Every date input uses the control; every display uses the pipes.</p>
+      <ul>
+        <li><b>9.1a–g</b> Frontend by area: attendance row, staff detail and calendars, ActiveWork dialogs (drop <code>UKDateAdapter</code>), <code>secure-job</code>, <code>near-miss-form</code>, report-period and wage selectors; fix <code>labour-summary.service.ts:226</code> (+1 h) and <code>date-utils.ts:26</code>.</li>
+        <li><b>9.1h</b> <span class="tag t-open">Q5</span> Customer-portal screens use each record's <code>teamTimeZone</code>.</li>
+        <li><b>9.2</b> InspectionsApp <code>date-entry</code>. <b>9.3</b> HandoverApp <code>attendance.service.ts:44-69</code> → <code>teamDayRangeUtc</code>.</li>
+        <li><b>9.4</b> <code>| date</code> → <code>teamDate</code> / <code>calendarDate</code>. <b>9.5</b> ESLint rules on per app.</li>
+      </ul>
+      <p class="done"><b>Done when</b> no banned pattern is left and the 10.2 script passes on a Toronto device for a London team.</p>
+    </div></article>
+
+    <article class="phase"><div class="num">10</div><div class="body">
+      <h3>Verification and one-step go-live <span class="tag t-open">Q1</span></h3>
+      <ul>
+        <li><b>10.1</b> Staging teams in London, Toronto, Auckland, and a customer linked to Toronto.</li>
+        <li><b>10.2</b> Device script: 08:00 stored as team 08:00; warning only in inputs and only when zones differ; lists and PDFs in team time; "today" turns at the team's midnight; the customer sees Toronto time.</li>
+        <li><b>10.3</b> S.5 on a production copy. <b>10.4</b> Fallback counter: zero on authenticated routes and zero <code>no-context</code>.</li>
+        <li><b>10.5</b> Release 0 (event readers) ahead of the window, then one window from the tested build: ProjectService → Gateway → 14 services → three apps.</li>
+        <li><b>10.6</b> Rollback: while production has only London teams (Z15), the Gateway and ProjectService switches give London back and the apps follow without a redeploy; day-query fixes stay; no data to restore. Once a non-London team has data, fix forward instead.</li>
+      </ul>
+      <p class="done"><b>Done when</b> 10.2–10.4 pass, the window completes, and one payroll cycle runs with the switches on.</p>
+    </div></article>
+
+    <article class="phase"><div class="num">11</div><div class="body">
+      <h3>Clean-up</h3>
+      <ul>
+        <li><b>11.1</b> Open production to non-London teams (Z15); remove the replaced <code>Current_</code> tests. <b>11.2</b> S.7 and 6.9 gates to error. <b>11.3</b> Delete <code>TimeZoneProvider</code>, <code>date-utils</code> offset helpers, <code>UKDateAdapter</code>.</li>
+      </ul>
+    </div></article>
+  </div>
+</section>
+
+<section id="size">
+  <h2>Order and size</h2>
+  <p><b>Critical path:</b> 0 → 1 → 2 → 3 → 5 (Attendance last) → 6 → 7 → 10 → 11. Phase 4 needs only Phase 1 and runs beside 2 and 3. Phases 8 and 9 run alongside once <code>/teamsettings</code> (2.6) is on staging; the 8.0 spike can start at once.</p>
+  <div class="chart" aria-label="Plan steps per repo">
+    <span class="label">Plan steps per repo · 179 in Phases 1–9</span>
+    <div class="row"><span>Frontend</span><div class="track"><div class="fill" style="width:100%"></div></div><span class="n">21</span></div>
+    <div class="row"><span>Attendance</span><div class="track"><div class="fill" style="width:81%"></div></div><span class="n">17</span></div>
+    <div class="row"><span>HandoverApp</span><div class="track"><div class="fill" style="width:67%"></div></div><span class="n">14</span></div>
+    <div class="row"><span>InspectionsApp</span><div class="track"><div class="fill" style="width:67%"></div></div><span class="n">14</span></div>
+    <div class="row"><span>ProjectService</span><div class="track"><div class="fill" style="width:52%"></div></div><span class="n">11</span></div>
+    <div class="row"><span>Handover</span><div class="track"><div class="fill" style="width:52%"></div></div><span class="n">11</span></div>
+    <div class="row"><span>Resources</span><div class="track"><div class="fill" style="width:52%"></div></div><span class="n">11</span></div>
+    <div class="row"><span>ActiveWork</span><div class="track"><div class="fill" style="width:52%"></div></div><span class="n">11</span></div>
+    <div class="row"><span>Inspections</span><div class="track"><div class="fill" style="width:48%"></div></div><span class="n">10</span></div>
+    <div class="row"><span>Materials</span><div class="track"><div class="fill" style="width:48%"></div></div><span class="n">10</span></div>
+    <div class="row"><span>Report.API</span><div class="track"><div class="fill" style="width:43%"></div></div><span class="n">9</span></div>
+    <div class="row"><span>Gateway</span><div class="track"><div class="fill" style="width:38%"></div></div><span class="n">8</span></div>
+    <div class="row"><span>Notification</span><div class="track"><div class="fill" style="width:33%"></div></div><span class="n">7</span></div>
+    <div class="row"><span>5 other services</span><div class="track"><div class="fill lite" style="width:25%"></div></div><span class="n">5</span></div>
+  </div>
+  <p class="note">"5 other services" are Customer, Forecasting, Gaffer, Permissions and SafetySuite, 5 steps each (S.2, S.7, 4.2, 4.3, 6.9), 25 in all. Step 7.6 touches the services on the 0.7 customer list and is not counted per repo.</p>
+</section>
+
+<section id="compare">
+  <h2>Compared with the other two plans</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Topic</th><th>UTC plan</th><th>Team-local plan</th><th>This plan</th></tr></thead>
+    <tbody>
+      <tr><td>Stored</td><td>UTC</td><td>Team wall clock labelled <code>Z</code></td><td>UTC, as today</td></tr>
+      <tr><td>Migration</td><td>None</td><td>118 collections, 12 event stores</td><td>None</td></tr>
+      <tr><td>Backend</td><td><code>IBusinessCalendar</code> everywhere, ~490 steps</td><td><code>ITeamTime</code>, 194 steps</td><td>Small kit, 118 sites, day-query audit; 179 steps</td></tr>
+      <tr><td>Attendance rules</td><td>15 behaviour changes</td><td>14 behaviour changes</td><td>None; only the 6.3 day-boundary list</td></tr>
+      <tr><td>Outside consumers</td><td>Unaffected</td><td><code>Z</code> means wall clock</td><td>Unaffected</td></tr>
+      <tr><td>UTC-day query bugs</td><td>Fixed</td><td>Fixed</td><td>Fixed (Phase 6)</td></tr>
+      <tr><td>Go-live</td><td>One step</td><td>One step</td><td>One step</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">Step counts are not like for like; each plan counts differently. The full three-way comparison is in <code>plan-comparison.html</code>.</p>
+</section>
+
+<section id="gaps">
+  <h2>Known gaps kept</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Gap</th><th>Effect</th><th>Why kept</th></tr></thead>
+    <tbody>
+      <tr><td>Old browser-midnight rows</td><td><code>21:00Z</code>, <code>22:00Z</code>, winter <code>23:00Z</code> fall outside the team-day window and read as the day before, as today</td><td>No data changes (Z2)</td></tr>
+      <tr><td>Existing teams fixed to London</td><td>A team that works elsewhere today stays London, unless support sets its zone once before go-live</td><td>Z10; Q8</td></tr>
+      <tr><td>Rollback only clean while production is London</td><td>After a non-London team writes data the switches would misread its days; fix forward</td><td>Z15; 10.6</td></tr>
+      <tr><td>Wrong zone at team creation</td><td>No fix, because the zone never changes</td><td>Create screen asks for confirmation (2.7)</td></tr>
+      <tr><td>Hub uses the token's team</td><td>A user who picked another team gets the token team's zone for prebuilt text</td><td>The hub never sees <code>X-Selected-Team</code>; payload dates stay UTC</td></tr>
+      <tr><td>Queries the greps miss</td><td>A UTC-day filter could survive</td><td>Gates and S.1 catch new ones; the audit is a read-through</td></tr>
+      <tr><td>Container <code>TZ</code></td><td>Left as <code>Europe/London</code> in six containers</td><td>UTC plan work; not needed here</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="questions">
+  <h2>Questions</h2>
+  <h3>Answered on 7 Oct 2026</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>#</th><th>Question</th><th>Answer</th><th>Applied in</th></tr></thead>
+    <tbody>
+      <tr><td>Q1</td><td>Per service or one step?</td><td>One step</td><td>Z11, 10.5</td></tr>
+      <tr><td>Q2</td><td>Fix UTC-day query bugs here?</td><td>Yes</td><td>Z12, Phase 6</td></tr>
+      <tr><td>Q3</td><td>Kit per repo or CommonLibs?</td><td>Per repo</td><td>Z9, 4.2</td></tr>
+      <tr><td>Q4</td><td>Who sets the zone; can it change?</td><td>Zone fixed at creation; formats can change</td><td>Z10, 2.3, 2.7</td></tr>
+      <tr><td>Q5</td><td>London fallback for customers and SignalR?</td><td>No: both get the team zone</td><td>Z13, 7.6, 7.7, 9.1h</td></tr>
+      <tr><td>Q6</td><td>Where does the warning show?</td><td>Input controls only</td><td>Z7, 8.4</td></tr>
+      <tr><td>Q7</td><td>Add to the plan comparison?</td><td>Yes</td><td>Z14</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Still open</h3>
+  <div class="qs">
+    <div class="q"><b>Q8</b><div>Existing teams are fixed to London. If one works outside London today, may support set its zone once before go-live, or must a new team be created? Proposed: yes, support-only, once, audited.<small>needed by 2.3</small></div></div>
+    <div class="q"><b>Q9</b><div><code>ActiveWorkRepo.cs:351</code>: does "future active work" start after today, or include today?<small>needed by 6.3</small></div></div>
+    <div class="q"><b>Q10</b><div><code>StaffMemberRepo.cs:220,248,254</code>: is an absence that starts today a "future" absence?<small>needed by 6.3</small></div></div>
+    <div class="q"><b>Q11</b><div>The ActiveWork PDF will print team time instead of raw UTC: is that change approved?<small>needed by 5.2</small></div></div>
+  </div>
+</section>
+
+<footer>Source: <code>datetime-timezone/team-zone-headers/TEAM_ZONE_HEADERS_PLAN.md</code>. Counts come from read-only scans of the working trees on 7 Oct 2026 and from the day-query audit: call sites and declared fields, not proven behaviour.</footer>
+
+</div>
