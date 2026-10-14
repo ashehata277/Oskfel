@@ -137,6 +137,8 @@ html { scroll-behavior: smooth; }
     <li><a href="#p8">8 · Messages and retries</a></li>
     <li><a href="#p9">9 · Clock inside the domain</a></li>
     <li><a href="#p10">10 · Proving pay is unchanged</a></li>
+    <li><a href="#p11">11 · Team time formats</a></li>
+    <li><a href="#merge">Merging into -develop</a></li>
     <li><a href="#verify">Verification</a></li>
     <li><a href="#discuss">For discussion</a></li>
   </ol>
@@ -148,15 +150,22 @@ html { scroll-behavior: smooth; }
 <p class="lede">The time problems the team-zone-headers work found in AttendanceService and how each was fixed, grouped into recurring patterns. Attendance is where time zones turn into money: clock-in rounding, the 08:00–16:00 pay window, weekend rates and pay weeks all depend on which day and hour a clock reading falls in. Most of the risk in this PR, and most of the testing, is there.</p>
 
 <div class="facts">
-  <div><b>164</b><span>files changed vs main</span></div>
-  <div><b>163</b><span>after ignoring whitespace and line endings</span></div>
-  <div><b>11</b><span>feature commits on the branch</span></div>
+  <div><b>156</b><span>files changed vs main</span></div>
+  <div><b>12</b><span>feature commits on the branch</span></div>
   <div><b>6</b><span>places that hard-coded London</span></div>
-  <div><b>593</b><span>tests passing on the PR branch</span></div>
+  <div><b>591</b><span>tests passing on the PR branch</span></div>
+  <div><b>612</b><span>tests passing on -develop after the merge</span></div>
 </div>
 
 <h2 id="model">The model this PR moves to</h2>
-<p>The model is the same as in every service on this feature. <strong>Clock readings are stored as UTC instants. A team's zone decides which day, weekday and wall-clock hour each reading belongs to.</strong> Requests carry the zone in <code>Intowork.TeamTimeZone</code>. Background work resolves it with <code>ITeamClocks.ForTeamAsync(teamName)</code> from Attendance's copy of the team, which <code>TeamCreated</code> and <code>TeamUpdated</code> keep up to date.</p>
+<p>The model is the same as in every service on this feature. <strong>Clock readings are stored as UTC instants. A team's zone decides which day, weekday and wall-clock hour each reading belongs to.</strong> Requests carry the zone in <code>Intowork.TeamTimeZone</code>. Background work looks it up from Attendance's copy of the team, which <code>TeamCreated</code> and <code>TeamUpdated</code> keep up to date.</p>
+<p>The time code now comes from the shared <code>Intowork.Common.Time</code> package (<span class="mono">1.0.0-alpha.11368</span>). The in-repo <code>Time/</code> folder (17 files, including <code>TeamDateTimeProvider</code> and <code>ITeamClocks</code>) was deleted. There is one clock per scope:</p>
+<ul>
+  <li><strong>One scoped <code>IDateTimeProvider</code>.</strong> In a request it takes the zone and formats from the headers. Registered with <code>AddTeamTimeByTeamName&lt;TeamCopyReader&gt;()</code>.</li>
+  <li><strong><code>UseTeamAsync(teamName)</code> for background work.</strong> A handler calls it once, before it reads any zone member. It loads the team from <code>TeamCopyReader</code>, and throws <code>TeamTimeUnavailableException</code> if the team has no valid zone.</li>
+  <li><strong>One scope per event.</strong> <code>ScopedEventHandler</code>, registered with <code>RunEachEventInItsOwnScope()</code>, gives each integration event its own scope, so two events never share a clock.</li>
+  <li><strong>One scope per team in loops.</strong> <code>ReminderService</code> and <code>ShadowCompare</code> create a scope for each team they visit.</li>
+</ul>
 <p>In Attendance this means one thing above all: the clock is no longer a fixed London lookup inside each helper. It is passed down as <code>IDateTimeProvider clock</code> through the wage pipeline: <code>WageRecalculation.Recalculate</code> → travel and break time → wages → bonus → deductions.</p>
 
 <h2 id="patterns">Problem patterns</h2>
@@ -271,6 +280,7 @@ var back = DaysBetween(DayOfWeek.Friday,
       <ul>
         <li>The attendance aggregate now has a clock. <code>UserAttendanceRecord.FromEvents(events, clock)</code> replays its events with it, and each same-day test is <code>Clock.DayOf(a) == Clock.DayOf(b)</code>. A record with no clock throws instead of quietly falling back to UTC.</li>
         <li>Repositories take a <code>UtcWindow</code> built by the caller (<code>clock.DayRangeUtc(day)</code>) instead of calling <code>.Date</code> and <code>.AddDays(1)</code> themselves.</li>
+        <li>On -develop, <code>RebuildAttendanceRecordHandler</code> applies only the new events to a stored record. It sets <code>attendanceRecord.Clock = _clock</code> before <code>ApplyEvents</code>, because a record loaded from Mongo has no clock.</li>
       </ul></dd>
     <dt>Guard</dt><dd><p><code>UserAttendanceRecordCharacterizationTests</code>, <code>DayWindowCharacterizationTests</code></p></dd>
   </dl>
@@ -296,7 +306,7 @@ var back = DaysBetween(DayOfWeek.Friday,
     <dt>Symptom</dt><dd><p>The morning and evening clock-in reminders were a single recurring job pair running on London time. Teams in other zones would get them at the wrong local hour, and the job built "today" as a London day for every team.</p></dd>
     <dt>Fix</dt><dd><ul>
       <li><code>ReminderJobScheduler.SyncAsync</code> registers one job pair for each distinct, valid team zone, for example <code>Send morning reminders (Europe/London)</code>. Each pair runs at 08:00 and 16:00 in its zone using <code>RecurringJobOptions.TimeZone</code>. The old pair without a zone is removed.</li>
-      <li><code>GenerateMorningReminders(zoneId)</code> builds the zone's day window and keeps only the allocations of teams in that zone (<code>InZoneAsync</code>).</li>
+      <li><code>GenerateMorningReminders(zoneId)</code> builds the zone's day window and keeps only the allocations of teams in that zone. <code>InZoneAsync</code> opens a new scope for each team and calls <code>UseTeamAsync</code> on that scope's clock, so one team's zone never leaks into the next.</li>
       <li>A <code>TeamUpdated</code> event re-runs the sync, so a new zone gets its jobs without a deploy. Zones that aren't valid are skipped with a warning.</li>
     </ul></dd>
     <dt>Guard</dt><dd><p><code>ReminderJobSchedulerTests</code>, <code>ReminderServiceTests</code></p></dd>
@@ -308,10 +318,11 @@ var back = DaysBetween(DayOfWeek.Friday,
   <dl class="rows">
     <dt>Symptom</dt><dd><p>Handlers saved data and marked the incoming event as handled before they knew the team's zone. If a recalculation failed afterwards, the message was not retried. <code>ActiveWorkStaffUpdatedHandler</code> also caught and logged the failure, which hid it completely.</p></dd>
     <dt>Fix</dt><dd><ul>
-      <li>The absence, staff-meta and attendance handlers resolve the team clock <em>before</em> any write. A team without a valid zone throws <code>TeamTimeUnavailableException</code> before anything is saved, so the retry starts from a clean state.</li>
+      <li>The absence, staff-meta and attendance handlers call <code>_clock.UseTeamAsync(teamName)</code> <em>before</em> any write. A team without a valid zone throws <code>TeamTimeUnavailableException</code> before anything is saved, so the retry starts from a clean state. Ten Background handlers now follow this pattern.</li>
       <li><code>ActiveWorkStaffUpdatedHandler</code> now rethrows.</li>
       <li><code>TeamUpdated</code> always saves the team's new zone and formats. If the wage settings changed and the zone isn't valid, it then throws instead of recalculating wages in the wrong zone.</li>
-      <li><code>ITeamClockFactory</code> and <code>DefaultTeamClock</code> were replaced by the shared <code>ITeamClocks</code>.</li>
+      <li><code>ITeamClockFactory</code> and <code>DefaultTeamClock</code> were removed. The later in-repo <code>ITeamClocks</code> was removed too, replaced by the package's scoped clock and <code>UseTeamAsync</code>.</li>
+      <li>Each event runs in its own scope (<code>ScopedEventHandler</code>), so a clock that has been set to one team is never reused for another event.</li>
     </ul></dd>
     <dt>Guard</dt><dd><p><code>TeamClockBeforeCommitTests</code> has 9 cases, for example <em>"Absence created for a team with no zone throws before saving or marking the event handled"</em>. Also <code>TeamTimeSettingsHandlerTests</code>.</p></dd>
   </dl>
@@ -321,8 +332,8 @@ var back = DaysBetween(DayOfWeek.Friday,
   <header><h3>9 · Domain events and models stamped their own time</h3><span class="tag">shared with all services</span></header>
   <dl class="rows">
     <dt>Fix</dt><dd><p>The domain events take <code>now</code> from the handler: <code>WageBonusAwarded</code>, <code>WageWeekSnapshotTaken</code>, <code>WageRecordApproved</code>/<code>2</code>, and <code>WageRecordOverridden2</code>/<code>3</code> (which take <code>date</code>). The <code>User</code> constructor takes <code>DateTime updated</code>, named after the property so the Mongo mapping keeps working, and its mutations take <code>now</code>. <code>ResourceAllocation.UpdateDuration(now)</code> does the same. Handlers that already hold <code>IDateTimeProvider</code> use <code>_clock.UtcNow</code>.</p>
-      <p>The shared pieces from the other services also apply here: strict header handling, the UTC JSON converter with a <code>Z</code> suffix, and team time defaults kept in code.</p></dd>
-    <dt>Guard</dt><dd><p><code>ClockUsageTests</code>, <code>UtcDateTimeJsonConverterTests</code>, <code>TeamDateTimeProviderTests</code>, <code>TeamZonesTests</code>, <code>TeamCopyReaderTests</code></p></dd>
+      <p>The shared pieces now come from <code>Intowork.Common.Time</code> and are no longer copied into each service: strict header handling, the UTC JSON converter with a <code>Z</code> suffix, and team time defaults.</p></dd>
+    <dt>Guard</dt><dd><p><code>ClockUsageTests</code>, <code>UtcDateTimeJsonConverterTests</code>, <code>TeamDateTimeProviderTests</code>, <code>TeamZonesTests</code>, <code>TeamCopyReaderTests</code>. <code>TeamDateTimeProviderTests</code> lost its <code>OffsetAt</code> and <code>ForZone</code> cases, which tested in-repo helpers that no longer exist.</p></dd>
   </dl>
 </section>
 
@@ -339,14 +350,55 @@ var back = DaysBetween(DayOfWeek.Friday,
   </dl>
 </section>
 
+<section class="pattern" id="p11">
+  <header><h3>11 · Times shown to users ignored the team's format</h3><span class="tag">overlap messages · TeamFormats</span></header>
+  <dl class="rows">
+    <dt>Symptom</dt><dd><p>When a clock-in or clock-out overlapped an existing shift, the refusal message showed the times as London <code>HH:mm</code>, whatever the team's zone and time format. A team that uses <code>h:mm a</code> saw 24-hour London times.</p></dd>
+    <dt>Fix</dt><dd>
+      <div class="diff">
+<pre class="before"><span class="lbl">Before</span>var overlapStart = ToLondonTime(overlap.ClockInDate);
+var overlapEnd   = ToLondonTime(overlap.ClockOutDate);
+$"{overlap.ProjectName} ({overlapStart:HH:mm} - {overlapEnd:HH:mm})"</pre>
+<pre class="after"><span class="lbl">After</span>private string TeamTimeText(DateTime? utc) =&gt;
+    utc.HasValue ? _clock.FormatTime(utc.Value) : null;
+
+$"{overlap.ProjectName} ({overlapStart} - {overlapEnd})"</pre>
+      </div>
+      <p><code>FormatTime</code> converts to the team zone and formats with <code>TeamFormats</code>, which uses invariant culture and maps the team's <code>a</code> token to .NET's <code>tt</code>. A team on <code>h:mm a</code> now sees <code>9:30 AM - 5:00 PM</code>.</p></dd>
+    <dt>Where</dt><dd class="where"><code>SupervisorClockInHandler</code>, <code>SupervisorClockoutHandler</code>; on -develop also <code>SupervisorBulkClockInHandler</code> and <code>SupervisorBulkClockOutHandler</code></dd>
+    <dt>Guard</dt><dd><p>The overlap cases in the clock-in and clock-out handler tests, and <code>SupervisorBulkClockHandlerTests</code> on -develop.</p></dd>
+  </dl>
+</section>
+
+<h2 id="merge">Merging into -develop</h2>
+<p>On 14 October 2026 the feature branch was merged into <code>feature/1.6.0/team-zone-headers-develop</code>, and then <code>origin/develop</code> was merged into it. Many of the conflicts came from develop converting files to CRLF line endings. The files were merged again with line endings normalised, and develop's CRLF was kept. The real conflicts were:</p>
+<div class="table-wrap"><table>
+  <thead><tr><th>File</th><th>Conflict</th><th>Resolution</th></tr></thead>
+  <tbody>
+    <tr><td><code>RebuildAttendanceRecordHandler</code></td><td>develop added incremental rebuild with <code>ITeamClocks.ForTeamAsync</code></td><td>kept the incremental rebuild; uses the injected <code>_clock</code> for <code>FromEvents</code> and <code>Clock =</code></td></tr>
+    <tr><td><code>IWageWeekSnapshotsRepo</code>, <code>WageWeekSnapshotsRepo</code></td><td>using lines</td><td><code>Intowork.Common.Time.Clock</code> plus develop's <code>MongoDB.Bson</code></td></tr>
+    <tr><td><code>SupervisorAbsentHandler</code>, <code>SupervisorClockInHandler</code>, <code>UserClockInHandler</code>, <code>SupervisorClockoutHandler</code>, <code>EventsRepo</code></td><td>line endings only</td><td>merged cleanly once line endings were normalised</td></tr>
+    <tr><td><code>IEventsRepo</code></td><td>develop added batch <code>GetUserAttendanceRecordsAsync</code></td><td>batch read takes <code>IDateTimeProvider clock</code> and builds records with <code>FromEvents(events, clock)</code>, like the single read</td></tr>
+    <tr><td><code>AttendanceController</code></td><td>develop added <code>MaxBulkClockItems</code></td><td>kept both fields; bulk endpoint logs use <code>_clock.UtcNow:O</code> instead of <code>DateTime.Now</code></td></tr>
+  </tbody>
+</table></div>
+<p>Develop also brought new bulk supervisor clock-in and clock-out handlers that still assumed London. They compiled against the old calculator signatures, and <code>ClockUsageTests</code> found five direct clock reads. They were adapted inside the merge commit, because the merged branch did not compile without the changes:</p>
+<ul>
+  <li>Both handlers take <code>IDateTimeProvider</code>. They pass it to the batch read and to <code>ClockInOutTimeCalculator</code>, and new records get <code>Clock = _clock</code>.</li>
+  <li>Overlap refusals use <code>TeamTimeText</code>; see <a href="#p11">pattern 11</a>. <code>SupervisorBulkClockSupport.ToLondonTime</code> and its <code>"GMT Standard Time"</code>/<code>"Europe/London"</code> lookup were deleted.</li>
+  <li>Redis lock expiry, in both the bulk and the single handlers, is <code>SupervisorBulkClockSupport.LockExpiry(clock)</code> instead of <code>DateTimeOffset.UtcNow</code>.</li>
+</ul>
+
 <h2 id="verify">Verification</h2>
 <div class="table-wrap"><table>
   <thead><tr><th>Check</th><th>Result</th></tr></thead>
   <tbody>
-    <tr><td>Attendance tests on the PR branch</td><td><span class="chip ok">593 passed · 0 failed</span></td></tr>
-    <tr><td>Attendance tests on -develop (after the merge)</td><td><span class="chip ok">594 passed · 0 failed</span></td></tr>
-    <tr><td>Merge of -develop: conflict in <code>UserClockInHandler</code></td><td><span class="chip">resolved</span> took develop's CRLF version and re-applied <code>_clock.UtcNow</code></td></tr>
-    <tr><td>Merge-tree: PR branch → main, -develop → develop</td><td><span class="chip ok">clean</span></td></tr>
+    <tr><td>Attendance tests on the PR branch (package <span class="mono">1.0.0-alpha.11368</span>)</td><td><span class="chip ok">591 passed · 0 failed</span></td></tr>
+    <tr><td>Attendance tests on -develop after both merges</td><td><span class="chip ok">612 passed · 0 failed</span></td></tr>
+    <tr><td><code>ClockUsageTests</code> on -develop</td><td><span class="chip ok">passing</span> failed on develop's five clock reads until they were moved to the injected clock</td></tr>
+    <tr><td>Old kit references (<code>ITeamClocks</code>, <code>TeamDateTimeProvider</code>, <code>Intowork.TeamTime</code>)</td><td><span class="chip ok">none left</span> in production code on either branch</td></tr>
+    <tr><td><code>Intowork.Common.Time</code> pipeline (build 11368)</td><td><span class="chip ok">succeeded</span> package published</td></tr>
+    <tr><td>Both branches pushed; -develop contains the feature and <code>origin/develop</code></td><td><span class="chip ok">yes</span></td></tr>
     <tr><td>ShadowCompare against real data</td><td><span class="chip warn">not run yet</span> needs a copy of a production database</td></tr>
   </tbody>
 </table></div>
@@ -359,10 +411,13 @@ var back = DaysBetween(DayOfWeek.Friday,
   <li><strong>Day labels look like instants.</strong> <code>TeamDayStart</code> returns a team day as a UTC-kind midnight. That value is a label, not the moment the day starts. Should it be a <code>DateOnly</code>, so nobody can compare it with clock times?</li>
   <li><strong>Teams without a valid zone.</strong> Reminders skip them with only a warning, and their wage messages keep failing and retrying. Do we need an alert or a data check before strict mode reaches production?</li>
   <li><strong>Hangfire job ids change.</strong> The old <code>Send morning reminders</code> and <code>Send evening reminders</code> jobs are removed when the new per-zone jobs are registered. Check that no other deploy re-creates the old ids.</li>
-  <li><strong>Found while writing this review.</strong> <code>WageWeekSnapshotsRepo.cs</code> on the PR branch starts with two byte-order marks (<code>EF BB BF EF BB BF</code>); main has one. It compiles, but it should be fixed before merge.</li>
+  <li><strong>Found while writing this review.</strong> <code>WageWeekSnapshotsRepo.cs</code> on the PR branch starts with two byte-order marks (<code>EF BB BF EF BB BF</code>); main has one. It compiles, but it should be fixed before merge. It was still there on 14 October.</li>
+  <li><strong>The bulk handler changes exist only on -develop.</strong> The bulk clock handlers came from develop, so their team-clock changes live in the -develop merge commit. If the feature branch is merged into develop directly, rather than through -develop, the same changes are needed again.</li>
+  <li><strong><code>ReminderService</code> still does its own zone maths.</strong> <code>DayIn</code> and <code>StartOfDayUtc</code> use <code>TimeZoneInfo</code> directly for the job's zone, because a reminder job covers a zone, not a team. Should the package offer a clock for a zone, so this code goes away?</li>
+  <li><strong>Overlap messages changed format.</strong> Teams with a 12-hour time format now see <code>9:30 AM</code> instead of <code>09:30</code>, and non-London teams see their own local times. Does the frontend or support documentation quote these messages?</li>
 </ol>
 
-<footer>Generated from the AttendanceService branch <span class="mono">feature/1.6.0/team-zone-headers</span>, compared with <span class="mono">origin/main</span>, on 13 October 2026. See also the <a href="https://claude.ai/artifact/L1DTYTfwwT2rcW3xHCdYkD">ProjectService review</a>.</footer>
+<footer>Generated from the AttendanceService branches <span class="mono">feature/1.6.0/team-zone-headers</span> and <span class="mono">feature/1.6.0/team-zone-headers-develop</span>, compared with <span class="mono">origin/main</span>, on 14 October 2026. See also the <a href="https://claude.ai/artifact/L1DTYTfwwT2rcW3xHCdYkD">ProjectService review</a>.</footer>
 </main>
 </div>
 
