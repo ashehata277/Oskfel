@@ -127,6 +127,7 @@ html { scroll-behavior: smooth; }
   <p>Contents</p>
   <ol>
     <li><a href="#model">The model</a></li>
+    <li><a href="#single-clock">Single clock design</a></li>
     <li><a href="#patterns">Problem patterns</a></li>
     <li><a href="#p1">1 · Server clock reads</a></li>
     <li><a href="#p2">2 · Day boundaries</a></li>
@@ -138,6 +139,7 @@ html { scroll-behavior: smooth; }
     <li><a href="#p8">8 · DST gaps and overlaps</a></li>
     <li><a href="#p9">9 · Clock inside the domain</a></li>
     <li><a href="#p10">10 · Merge drift</a></li>
+    <li><a href="#p11">11 · Two clocks for one job</a></li>
     <li><a href="#across">Across the other PRs</a></li>
     <li><a href="#verify">Verification</a></li>
     <li><a href="#discuss">For discussion</a></li>
@@ -152,8 +154,9 @@ html { scroll-behavior: smooth; }
 <div class="facts">
   <div><b>313</b><span>files changed in ProjectService vs main</span></div>
   <div><b>11</b><span>feature commits on the branch</span></div>
-  <div><b>10</b><span>problem patterns found</span></div>
-  <div><b>2,747</b><span>tests passing on the PR branch</span></div>
+  <div><b>11</b><span>problem patterns found</span></div>
+  <div><b>2,758</b><span>tests passing with the single-clock pilot</span></div>
+  <div><b>1</b><span>clock type injected by application code</span></div>
   <div><b>18</b><span>repos on the same feature branch</span></div>
 </div>
 
@@ -161,11 +164,97 @@ html { scroll-behavior: smooth; }
 <p>One rule applies everywhere: <strong>instants are stored and sent as UTC, and the team's zone is applied only at the edges.</strong> The edges are the points where a person's idea of a day, a month or a printed date meets the data. Each request carries the team's time settings in headers:</p>
 <div class="headers">
   <code>Intowork.TeamTimeZone</code><span>IANA zone, for example <code>Europe/London</code>. Required on every request; a missing or invalid zone gets 400.</span>
-  <code>Intowork.TeamDateFormat</code><span>Display format, default <code>dd/MM/yyyy</code></span>
-  <code>Intowork.TeamTimeFormat</code><span>Display format, default <code>HH:mm</code></span>
-  <code>Intowork.TeamName</code><span>Used by background work to look the team's zone up</span>
+  <code>Intowork.TeamDateFormat</code><span>Display format, default <code>dd/MM/yyyy</code>. Used by the apps; the ProjectService time kit no longer reads it.</span>
+  <code>Intowork.TeamTimeFormat</code><span>Display format, default <code>HH:mm</code>. Used by the apps; the ProjectService time kit no longer reads it.</span>
+  <code>Intowork.TeamName</code><span>Identifies the team on the request. Background work reads the team name from the message instead.</span>
 </div>
-<p>Code reads the time only through <code>IDateTimeProvider</code> (team aware: <code>TeamNow</code>, <code>DayOf</code>, <code>DayRangeUtc</code>, <code>ToTeamTime</code>, <code>ToUtc</code>) or <code>TimeProvider</code> (plain UTC "now"). Inside a request, <code>RequestDateTimeProvider</code> builds the team clock lazily from the header. Outside a request, <code>ITeamClocks.ForTeamAsync(teamName)</code> resolves the zone from the service's copy of the team.</p>
+<p>In ProjectService, code reads the time only through <code>IDateTimeProvider</code>, and that interface has a single implementation, <code>DateTimeProvider</code>. <code>UtcNow</code> never needs a zone. The team-aware members (<code>TeamNow</code>, <code>ToTeamTime</code>, <code>DayOf</code>, <code>StartOfDayUtc</code>, <code>DayRangeUtc</code>) use the team zone. Inside a request the zone comes from the header. Background work sets it with <code>await clock.UseTeamAsync(teamName, token)</code>, which reads the service's copy of the team. The <a href="#single-clock">single clock design</a> section explains how it works.</p>
+<p class="where">The other services still use the first iteration: <code>RequestDateTimeProvider</code> and <code>TeamDateTimeProvider</code> behind <code>IDateTimeProvider</code>, <code>TimeProvider</code> for "now", and <code>ITeamClocks.ForTeamAsync(teamName)</code> for background work. Rolling the pilot out to them is an open question.</p>
+
+<h2 id="single-clock">Single clock design (ProjectService pilot)</h2>
+<p>The first iteration left each class to choose between three clock types: <code>TimeProvider</code> for "now", <code>IDateTimeProvider</code> for team time in a request, and <code>ITeamClocks</code> for team time in background work. Two classes implemented <code>IDateTimeProvider</code>, and dependency injection picked one by context. The pilot keeps <strong>one injectable type with one implementation</strong>. The clock decides where the zone comes from, and a handler that needs a team says which team, in one line.</p>
+
+<div class="table-wrap"><table>
+  <thead><tr><th>Where the code runs</th><th>Where the zone comes from</th><th>What the code writes</th></tr></thead>
+  <tbody>
+    <tr><td>Only needs "now"</td><td>No zone needed</td><td><code>clock.UtcNow</code></td></tr>
+    <tr><td>API request</td><td>The <code>Intowork.TeamTimeZone</code> header, or 400 if it is missing or invalid</td><td>Inject <code>IDateTimeProvider</code>, nothing else</td></tr>
+    <tr><td>Event handler that reads a team day or time</td><td>The team named on the message</td><td><code>await clock.UseTeamAsync(@event.TeamName, token);</code> as the first line, before commit or "mark handled"</td></tr>
+    <tr><td>Hosted service or other singleton</td><td>The team it is working for</td><td>Open a scope, resolve the clock inside it, then call <code>UseTeamAsync</code>. Use one scope per team when looping over teams.</td></tr>
+  </tbody>
+</table></div>
+
+<p>The clock resolves its zone <strong>lazily</strong>, the first time a zone member is read:</p>
+<ol>
+  <li>the team set with <code>UseTeamAsync</code>, if any;</li>
+  <li>otherwise the request header, or 400 if the header is missing;</li>
+  <li>otherwise, with no team and no request, <code>TeamTimeUnavailableException</code>. There is never a fallback zone.</li>
+</ol>
+
+<div class="diff">
+<pre class="before"><span class="lbl">Before · first iteration</span>public Handler(TimeProvider time, ITeamClocks clocks)
+
+var clock = await clocks.ForTeamAsync(
+    @event.TeamName, token);
+var day = clock.DayOf(
+    time.GetUtcNow().UtcDateTime);</pre>
+<pre class="after"><span class="lbl">After · single clock</span>public Handler(IDateTimeProvider clock)
+
+await clock.UseTeamAsync(@event.TeamName, token);
+var day = clock.DayOf(clock.UtcNow);</pre>
+</div>
+
+<h3>Rules for <code>UseTeamAsync</code></h3>
+<ul>
+  <li>Call it only when the handler's code path reads a zone member, directly or through a service or repository it calls. A handler that only needs <code>UtcNow</code> does not call it, so a message for a team this service hasn't seen yet does not fail for no reason.</li>
+  <li>Call it once per message, before any zone member is read. A second call, or a call after the zone was read, throws <code>InvalidOperationException</code>, so a scope can never switch team part way through.</li>
+  <li>A missing team name, an unknown team or a team without a valid zone throws <code>TeamTimeUnavailableException</code>. Let it propagate, so the message is retried and then dead-lettered.</li>
+  <li>The team name comes from the event however that event names it (<code>TeamName</code>, <code>Teamname</code>, <code>Team</code>). Events need no marker interface, and their wire shape is unchanged.</li>
+  <li>Today no ProjectService event handler reads a zone. The four handlers that inject the clock use only <code>UtcNow</code>, and every zone read is on an API request path.</li>
+</ul>
+
+<h3>Why each message still gets its own scope</h3>
+<p>The Common.Messaging event bus (2.1.7) resolves each handler from the <em>root</em> service provider and runs sessions concurrently. If the scoped clock came from the root, two messages for different teams would share one instance, and one team's zone could overwrite the other's. <code>RunEachEventInItsOwnScope()</code> (<code>Intowork.Jobs.BackgroundService/Events/Scoping/</code>) wraps every handler registration in <code>ScopedEventHandler&lt;TEvent, THandler&gt;</code>, which opens a DI scope per message and builds the handler inside it. The wrapper knows nothing about teams. The ordered and Baton customer buses inherit the same bus, so the wrapper covers them too. It is called last in the BackgroundService <code>Program.cs</code>. It could move into Common.Messaging later, which would fix the same problem in every service.</p>
+
+<h3>Kit layout: the <code>Intowork.Common.Time</code> package</h3>
+<p>The kit is now a NuGet package in CommonLibs (<code>CommonLibs/Intowork.Common.Time</code>, branch <code>feature/1.6.0/team-zone-headers</code>), with its own pipeline <code>azure.pipelines.build.yml</code>, built like the other CommonLibs packages: <code>feature/*</code> and <code>develop</code> publish <code>1.0.0-alpha.{buildId}</code>, <code>stage</code> publishes an RC, <code>main</code> publishes <code>1.0.0</code>. Every service will reference this package instead of keeping its own <code>Time/</code> copy; ProjectService is the first. Each folder is its own namespace.</p>
+<div class="table-wrap"><table>
+  <thead><tr><th>Namespace</th><th>Types</th></tr></thead>
+  <tbody>
+    <tr><td><code>Intowork.Common.Time.Clock</code></td><td><code>IDateTimeProvider</code>, <code>UtcWindow</code>, <code>DateTimeProvider</code>. Besides the pilot members it has <code>TeamToday</code>, <code>ToUtc</code>, <code>DaysRangeUtc(first, last)</code>, <code>Formats</code>, <code>FormatDate</code>, <code>FormatTime</code> and <code>FormatDateTime</code>, because the other services use them.</td></tr>
+    <tr><td><code>Intowork.Common.Time.Formats</code></td><td><code>TeamFormats(DateFormat, TimeFormat)</code>: the defaults (<code>dd/MM/yyyy</code>, <code>HH:mm</code>), and formatting that turns the team's <code>a</code> into .NET <code>tt</code>. ActiveWork and Handover reports printed a literal <code>a</code> before; this fixes it for every service.</td></tr>
+    <tr><td><code>Intowork.Common.Time.Zones</code></td><td><code>TeamZones</code> (<code>Find</code>, <code>IanaIdOf</code>), <code>TeamTimeUnavailableException</code>, <code>TeamTimeHeaderMissingException</code></td></tr>
+    <tr><td><code>Intowork.Common.Time.Requests</code></td><td><code>IRequestInfo</code> (zone and formats), <code>HeaderRequestInfo</code>, <code>TeamHeaders</code> (all team headers), <code>TeamTimeHeaderMissingFilter</code>, <code>UtcDateTimeJsonConverter</code>, <code>TeamHeadersForwardingHandler</code></td></tr>
+    <tr><td><code>Intowork.Common.Time.Teams</code></td><td><code>ITeamCopyReader</code>, <code>TeamTimeSettings(TimeZone, DateFormat, TimeFormat)</code>. Each service implements the reader over its own team copy; ProjectService's is <code>TeamsRepoTeamCopyReader</code>.</td></tr>
+    <tr><td><code>Intowork.Common.Time.Mongo</code></td><td><code>MongoDateParts</code>: aggregation stages in the team zone (used by Customer and Permissions)</td></tr>
+    <tr><td><code>Intowork.Common.Time.Calendar</code></td><td><code>CalendarDays</code>: <code>WeekStart</code>, <code>AddBusinessDays</code>, <code>IsWeekend</code> (from Gaffer and Handover)</td></tr>
+    <tr><td><code>Intowork.Common.Time.DependencyInjection</code></td><td><code>AddTeamTimeByTeamName&lt;TReader&gt;()</code>, called through <code>AddTeamSettingsTime()</code> in both ProjectService hosts</td></tr>
+  </tbody>
+</table></div>
+<p>Left out on purpose: <code>ITeamClocks</code>, <code>ITeamZoneResolver</code> and <code>ForZone</code> (they are the second clock the single-clock design removes) and <code>OffsetAt</code> (used only in Attendance tests). The per-message scope wrapper stays in ProjectService because it depends on Common.Messaging.</p>
+
+<h3>What the pilot removed</h3>
+<ul>
+  <li><strong>Second clock types:</strong> <code>RequestDateTimeProvider</code>, <code>TeamDateTimeProvider</code>, <code>ScopedDateTimeProvider</code>, <code>ITeamClocks</code>, <code>TeamClockWithFormats</code> and <code>TeamClockScope</code>. <code>TimeProvider</code> is now used only inside the kit, and 92 classes switched to <code>IDateTimeProvider</code>.</li>
+  <li><strong>Team plumbing:</strong> <code>ITeamZoneResolver</code>, <code>ITeamScopes</code>, <code>TeamZoneScope</code>, the team-aware event wrapper, and the <code>ITeamEvent</code> marker that had been added to 38 events.</li>
+  <li><strong>Unused helpers:</strong> <code>OffsetAt</code> and <code>ForZone</code>. <code>MongoDateParts</code>, <code>TeamHeadersForwardingHandler</code>, <code>TeamToday</code>, <code>ToUtc</code> and the format headers came back in the shared package because other services use them.</li>
+</ul>
+
+<h3>Other changes made with the pilot</h3>
+<ul>
+  <li>The data seeders are scoped and run inside a startup scope. <code>IntegrationEventPublisherService</code> opens a scope on each loop iteration, so no singleton holds the scoped clock.</li>
+  <li>The API and BackgroundService <code>Dockerfile</code>s need no change: the kit arrives as the <code>Intowork.Common.Time</code> package through the existing <code>NuGet.config</code>.</li>
+  <li>Tests build clocks with <code>TestClocks.WithoutTeam</code> (in each test project's <code>Support/</code>) and <code>TestClocks.InZone(time, zone)</code>.</li>
+</ul>
+
+<h3>Reviewer checklist</h3>
+<p>This list is part of the <code>team-date-time</code> skill, which the code-review skill reads as a repository standard.</p>
+<ul>
+  <li>The handler's path reads a zone member → it calls <code>UseTeamAsync</code> first.</li>
+  <li><code>UseTeamAsync</code> runs before commit or "mark handled", once, with the team from the event, and its exception is not caught.</li>
+  <li>A handler that doesn't read the zone doesn't call it.</li>
+  <li>No marker interface on events, no team-aware wrapper, and no second clock implementation.</li>
+</ul>
 
 <h2 id="patterns">Problem patterns</h2>
 <p>Every pattern below uses the same layout: what went wrong, why it happened, the fix, where the code lives, and the test that now guards it.</p>
@@ -180,13 +269,13 @@ html { scroll-behavior: smooth; }
 <pre class="before"><span class="lbl">Before · AcquireBulkMoveRegistryHandler</span>DateAcquired = DateTime.Now,
 ...
 var expiry = DateTimeOffset.Now;</pre>
-<pre class="after"><span class="lbl">After</span>DateAcquired = _timeProvider.GetUtcNow().UtcDateTime,
+<pre class="after"><span class="lbl">After</span>DateAcquired = _clock.UtcNow,
 ...
-var expiry = _timeProvider.GetUtcNow();</pre>
+var expiry = new DateTimeOffset(_clock.UtcNow);</pre>
       </div>
-      <p>Classes inject <code>TimeProvider</code>, or use <code>IDateTimeProvider</code> when they already need team time. Commit <span class="mono">3d0027dd</span> did this across 214 files in ProjectService.</p>
+      <p>Commit <span class="mono">3d0027dd</span> made classes inject a clock across 214 files in ProjectService. At first that clock was <code>TimeProvider</code>; with the <a href="#single-clock">single clock</a> pilot every class injects <code>IDateTimeProvider</code>.</p>
     </dd>
-    <dt>Guard</dt><dd><p><code>Time/ClockUsageTests</code> scans every production <code>.cs</code> file and fails on <code>DateTime(Offset).UtcNow|Now|Today</code>. The same test is in all 15 services.</p></dd>
+    <dt>Guard</dt><dd><p><code>Time/ClockUsageTests</code> scans every production <code>.cs</code> file and fails on <code>DateTime(Offset).UtcNow|Now|Today</code>. The same test is in all 15 services. In ProjectService it also fails on any <code>TimeProvider</code> in production code; only the package uses it.</p></dd>
   </dl>
 </section>
 
@@ -270,7 +359,7 @@ _clock.ToTeamTime(value).ToString("dd-MM-yyyy", Culture)</pre>
   <header><h3>5 · UTC values left the API without a <code>Z</code></h3><span class="tag">UtcDateTimeJsonConverter</span></header>
   <dl class="rows">
     <dt>Symptom</dt><dd><p>A <code>DateTime</code> read from Mongo or built in code with <code>Kind = Unspecified</code> was serialised as <code>"2026-03-30T08:00:00"</code>. The browser read that text in the device's zone, so the frontend had built regexes to guess what each date string meant.</p></dd>
-    <dt>Fix</dt><dd><p>One JSON converter, registered by <code>AddTeamTime()</code>, writes every <code>DateTime</code> as UTC with <code>Z</code>. On read, an unspecified value is taken as UTC and a local value is converted. Commit <span class="mono">f13b9941</span>; the same converter is in all 13 services.</p>
+    <dt>Fix</dt><dd><p>One JSON converter, registered by the kit's registration call, writes every <code>DateTime</code> as UTC with <code>Z</code>. On read, an unspecified value is taken as UTC and a local value is converted. Commit <span class="mono">f13b9941</span>; the same converter is in all 13 services.</p>
       <p>This is what allowed the apps to drop their date-shape regexes. They now call <code>new Date(text)</code> and refuse any date-time without <code>Z</code> or an offset.</p></dd>
     <dt>Guard</dt><dd><p>No dedicated test yet. Adding a serialisation test for an <code>Unspecified</code> value would be a cheap follow-up.</p></dd>
   </dl>
@@ -282,8 +371,8 @@ _clock.ToTeamTime(value).ToString("dd-MM-yyyy", Culture)</pre>
     <dt>Symptom</dt><dd><p>The first version fell back to <code>Europe/London</code> from configuration, and a meter counted how often that happened. A missing header or a team with no zone therefore produced answers that were plausible but wrong, and never an error. For a London-only customer base, this fallback was hiding exactly the bugs this work set out to find.</p></dd>
     <dt>Fix</dt><dd><ul>
       <li><strong>Requests:</strong> the zone comes only from <code>Intowork.TeamTimeZone</code>. If it is missing or not a known zone, <code>TeamTimeHeaderMissingFilter</code> returns 400 with a ProblemDetails body ("Team time zone required").</li>
-      <li><strong>Background work</strong> (messages, jobs): <code>ITeamClocks.ForTeamAsync(teamName)</code> reads the service's copy of the team. A team without a valid zone throws <code>TeamTimeUnavailableException</code>, so the message fails and is retried instead of being processed in the wrong zone.</li>
-      <li><strong>Lazy clock:</strong> <code>RequestDateTimeProvider</code> only reads the header when team time is first needed, so <code>UtcNow</code> still works on endpoints that never send the header.</li>
+      <li><strong>Background work</strong> (messages, jobs): <code>clock.UseTeamAsync(teamName)</code> reads the service's copy of the team (<code>ITeamClocks.ForTeamAsync</code> in the services that have not moved to the single clock yet). A team without a valid zone throws <code>TeamTimeUnavailableException</code>, so the message fails and is retried instead of being processed in the wrong zone.</li>
+      <li><strong>Lazy clock:</strong> <code>DateTimeProvider</code> only reads the header when team time is first needed, so <code>UtcNow</code> still works on endpoints that never send the header.</li>
       <li><strong>Defaults:</strong> <code>TeamTimeOptions</code> and the appsettings and helm entries were removed. <code>TeamTimeDefaults</code> keeps only the two display formats. There is no default zone.</li>
     </ul></dd>
     <dt>Commits</dt><dd class="where"><span class="mono">cef8a0ef</span> remove settings from appsettings and helm · <span class="mono">31e71823</span> defaults in code · <span class="mono">5e7122c0</span> strict team time</dd>
@@ -306,7 +395,7 @@ _clock.ToTeamTime(value).ToString("dd-MM-yyyy", Culture)</pre>
 </section>
 
 <section class="pattern" id="p8">
-  <header><h3>8 · Converting local times to UTC around DST changes</h3><span class="tag">TeamDateTimeProvider.ToUtc</span></header>
+  <header><h3>8 · Converting local times to UTC around DST changes</h3><span class="tag">DateTimeProvider · StartOfDayUtc</span></header>
   <dl class="rows">
     <dt>Symptom</dt><dd><p><code>TimeZoneInfo.ConvertTimeToUtc</code> throws for a local time that doesn't exist, such as 01:30 on the morning clocks go forward. For a time that occurs twice, when clocks go back, it silently picks one of the two.</p></dd>
     <dt>Fix</dt><dd>
@@ -331,8 +420,18 @@ if (zone.IsAmbiguousTime(local))
   <header><h3>10 · Feature work on main and develop kept adding old-style calls</h3><span class="tag">merge drift</span></header>
   <dl class="rows">
     <dt>Symptom</dt><dd><p>While this branch was open, main gained application versioning (PR 11140) and develop gained worker item types (PR 11112). Their new code and tests called constructors without the new <code>now</code> parameter, which caused build errors and one conflict in <code>UpdateVersionInfoHandlerTests.cs</code>.</p></dd>
-    <dt>Fix</dt><dd><p>For each conflicted file, take the incoming version, then add the clock arguments again. Tests pass <code>TimeProvider.System.GetUtcNow().UtcDateTime</code> and production code passes the injected clock. Main is merged into the PR branch first, and the PR branch then into -develop, so the PR never needs a fix made only on -develop.</p></dd>
+    <dt>Fix</dt><dd><p>For each conflicted file, take the incoming version, then add the clock arguments again. Tests pass <code>TestClocks.WithoutTeam.UtcNow</code> and production code passes the injected clock. Main is merged into the PR branch first, and the PR branch then into -develop, so the PR never needs a fix made only on -develop.</p></dd>
     <dt>Guard</dt><dd><p>Before each push, <code>git merge-tree</code> of the PR branch against main and of -develop against develop. Both are clean now.</p></dd>
+  </dl>
+</section>
+
+<section class="pattern" id="p11">
+  <header><h3>11 · Two clocks for one job</h3><span class="tag">TimeProvider · ITeamClocks · two IDateTimeProvider implementations</span></header>
+  <dl class="rows">
+    <dt>Symptom</dt><dd><p>A handler that needed "now" and a team day injected <code>TimeProvider</code> and <code>ITeamClocks</code>, and then built a third object. Reviewers had to check that each class had picked the right clock for its context. Which <code>IDateTimeProvider</code> a class received depended on DI wiring that its code never showed.</p></dd>
+    <dt>Root cause</dt><dd><p>The decision about where the zone comes from lived in each caller instead of in the clock.</p></dd>
+    <dt>Fix</dt><dd><p>One <code>DateTimeProvider</code>, resolved per scope. It works out the zone lazily, and handlers set the team themselves with <code>UseTeamAsync</code>. Each message runs in its own DI scope, so concurrent messages cannot share a clock. See <a href="#single-clock">Single clock design</a>.</p></dd>
+    <dt>Guard</dt><dd><p><code>TeamScopedClockTests</code> (zone per scope, set once, failures), <code>TeamTimeRegistrationTests</code>, <code>ScopedEventHandlerTests</code> (a separate clock per message, every handler wrapped, <code>Program.cs</code> wraps last), and <code>ClockUsageTests</code>.</p></dd>
   </dl>
 </section>
 
@@ -358,6 +457,9 @@ if (zone.IsAmbiguousTime(local))
 <div class="table-wrap"><table>
   <thead><tr><th>Check</th><th>Result</th></tr></thead>
   <tbody>
+    <tr><td>ProjectService tests with the single-clock pilot (14 Oct, not yet committed)</td><td><span class="chip ok">2,758 passed · 0 failed</span></td></tr>
+    <tr><td>API and BackgroundService containers built with <code>ValidateScopes</code> and <code>ValidateOnBuild</code></td><td><span class="chip ok">no scoped clock captured by a singleton</span></td></tr>
+    <tr><td>ProjectService tests on the <code>Intowork.Common.Time</code> package (local alpha build, 14 Oct)</td><td><span class="chip ok">2,752 passed · 0 failed</span></td></tr>
     <tr><td>ProjectService tests on the PR branch (after merging main)</td><td><span class="chip ok">2,747 passed · 0 failed</span></td></tr>
     <tr><td>ProjectService tests on -develop (after merging develop)</td><td><span class="chip ok">2,769 passed · 0 failed</span></td></tr>
     <tr><td><code>ClockUsageTests</code> in all 15 services</td><td><span class="chip ok">green</span></td></tr>
@@ -372,12 +474,13 @@ if (zone.IsAmbiguousTime(local))
   <li><strong>Strict 400 and older clients.</strong> Any caller that doesn't send <code>Intowork.TeamTimeZone</code>, such as an older mobile build, a script or a webhook, now gets 400 on endpoints that use team time. Do we ship the apps first, or keep a short window in which the Gateway always fills in the header?</li>
   <li><strong>Day filter or instant filter.</strong> In <code>DayWindowOf</code>, plain text such as <code>2026-03-30</code> is a team day, while text with <code>Z</code> or an offset is converted to its team day first. Should clients send only plain days for day filters, so there is one shape?</li>
   <li><strong>Overlap rule.</strong> When a local time occurs twice, we choose the earlier instant. Is that right for every case, including clock-out times entered during the repeated hour?</li>
-  <li><strong>Unused helpers.</strong> <code>MongoDateParts</code> (timezone-aware <code>$dateToString</code>, <code>$dayOfWeek</code> and similar) and <code>TeamHeadersForwardingHandler</code> exist in ProjectService but nothing uses them yet. Should we remove them, or wire them in where aggregations group by day and where ProjectService calls other services?</li>
+  <li><strong>Unused helpers.</strong> Resolved: <code>MongoDateParts</code> and <code>TeamHeadersForwardingHandler</code> were removed with the single-clock pilot. ProjectService calls no other Intowork service over HTTP, and no aggregation groups by team day yet.</li>
+  <li><strong>Roll out the single clock.</strong> Should the other 13 services move to one <code>IDateTimeProvider</code> with <code>UseTeamAsync</code>, and should the scope per message move into Common.Messaging, so each service doesn't need its own wrapper?</li>
   <li><strong>Team zone is fixed.</strong> If a team ever needs to move, is a data migration the agreed path rather than an endpoint?</li>
   <li><strong>Out of scope for now.</strong> CommonLibs still has 7 files that read the static clock, and the Frontend near-miss rollback decision is still open.</li>
 </ol>
 
-<footer>Generated from the ProjectService branch <span class="mono">feature/1.6.0/team-zone-headers</span> at <span class="mono">23f977a4</span>, compared with <span class="mono">origin/main</span>, on 13 October 2026.</footer>
+<footer>Generated from the ProjectService branch <span class="mono">feature/1.6.0/team-zone-headers</span> at <span class="mono">23f977a4</span>, compared with <span class="mono">origin/main</span>, on 13 October 2026. Updated on 14 October 2026 with the single-clock pilot, which is in the working tree and not yet committed.</footer>
 </main>
 </div>
 
