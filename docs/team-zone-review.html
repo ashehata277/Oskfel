@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Team Zone Headers Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column with a sticky contents rail on wide screens; pattern cards stack in sequence, each with the same five labelled rows. */
+:root {
+  --ink: #17202b;
+  --ink-soft: #4a5666;
+  --paper: #f6f8fa;
+  --surface: #ffffff;
+  --line: #d8dee6;
+  --accent: #1f6f8b;
+  --accent-soft: #e2f0f5;
+  --old: #b5462f;
+  --old-soft: #f8e7e2;
+  --new: #2f7d4f;
+  --new-soft: #e3f2e8;
+  --code-bg: #eef2f6;
+  --f-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --f-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --ink: #e4e9ef; --ink-soft: #9ba8b8; --paper: #10161d; --surface: #17202a; --line: #2a3644;
+    --accent: #5fb4d1; --accent-soft: #15303b; --old: #e58a72; --old-soft: #3a211b; --new: #7cc999; --new-soft: #1a3324; --code-bg: #1d2834;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --ink: #e4e9ef; --ink-soft: #9ba8b8; --paper: #10161d; --surface: #17202a; --line: #2a3644;
+  --accent: #5fb4d1; --accent-soft: #15303b; --old: #e58a72; --old-soft: #3a211b; --new: #7cc999; --new-soft: #1a3324; --code-bg: #1d2834;
+}
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font: 400 16px/1.6 var(--f-body); padding-inline: 20px; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-block: 48px 96px; display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 56px; }
+nav.toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 24px); align-self: start; font-size: 14px; }
+nav.toc p { font: 600 11px/1 var(--f-body); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); margin: 0 0 12px; }
+nav.toc ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+nav.toc a { color: var(--ink-soft); text-decoration: none; }
+nav.toc a:hover, nav.toc a:focus-visible { color: var(--accent); }
+main { min-width: 0; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; line-height: 1.15; }
+h1 { font-size: clamp(34px, 5vw, 48px); font-weight: 700; margin: 8px 0 16px; letter-spacing: -.01em; }
+h2 { font-size: 28px; font-weight: 700; margin: 64px 0 16px; padding-top: 8px; border-top: 1px solid var(--line); }
+h3 { font-size: 20px; font-weight: 500; margin: 0; }
+p, li { max-width: 68ch; }
+.eyebrow { font: 600 12px/1 var(--f-body); letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+.lede { font-size: 18px; color: var(--ink-soft); }
+code, .mono { font-family: var(--f-mono); font-size: .88em; }
+:not(pre) > code { background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+a { color: var(--accent); }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; margin: 28px 0; }
+.facts div { background: var(--surface); padding: 14px 16px; }
+.facts b { display: block; font: 700 24px/1.1 var(--f-display); font-variant-numeric: tabular-nums; }
+.facts span { font-size: 13px; color: var(--ink-soft); }
+.headers { display: grid; grid-template-columns: max-content 1fr; gap: 6px 20px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 16px 20px; margin: 20px 0; font-size: 15px; }
+.headers code { background: none; padding: 0; color: var(--accent); }
+.pattern { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; margin: 24px 0; overflow: hidden; }
+.pattern > header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 14px; padding: 18px 22px; border-bottom: 1px solid var(--line); }
+.pattern > header .tag { font: 500 12px/1 var(--f-mono); color: var(--ink-soft); }
+.rows { display: grid; grid-template-columns: 120px minmax(0, 1fr); }
+.rows > dt, .rows > dd { padding: 12px 22px; border-bottom: 1px solid var(--line); margin: 0; }
+.rows > dt { font: 600 12px/1.6 var(--f-body); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); padding-right: 0; }
+.rows > dd p { margin: 0 0 8px; }
+.rows > dd p:last-child, .rows > dd ul:last-child { margin-bottom: 0; }
+.rows > dd ul { margin: 0; padding-left: 18px; }
+.rows > dt:last-of-type, .rows > dd:last-of-type { border-bottom: 0; }
+.diff { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px; margin: 8px 0; }
+.diff pre { margin: 0; }
+pre { background: var(--code-bg); border-radius: 6px; padding: 10px 12px; overflow-x: auto; font: 400 12.5px/1.55 var(--f-mono); }
+pre .lbl { display: block; font: 600 10.5px/1 var(--f-body); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 8px; }
+pre.before { box-shadow: inset 3px 0 0 var(--old); }
+pre.before .lbl { color: var(--old); }
+pre.after { box-shadow: inset 3px 0 0 var(--new); }
+pre.after .lbl { color: var(--new); }
+.where { font-size: 14px; color: var(--ink-soft); }
+.timeline { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 20px 22px; margin: 20px 0; }
+.timeline figcaption { font-size: 14px; color: var(--ink-soft); margin-top: 10px; }
+.tl-wrap { overflow-x: auto; }
+.tl { min-width: 560px; display: grid; gap: 10px; }
+.tl-row { display: grid; grid-template-columns: 150px 1fr; align-items: center; gap: 12px; font-size: 13px; }
+.tl-track { position: relative; height: 26px; background: var(--code-bg); border-radius: 4px; }
+.tl-bar { position: absolute; top: 3px; bottom: 3px; border-radius: 3px; font: 500 11px/20px var(--f-mono); padding-left: 6px; white-space: nowrap; overflow: hidden; }
+.tl-bar.old { background: var(--old-soft); color: var(--old); border: 1px solid var(--old); }
+.tl-bar.new { background: var(--new-soft); color: var(--new); border: 1px solid var(--new); }
+.tl-axis { display: grid; grid-template-columns: 150px 1fr; gap: 12px; font: 400 11px/1 var(--f-mono); color: var(--ink-soft); }
+.tl-ticks { position: relative; height: 14px; }
+.tl-ticks span { position: absolute; transform: translateX(-50%); }
+.miss { position: absolute; top: 0; bottom: 0; background: repeating-linear-gradient(135deg, transparent 0 4px, color-mix(in srgb, var(--old) 35%, transparent) 4px 6px); }
+.table-wrap { overflow-x: auto; margin: 16px 0; border: 1px solid var(--line); border-radius: 8px; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; background: var(--surface); }
+th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font: 600 12px/1.4 var(--f-body); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); background: var(--paper); }
+tr:last-child td { border-bottom: 0; }
+td.num { font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+.chip { display: inline-block; font: 500 11px/1 var(--f-body); padding: 4px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); white-space: nowrap; }
+.chip.warn { background: var(--old-soft); color: var(--old); }
+.chip.ok { background: var(--new-soft); color: var(--new); }
+.questions { counter-reset: q; list-style: none; padding: 0; display: grid; gap: 14px; }
+.questions li { counter-increment: q; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 14px 18px 14px 52px; position: relative; max-width: none; }
+.questions li::before { content: "Q" counter(q); position: absolute; left: 16px; top: 14px; font: 700 14px/1.6 var(--f-display); color: var(--accent); }
+footer { margin-top: 64px; font-size: 13px; color: var(--ink-soft); }
+@media (max-width: 860px) {
+  .wrap { grid-template-columns: 1fr; gap: 0; padding-block: 28px 64px; }
+  nav.toc { position: static; margin-bottom: 8px; }
+  nav.toc ol { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+  .rows { grid-template-columns: 1fr; }
+  .rows > dt { border-bottom: 0; padding-bottom: 0; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+html { scroll-behavior: smooth; }
+</style>
+<style>body{margin:0}</style>
+</head>
+<body>
+
+<div class="wrap">
+<nav class="toc" aria-label="Contents">
+  <p>Contents</p>
+  <ol>
+    <li><a href="#model">The model</a></li>
+    <li><a href="#patterns">Problem patterns</a></li>
+    <li><a href="#p1">1 · Server clock reads</a></li>
+    <li><a href="#p2">2 · Day boundaries</a></li>
+    <li><a href="#p3">3 · Month windows</a></li>
+    <li><a href="#p4">4 · UTC printed as local</a></li>
+    <li><a href="#p5">5 · Unmarked UTC on the wire</a></li>
+    <li><a href="#p6">6 · Silent London fallback</a></li>
+    <li><a href="#p7">7 · Mutable team zone</a></li>
+    <li><a href="#p8">8 · DST gaps and overlaps</a></li>
+    <li><a href="#p9">9 · Clock inside the domain</a></li>
+    <li><a href="#p10">10 · Merge drift</a></li>
+    <li><a href="#across">Across the other PRs</a></li>
+    <li><a href="#verify">Verification</a></li>
+    <li><a href="#discuss">For discussion</a></li>
+  </ol>
+</nav>
+
+<main>
+<div class="eyebrow">ProjectService · feature/1.6.0/team-zone-headers</div>
+<h1>Team Zone Headers Review</h1>
+<p class="lede">This review covers the time problems that the team-zone-headers work found in ProjectService and how each one was fixed. They are grouped into recurring patterns, so we can agree on the rule behind each fix and not only the fix. Each pattern also notes where the same problem appeared in the other services and apps in this feature.</p>
+
+<div class="facts">
+  <div><b>313</b><span>files changed in ProjectService vs main</span></div>
+  <div><b>11</b><span>feature commits on the branch</span></div>
+  <div><b>10</b><span>problem patterns found</span></div>
+  <div><b>2,747</b><span>tests passing on the PR branch</span></div>
+  <div><b>18</b><span>repos on the same feature branch</span></div>
+</div>
+
+<h2 id="model">The model this PR moves to</h2>
+<p>One rule applies everywhere: <strong>instants are stored and sent as UTC, and the team's zone is applied only at the edges.</strong> The edges are the points where a person's idea of a day, a month or a printed date meets the data. Each request carries the team's time settings in headers:</p>
+<div class="headers">
+  <code>Intowork.TeamTimeZone</code><span>IANA zone, for example <code>Europe/London</code>. Required on every request; a missing or invalid zone gets 400.</span>
+  <code>Intowork.TeamDateFormat</code><span>Display format, default <code>dd/MM/yyyy</code></span>
+  <code>Intowork.TeamTimeFormat</code><span>Display format, default <code>HH:mm</code></span>
+  <code>Intowork.TeamName</code><span>Used by background work to look the team's zone up</span>
+</div>
+<p>Code reads the time only through <code>IDateTimeProvider</code> (team aware: <code>TeamNow</code>, <code>DayOf</code>, <code>DayRangeUtc</code>, <code>ToTeamTime</code>, <code>ToUtc</code>) or <code>TimeProvider</code> (plain UTC "now"). Inside a request, <code>RequestDateTimeProvider</code> builds the team clock lazily from the header. Outside a request, <code>ITeamClocks.ForTeamAsync(teamName)</code> resolves the zone from the service's copy of the team.</p>
+
+<h2 id="patterns">Problem patterns</h2>
+<p>Every pattern below uses the same layout: what went wrong, why it happened, the fix, where the code lives, and the test that now guards it.</p>
+
+<section class="pattern" id="p1">
+  <header><h3>1 · The server's clock stood in for the team's clock</h3><span class="tag">DateTime.Now · DateTime.UtcNow · DateTimeOffset.Now</span></header>
+  <dl class="rows">
+    <dt>Symptom</dt><dd><p>Timestamps depended on the host machine. <code>DateTime.Now</code> gives a container's local time, which in AKS is usually UTC and on a developer laptop is something else. Code that read the clock directly also could not be tested at a fixed instant.</p></dd>
+    <dt>Root cause</dt><dd><p>The static clock was read in handlers, repositories, models and property initializers. Some places mixed <code>Now</code> and <code>UtcNow</code> in the same flow.</p></dd>
+    <dt>Fix</dt><dd>
+      <div class="diff">
+<pre class="before"><span class="lbl">Before · AcquireBulkMoveRegistryHandler</span>DateAcquired = DateTime.Now,
+...
+var expiry = DateTimeOffset.Now;</pre>
+<pre class="after"><span class="lbl">After</span>DateAcquired = _timeProvider.GetUtcNow().UtcDateTime,
+...
+var expiry = _timeProvider.GetUtcNow();</pre>
+      </div>
+      <p>Classes inject <code>TimeProvider</code>, or use <code>IDateTimeProvider</code> when they already need team time. Commit <span class="mono">3d0027dd</span> did this across 214 files in ProjectService.</p>
+    </dd>
+    <dt>Guard</dt><dd><p><code>Time/ClockUsageTests</code> scans every production <code>.cs</code> file and fails on <code>DateTime(Offset).UtcNow|Now|Today</code>. The same test is in all 15 services.</p></dd>
+  </dl>
+</section>
+
+<section class="pattern" id="p2">
+  <header><h3>2 · Calendar days were cut at UTC midnight</h3><span class="tag">FilterAndSortExtension</span></header>
+  <dl class="rows">
+    <dt>Symptom</dt><dd><p>A grid filter such as "Transaction date = 30/03/2026" missed rows created between 00:00 and 01:00 London time during BST. Those rows showed up under the previous day instead. The <code>&gt;</code> and <code>&lt;=</code> operators were off by the same hour.</p></dd>
+    <dt>Root cause</dt><dd><p>The filter parsed the day text as <code>00:00</code> with no kind and compared it straight against UTC values in Mongo. The end of the day was built as <code>+1 day − 1 ms</code>. On top of that, the aggregate <code>ApplyFilters</code> overload never passed <code>isDateTimeFilter</code>, so date-time filters on aggregates were treated as day filters.</p></dd>
+    <dt>Fix</dt><dd>
+      <figure class="timeline">
+        <div class="tl-wrap"><div class="tl">
+          <div class="tl-axis"><span></span><div class="tl-ticks">
+            <span style="left:0%">29 Mar 22:00Z</span><span style="left:25%">23:00Z</span><span style="left:50%">30 Mar 12:00Z</span><span style="left:96%">23:00Z</span>
+          </div></div>
+          <div class="tl-row"><span>Old window</span><div class="tl-track"><div class="miss" style="left:3.8%;width:4.2%"></div><div class="tl-bar old" style="left:7.7%;width:92.3%">00:00Z → 23:59:59.999Z</div></div></div>
+          <div class="tl-row"><span>Team day (London BST)</span><div class="tl-track"><div class="tl-bar new" style="left:3.8%;width:92.3%">29 Mar 23:00Z → 30 Mar 23:00Z</div></div></div>
+        </div></div>
+        <figcaption>"30 March 2026" for a London team, one day after BST starts. The hatched hour belongs to the team's 30 March but fell outside the old window.</figcaption>
+      </figure>
+      <div class="diff">
+<pre class="before"><span class="lbl">Before</span>var dt = DateTime.Parse(searchValue, null,
+    DateTimeStyles.RoundtripKind);
+typedSearchValue = DateTime.SpecifyKind(dt, DateTimeKind.Utc);
+...
+AdjustToEndOfDay(date) =&gt; date.AddDays(1).AddMilliseconds(-1);</pre>
+<pre class="after"><span class="lbl">After</span>typedSearchValue = isDateTimeFilter
+    ? ParseInstant(searchValue)
+    : DayWindowOf(searchValue, clock);   // clock.DayRangeUtc(day)
+
+Equal        → from &lt;= x &amp;&amp; x &lt; to
+GreaterThan  → x &gt;= to
+LessThanOrEq → x &lt; to</pre>
+      </div>
+      <p>A day filter becomes a half-open UTC window <code>[teamMidnight, nextTeamMidnight)</code>. A date-time filter is read as an instant using the invariant culture. Both <code>ApplyFilters</code> overloads now take the clock (commit <span class="mono">4817201f</span> fixed the aggregate one).</p>
+    </dd>
+    <dt>Where</dt><dd class="where">The 16 paginated query handlers and their repos (quotations, versions, notes, files, prelims cost and income, external money and valuations, items, materials, catalogues, teams), all through <code>ApplyFilters(filters, clock)</code>.</dd>
+    <dt>Guard</dt><dd><p><code>FilterAndSortExtensionDateTests</code> covers every operator for a London team, both sides of a DST change.</p></dd>
+  </dl>
+</section>
+
+<section class="pattern" id="p3">
+  <header><h3>3 · Month windows used the UTC month with an inclusive upper bound</h3><span class="tag">ExternalValuation · one per month</span></header>
+  <dl class="rows">
+    <dt>Symptom</dt><dd><p>The rule "one external valuation per project per month" checked the wrong month for entries close to midnight. Because the end was inclusive, an entry at exactly 00:00 on the 1st counted for two months.</p></dd>
+    <dt>Root cause</dt><dd><p>The month was taken from the UTC <code>Year</code> and <code>Month</code> of the instant, and the query used <code>&lt;= nextMonth</code>.</p></dd>
+    <dt>Fix</dt><dd>
+      <div class="diff">
+<pre class="before"><span class="lbl">Before · JobsRepo</span>c.TransactionDate &gt;= new DateTime(year, month, 1) &amp;&amp;
+c.TransactionDate &lt;= new DateTime(year, month, 1).AddMonths(1)</pre>
+<pre class="after"><span class="lbl">After</span>var month = TeamMonthWindow.Of(clock, transactionDate);
+c.TransactionDate &gt;= month.From &amp;&amp;
+c.TransactionDate &lt;  month.To</pre>
+      </div>
+      <p><code>TeamMonthWindow.Of</code> takes the instant's team day, goes back to the 1st of that month, and returns UTC team midnights for that 1st and the next.</p>
+    </dd>
+    <dt>Guard</dt><dd><p><code>TeamMonthWindowTests</code></p></dd>
+  </dl>
+</section>
+
+<section class="pattern" id="p4">
+  <header><h3>4 · UTC instants were printed as if they were local</h3><span class="tag">server-rendered text · PDFs · DTOs with date strings</span></header>
+  <dl class="rows">
+    <dt>Symptom</dt><dd><p>Quotation PDFs were dated with the UTC date. A quote produced at 00:30 BST carried yesterday's date, and so did "uploaded on" for attachments. Over-hire handover erect and strike dates, and the contracted due-strike date worked out from them, could each be one day early.</p></dd>
+    <dt>Root cause</dt><dd><p>Wherever the backend formats a date into text, the browser never gets the instant to convert. The conversion therefore has to happen on the server, and it was missing.</p></dd>
+    <dt>Fix</dt><dd>
+      <div class="diff">
+<pre class="before"><span class="lbl">Before · QuotationDocumentGenerator</span>var now = DateTime.UtcNow;
+...
+value.ToString("dd-MM-yyyy", Culture)</pre>
+<pre class="after"><span class="lbl">After</span>var now = _clock.TeamNow;
+...
+_clock.ToTeamTime(value).ToString("dd-MM-yyyy", Culture)</pre>
+      </div>
+      <p>In <code>GetOverHireHandler</code>, dates are converted to team time first, and the <code>ContractHirePeriod × 7</code> days are added after that, so the date arithmetic runs on team days.</p>
+    </dd>
+    <dt>Guard</dt><dd><p><code>QuotationDocumentGeneratorTests</code> and <code>GetQuotationVersionsQueryHandlerTests</code> pin the clock with <code>TeamClockSupport</code>.</p></dd>
+  </dl>
+</section>
+
+<section class="pattern" id="p5">
+  <header><h3>5 · UTC values left the API without a <code>Z</code></h3><span class="tag">UtcDateTimeJsonConverter</span></header>
+  <dl class="rows">
+    <dt>Symptom</dt><dd><p>A <code>DateTime</code> read from Mongo or built in code with <code>Kind = Unspecified</code> was serialised as <code>"2026-03-30T08:00:00"</code>. The browser read that text in the device's zone, so the frontend had built regexes to guess what each date string meant.</p></dd>
+    <dt>Fix</dt><dd><p>One JSON converter, registered by <code>AddTeamTime()</code>, writes every <code>DateTime</code> as UTC with <code>Z</code>. On read, an unspecified value is taken as UTC and a local value is converted. Commit <span class="mono">f13b9941</span>; the same converter is in all 13 services.</p>
+      <p>This is what allowed the apps to drop their date-shape regexes. They now call <code>new Date(text)</code> and refuse any date-time without <code>Z</code> or an offset.</p></dd>
+    <dt>Guard</dt><dd><p>No dedicated test yet. Adding a serialisation test for an <code>Unspecified</code> value would be a cheap follow-up.</p></dd>
+  </dl>
+</section>
+
+<section class="pattern" id="p6">
+  <header><h3>6 · A silent London fallback hid missing context</h3><span class="tag">strict team time</span></header>
+  <dl class="rows">
+    <dt>Symptom</dt><dd><p>The first version fell back to <code>Europe/London</code> from configuration, and a meter counted how often that happened. A missing header or a team with no zone therefore produced answers that were plausible but wrong, and never an error. For a London-only customer base, this fallback was hiding exactly the bugs this work set out to find.</p></dd>
+    <dt>Fix</dt><dd><ul>
+      <li><strong>Requests:</strong> the zone comes only from <code>Intowork.TeamTimeZone</code>. If it is missing or not a known zone, <code>TeamTimeHeaderMissingFilter</code> returns 400 with a ProblemDetails body ("Team time zone required").</li>
+      <li><strong>Background work</strong> (messages, jobs): <code>ITeamClocks.ForTeamAsync(teamName)</code> reads the service's copy of the team. A team without a valid zone throws <code>TeamTimeUnavailableException</code>, so the message fails and is retried instead of being processed in the wrong zone.</li>
+      <li><strong>Lazy clock:</strong> <code>RequestDateTimeProvider</code> only reads the header when team time is first needed, so <code>UtcNow</code> still works on endpoints that never send the header.</li>
+      <li><strong>Defaults:</strong> <code>TeamTimeOptions</code> and the appsettings and helm entries were removed. <code>TeamTimeDefaults</code> keeps only the two display formats. There is no default zone.</li>
+    </ul></dd>
+    <dt>Commits</dt><dd class="where"><span class="mono">cef8a0ef</span> remove settings from appsettings and helm · <span class="mono">31e71823</span> defaults in code · <span class="mono">5e7122c0</span> strict team time</dd>
+    <dt>Guard</dt><dd><p><code>RequestTeamTimeTests</code> and <code>TeamTimeRegistrationTests</code></p></dd>
+  </dl>
+</section>
+
+<section class="pattern" id="p7">
+  <header><h3>7 · A team's zone could change after its data existed</h3><span class="tag">team settings ownership</span></header>
+  <dl class="rows">
+    <dt>Symptom</dt><dd><p>The first iteration added <code>PUT teamsettings/{team}/timeZone</code>. Changing the zone later would move the meaning of every stored team day, such as absences, month windows and valuation months, without rewriting any data.</p></dd>
+    <dt>Fix</dt><dd><ul>
+      <li>The endpoint was removed along with its command, handler, repository method and helm route (commit <span class="mono">8b92ac54</span>, 445 lines deleted).</li>
+      <li>A zone is required when a team is created and checked by <code>TeamTimeSettingsValidator</code>. Editing or updating a team returns <code>TEAM_TIME_ZONE_FIXED</code> if the zone would change.</li>
+      <li><code>TeamCreated</code> and <code>TeamUpdated</code> now carry <code>TimeZone</code>, <code>DateFormat</code> and <code>TimeFormat</code>, so every other service's copy of the team can resolve the zone for background work.</li>
+      <li>The seeder gives <code>masterteam</code> and the default team <code>Europe/London</code> and publishes the zone in its events.</li>
+    </ul></dd>
+    <dt>Guard</dt><dd><p><code>CreateTeamTimeSettingsTests</code>, <code>EditTeamTimeSettingsTests</code>, <code>UpdateTeamTimeSettingsTests</code>, <code>TeamEventsTimeFieldsTests</code>, <code>MasterTeamSeedTests</code></p></dd>
+  </dl>
+</section>
+
+<section class="pattern" id="p8">
+  <header><h3>8 · Converting local times to UTC around DST changes</h3><span class="tag">TeamDateTimeProvider.ToUtc</span></header>
+  <dl class="rows">
+    <dt>Symptom</dt><dd><p><code>TimeZoneInfo.ConvertTimeToUtc</code> throws for a local time that doesn't exist, such as 01:30 on the morning clocks go forward. For a time that occurs twice, when clocks go back, it silently picks one of the two.</p></dd>
+    <dt>Fix</dt><dd>
+<pre>while (zone.IsInvalidTime(local)) local = local.AddMinutes(30);           // gap → first valid time
+if (zone.IsAmbiguousTime(local))
+    return local - zone.GetAmbiguousTimeOffsets(local).Max();      // overlap → the earlier instant</pre>
+      <p>Team midnight never falls in a London gap, but these rules matter for other zones and for any time a user enters near 01:00–02:00.</p></dd>
+  </dl>
+</section>
+
+<section class="pattern" id="p9">
+  <header><h3>9 · Domain models read the clock themselves</h3><span class="tag">BaseAuditableEntity · constructors · initializers</span></header>
+  <dl class="rows">
+    <dt>Symptom</dt><dd><p><code>MarkAsCreated</code>, <code>MarkAsUpdated</code>, <code>MarkAsDeleted</code>, about 37 model methods and several <code>= DateTime.UtcNow</code> property initializers stamped time on their own. They could not be tested deterministically, and Mongo deserialisation ran the initializer for nothing.</p></dd>
+    <dt>Fix</dt><dd><p>Models take a <code>DateTime now</code> from the handler that owns the clock. Examples: <code>MarkAsCreated(performer, now)</code>, <code>LinkExpiresOn(now)</code> and <code>QuotationMetadataEventData.From(q, v, now)</code>. The initializers were removed once every creator set the value.</p>
+      <p>New constructor parameters are named after the property they set (<code>raisedDate</code> on ExternalMoney and ExternalValuation, <code>importedAt</code> on Material). The Mongo driver's automatic creator mapping matches parameters to properties by name, so a parameter called <code>now</code> would have broken reads.</p></dd>
+    <dt>Guard</dt><dd><p>The compiler checks that every call site passes the time, and <code>ClockUsageTests</code> rejects any new static clock read.</p></dd>
+  </dl>
+</section>
+
+<section class="pattern" id="p10">
+  <header><h3>10 · Feature work on main and develop kept adding old-style calls</h3><span class="tag">merge drift</span></header>
+  <dl class="rows">
+    <dt>Symptom</dt><dd><p>While this branch was open, main gained application versioning (PR 11140) and develop gained worker item types (PR 11112). Their new code and tests called constructors without the new <code>now</code> parameter, which caused build errors and one conflict in <code>UpdateVersionInfoHandlerTests.cs</code>.</p></dd>
+    <dt>Fix</dt><dd><p>For each conflicted file, take the incoming version, then add the clock arguments again. Tests pass <code>TimeProvider.System.GetUtcNow().UtcDateTime</code> and production code passes the injected clock. Main is merged into the PR branch first, and the PR branch then into -develop, so the PR never needs a fix made only on -develop.</p></dd>
+    <dt>Guard</dt><dd><p>Before each push, <code>git merge-tree</code> of the PR branch against main and of -develop against develop. Both are clean now.</p></dd>
+  </dl>
+</section>
+
+<h2 id="across">The same patterns in the other PRs</h2>
+<p>All 18 repos share the commit sequence: headers → test matrix → UTC converter → defaults in code → strict team time → skill → injected clock. The table lists only the repo-specific fixes that go beyond that shared set.</p>
+<div class="table-wrap"><table>
+  <thead><tr><th>Repo</th><th class="num">Files</th><th>Patterns</th><th>Notable fixes</th></tr></thead>
+  <tbody>
+    <tr><td>AttendanceService</td><td class="num">164</td><td><span class="chip">1</span> <span class="chip">2</span> <span class="chip">6</span> <span class="chip">9</span></td><td><code>WageHelperLegacy</code> worked out the 08:00–16:00 pay window in a hard-coded London zone and now uses the team clock. The team clock is resolved before commit, so retried messages redo the work. One reminder job pair is registered per team zone.</td></tr>
+    <tr><td>HandoverService</td><td class="num">97</td><td><span class="chip">1</span> <span class="chip">4</span> <span class="chip">9</span></td><td>The claim reference number used <code>DateTime.Now</code> and now uses UTC. The <code>Is*Required</code> notification checks became methods that take <code>now</code>.</td></tr>
+    <tr><td>MaterialsService</td><td class="num">113</td><td><span class="chip">2</span> <span class="chip">9</span></td><td>The collection and order repos use the CommonLibs <code>ApplyFilters</code> instead of a copy. <code>StaffMember.IsActive(now)</code> became a method.</td></tr>
+    <tr><td>ActiveWorkService</td><td class="num">105</td><td><span class="chip">1</span> <span class="chip">4</span></td><td>Export zip and readiness-report file names are dated in team time.</td></tr>
+    <tr><td>InspectionsService</td><td class="num">77</td><td><span class="chip">9</span></td><td><code>Inspection.ApplyEvents(events, now)</code> passes the time to the event handlers it replays.</td></tr>
+    <tr><td>Gateway</td><td class="num">30</td><td><span class="chip">6</span></td><td>Sends an empty zone instead of London when a team has none, so the downstream service returns 400 instead of guessing. The session id timestamp is now UTC.</td></tr>
+    <tr><td>FrameworkCache</td><td class="num">59</td><td><span class="chip">1</span> <span class="chip">9</span></td><td><code>ReportingCalendar.UtcNow</code> is shared by the labour and plant reports.</td></tr>
+    <tr><td>Frontend</td><td class="num">563</td><td><span class="chip">2</span> <span class="chip">4</span> <span class="chip">5</span></td><td>Calendar days (absences, vehicle unavailability, compliance) are kept as team days and sent as UTC midnight. Day and week ranges are built from team midnights. A zone tag appears on date fields when the device zone differs from the team's. All date inputs share one pick-only field. Clearing a start date no longer produces 1 Jan 1970.</td></tr>
+    <tr><td>HandoverApp, InspectionsApp</td><td class="num">71 / 59</td><td><span class="chip">2</span> <span class="chip">5</span></td><td>Response models convert API instants to team time in their constructors. Bank holidays and inspection date answers are checked against team now.</td></tr>
+    <tr><td>Customer, Forecasting, Gaffer, Notification, Permissions, Resources, SafetySuite</td><td class="num">33–94</td><td><span class="chip">1</span> <span class="chip">6</span> <span class="chip">9</span></td><td>Only the shared set. In Resources, the bank-holiday mapper takes <code>now</code>.</td></tr>
+  </tbody>
+</table></div>
+
+<h2 id="verify">Verification</h2>
+<div class="table-wrap"><table>
+  <thead><tr><th>Check</th><th>Result</th></tr></thead>
+  <tbody>
+    <tr><td>ProjectService tests on the PR branch (after merging main)</td><td><span class="chip ok">2,747 passed · 0 failed</span></td></tr>
+    <tr><td>ProjectService tests on -develop (after merging develop)</td><td><span class="chip ok">2,769 passed · 0 failed</span></td></tr>
+    <tr><td><code>ClockUsageTests</code> in all 15 services</td><td><span class="chip ok">green</span></td></tr>
+    <tr><td>Merge-tree: PR branch → main, -develop → develop</td><td><span class="chip ok">clean in all 15 repos</span></td></tr>
+    <tr><td>SafetySuite -develop</td><td><span class="chip warn">1 failure that predates this work</span> <code>UploadAttachment_WhenFileIsNull</code>, from PR 10961</td></tr>
+    <tr><td>Gaffer, Inspections</td><td><span class="chip">tested in a scratch copy</span> because package restore fails locally</td></tr>
+  </tbody>
+</table></div>
+
+<h2 id="discuss">For discussion</h2>
+<ol class="questions">
+  <li><strong>Strict 400 and older clients.</strong> Any caller that doesn't send <code>Intowork.TeamTimeZone</code>, such as an older mobile build, a script or a webhook, now gets 400 on endpoints that use team time. Do we ship the apps first, or keep a short window in which the Gateway always fills in the header?</li>
+  <li><strong>Day filter or instant filter.</strong> In <code>DayWindowOf</code>, plain text such as <code>2026-03-30</code> is a team day, while text with <code>Z</code> or an offset is converted to its team day first. Should clients send only plain days for day filters, so there is one shape?</li>
+  <li><strong>Overlap rule.</strong> When a local time occurs twice, we choose the earlier instant. Is that right for every case, including clock-out times entered during the repeated hour?</li>
+  <li><strong>Unused helpers.</strong> <code>MongoDateParts</code> (timezone-aware <code>$dateToString</code>, <code>$dayOfWeek</code> and similar) and <code>TeamHeadersForwardingHandler</code> exist in ProjectService but nothing uses them yet. Should we remove them, or wire them in where aggregations group by day and where ProjectService calls other services?</li>
+  <li><strong>Team zone is fixed.</strong> If a team ever needs to move, is a data migration the agreed path rather than an endpoint?</li>
+  <li><strong>Out of scope for now.</strong> CommonLibs still has 7 files that read the static clock, and the Frontend near-miss rollback decision is still open.</li>
+</ol>
+
+<footer>Generated from the ProjectService branch <span class="mono">feature/1.6.0/team-zone-headers</span> at <span class="mono">23f977a4</span>, compared with <span class="mono">origin/main</span>, on 13 October 2026.</footer>
+</main>
+</div>
+
+</body>
+</html>

@@ -219,8 +219,8 @@ sleep 2
 run_service "$SCRIPT_DIR/PermissionsService/Intowork.Permissions.API" "http://localhost:5001"
 sleep 2
 
-# run_service "$SCRIPT_DIR/Gateway/Intowork.Gateway" "http://localhost:5002"
-# sleep 2
+run_service "$SCRIPT_DIR/Gateway/Intowork.Gateway" "http://localhost:5002"
+sleep 2
 
 run_service "$SCRIPT_DIR/CustomerService/Intowork.Customers.API" "http://localhost:5003"
 sleep 2
@@ -258,11 +258,11 @@ sleep 2
 run_service "$SCRIPT_DIR/MaterialsService/Intowork.MaterialsService.API" "http://localhost:5009"
 sleep 2
 
-# run_service "$SCRIPT_DIR/ForecastingService/Intowork.Forecasting.API" "http://localhost:5010"
-# sleep 2
+run_service "$SCRIPT_DIR/ForecastingService/Intowork.Forecasting.API" "http://localhost:5010"
+ sleep 2
 
-# run_service "$SCRIPT_DIR/ForecastingService/Intowork.Forecasting.Background" "http://localhost:5110"
-# sleep 2
+run_service "$SCRIPT_DIR/ForecastingService/Intowork.Forecasting.Background" "http://localhost:5110"
+ sleep 2
 
 run_service "$SCRIPT_DIR/FrameworkCache/Intowork.Report.API" "http://localhost:5011"
 sleep 2
