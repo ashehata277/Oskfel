@@ -1,0 +1,183 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Projection Lag Investigation</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column; symptom, mechanism, evidence, root cause, the arithmetic, fixes in order, test plan, side findings. */
+:root {
+  --bg: #f7f8fa; --surface: #ffffff; --fg: #15202b; --fg-2: #4a5663; --fg-3: #7a8694;
+  --line: #d9dee5; --accent: #1f5f8b; --accent-soft: #e4eef6; --bad: #b4540a; --good: #1b7f4b;
+  --display: "Source Serif 4", Georgia, serif; --body: "Source Sans 3", "Segoe UI", Helvetica, Arial, sans-serif; --mono: "IBM Plex Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #121619; --surface: #1a1f24; --fg: #e8ecf0; --fg-2: #b4bcc6; --fg-3: #8390a0; --line: #2d353e; --accent: #6fb0e0; --accent-soft: #1d2b38; --bad: #e3903a; --good: #4fc27f; color-scheme: dark } }
+:root[data-theme="dark"] { --bg: #121619; --surface: #1a1f24; --fg: #e8ecf0; --fg-2: #b4bcc6; --fg-3: #8390a0; --line: #2d353e; --accent: #6fb0e0; --accent-soft: #1d2b38; --bad: #e3903a; --good: #4fc27f; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16.5px; line-height: 1.55; margin: 0; padding-block: 0 64px; padding-inline: 16px; }
+.wrap { max-width: 920px; margin: 0 auto; }
+header { padding-block: 40px 22px; border-bottom: 1px solid var(--line); margin-bottom: 26px; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--fg-3); }
+h1 { font-family: var(--display); font-weight: 600; font-size: clamp(30px, 5vw, 40px); line-height: 1.1; margin: 8px 0 12px; text-wrap: balance; }
+.lede { font-size: 18px; color: var(--fg-2); max-width: 70ch; margin: 0; }
+h2 { font-family: var(--display); font-weight: 600; font-size: 24px; margin: 44px 0 10px; text-wrap: balance; }
+h3 { font-size: 17px; font-weight: 600; margin: 24px 0 6px; }
+p, li { max-width: 72ch; } p { margin: 0 0 12px; } ul, ol { padding-left: 22px; margin: 0 0 12px; } li { margin-bottom: 6px; }
+code { font-family: var(--mono); font-size: .88em; background: var(--accent-soft); padding: 1px 5px; border-radius: 3px; }
+pre { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 12px 14px; overflow-x: auto; font-family: var(--mono); font-size: 13px; line-height: 1.5; margin: 8px 0 16px; }
+pre code { background: none; padding: 0; font-size: inherit; }
+.rule { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--accent); padding: 16px 20px; margin: 0 0 8px; }
+.rule h2 { margin: 0 0 8px; font-size: 20px; }
+table { border-collapse: collapse; width: 100%; font-size: 15px; } .tablewrap { overflow-x: auto; margin: 10px 0 18px; }
+th, td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+th { font-weight: 600; color: var(--fg-2); font-size: 13px; letter-spacing: .04em; text-transform: uppercase; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.callout { background: var(--accent-soft); border-radius: 6px; padding: 14px 18px; margin: 16px 0; } .callout p:last-child { margin-bottom: 0; }
+.step { border-left: 3px solid var(--accent); padding: 4px 0 4px 14px; margin: 14px 0; } .step b { display: block; } .step .see { color: var(--fg-2); font-size: 14.5px; }
+figure { margin: 18px 0 26px; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 16px 16px 12px; } figure svg { width: 100%; height: auto; display: block; } figcaption { font-size: 14.5px; color: var(--fg-2); margin-top: 8px; }
+footer { margin-top: 52px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 14px; color: var(--fg-3); }
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">Baton platform · production incident analysis · 16 October 2026</div>
+  <h1>Projection Lag Investigation</h1>
+  <p class="lede">Users report that a record they have just saved vanishes from the screen and comes back minutes later. This page traces that experience through the system, shows the measurements that locate the delay, names the cause, and sets out the fixes in the order that pays back fastest.</p>
+</header>
+
+<section class="rule">
+  <h2>The short version</h2>
+  <p><b>Yes, it is related, and it is not the database or the API.</b> API writes complete in a quarter of a second at the 95th percentile. The record disappears because every screen re-reads a <em>projection</em> that a background worker updates from a Service Bus message, and that message is queuing for minutes. It queues because the session processors that consume these queues have very few working slots, and each slot sits idle for 30 to 60 seconds after every single-message session before it takes the next one. Measured on production: with 100 slots the Attendance processor still did at most 55 seconds of work per minute, the equivalent of one worker. Ten of the eleven services run older library builds with only 20 to 32 slots and a 60-second idle wait, so their ceiling is 20 to 40 messages a minute. Bursts of several hundred messages, mostly wage and bonus recalculations and bulk ITW operations, therefore take 5 to 10 minutes to drain, and everything a user does during that time waits behind them. The SignalR event that would tell the board to refresh travels through one of those same starved queues, and some of those events are dead-lettered unread.</p>
+  <p><b>The fix is mostly configuration and a library upgrade, not a redesign:</b> every service on the current messaging library, the session idle timeout cut from 30 to 60 seconds to 2 seconds, and the notification queue repaired. That alone raises the drain ceiling from tens of messages a minute to thousands. Smaller code changes then remove the bursts and stop screens overwriting what the user just typed.</p>
+</section>
+
+<h2>1. What the user sees, and what the system does</h2>
+<p>Take a supervisor clocking a gang out, or a planner creating an ITW. The sequence is:</p>
+<ol>
+  <li>The browser sends the command. The API appends an event, writes a message, and answers in about 11 ms median, 277 ms at the 95th percentile (7 days, all POST and PUT). The user is not blocked here.</li>
+  <li>The screen patches its local list from the response, so the record is visible. Then, immediately or after a fixed 1.5 to 3 second wait, it re-fetches the list from the API. That re-fetch reads the projection.</li>
+  <li>The projection is written by a Background host when it processes the message. If the message is still queued, the re-fetch returns a list without the record, and the record <b>disappears</b>.</li>
+  <li>Minutes later the message is processed, the projection has the record, and the next refresh, a SignalR event or the user navigating, makes it <b>reappear</b>.</li>
+</ol>
+<p>Only the active-work boards (daily, weekly and the old LDF) receive a SignalR event when their projection catches up. Attendance, wages, handovers, materials, quotations, resources and inspections get no event at all; they see the change on whatever fetch happens next.</p>
+
+<h2>2. Where the minutes are, measured</h2>
+<h3>The queues back up for 5 to 10 minutes at a time, during working hours</h3>
+<div class="tablewrap"><table>
+<thead><tr><th>Production entity</th><th class="num">Largest backlog (30 days)</th><th class="num">Episodes ≥ 50 queued (14 days)</th><th>Typical episode</th></tr></thead>
+<tbody>
+<tr><td><code>attendance_ordered_integration_events</code> (wages, bonuses, clock recalculations)</td><td class="num">6,216</td><td class="num">34, totalling 225 minutes</td><td>5 to 10 minutes, peaks of 450 to 1,244, between 09:00 and 16:30 UTC</td></tr>
+<tr><td><code>ActiveWorkModelRebuild2</code> queue (every ITW change)</td><td class="num">362</td><td class="num">9, totalling 50 minutes</td><td>5 to 10 minutes, peaks of 51 to 231</td></tr>
+<tr><td><code>jobs_ordered_integration_events</code> (job projections)</td><td class="num">1,095</td><td class="num">0 in the last 14 days</td><td>occasional, bulk-handover days</td></tr>
+<tr><td><code>UserPermissionUpdatedEvent</code> topic</td><td class="num">236</td><td class="num">constant</td><td>101 messages parked on a subscription nobody consumes (see side findings)</td></tr>
+</tbody></table></div>
+<h3>The handlers are fast; the processor is idle</h3>
+<p>Application Insights records every processed message as a request named <code>ServiceBusSessionProcessor.ProcessSessionMessage</code>. Per entity, over seven days:</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Subscription</th><th class="num">Messages</th><th class="num">Handler p50 / p95 ms</th><th class="num">Busiest minute: messages</th><th class="num">Busiest minute: handler time</th></tr></thead>
+<tbody>
+<tr><td>attendance ordered (attendanceservice)</td><td class="num">29,294</td><td class="num">114 / 252</td><td class="num">418</td><td class="num">54.9 s of 60</td></tr>
+<tr><td>ActiveWorkModelRebuild2</td><td class="num">6,029</td><td class="num">114 / 191</td><td class="num">160</td><td class="num">16.7 s of 60</td></tr>
+<tr><td>jobs ordered</td><td class="num">2,298</td><td class="num">229 / 2,818</td><td class="num">37</td><td class="num">small</td></tr>
+<tr><td>QuotationUpdatedEvent</td><td class="num">3,880</td><td class="num">296 / 1,888</td><td class="num">small</td><td class="num">small</td></tr>
+</tbody></table></div>
+<p>Read the first row carefully. Attendance runs the newest library with <b>100</b> concurrent session slots, handlers take a tenth of a second, and yet in its busiest minute the total handler time was 55 seconds. One hundred slots did the work of one. The slots were not busy; they were waiting.</p>
+<h3>Why they wait: one session per message, then an idle timeout per slot</h3>
+<p>Every message in these queues is published with a fresh session id (the wage record id, the bonus id, the ITW id). A session processor slot accepts a session, receives its single message, handles it in 0.1 seconds, and then, by design, <b>keeps the session open and waits for another message in it</b> for the <code>SessionIdleTimeout</code> before releasing the slot. Microsoft's documentation: "the maximum amount of time to wait for a message to be received for the currently active session. After this time has elapsed, the processor will close the session and attempt to process another session. If not specified, the TryTimeout will be used" (TryTimeout is 60 seconds). The shared library sets 30 seconds in its newer builds and nothing in the older ones.</p>
+<p>So the throughput ceiling of a subscription is <i>slots ÷ idle seconds × 60</i> messages a minute when messages arrive one per session, regardless of how fast the handler is:</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Library build</th><th>Services on it</th><th class="num">Slots (queue / subscription)</th><th class="num">Idle wait</th><th class="num">Ceiling, messages per minute</th></tr></thead>
+<tbody>
+<tr><td>2.1.2-alpha.7208 and .7219</td><td>Handovers, Inspections, Resources, Materials, Permissions, Customers, Gateway, <b>Notifications</b></td><td class="num">20 / 32</td><td class="num">60 s (SDK default; the setting does not exist in these builds)</td><td class="num">20 / 32</td></tr>
+<tr><td>2.1.7</td><td>ActiveWork, Projects</td><td class="num">20 / 32</td><td class="num">30 s</td><td class="num">40 / 64</td></tr>
+<tr><td>2.1.8 (current source)</td><td>Attendance only</td><td class="num">100 / 100</td><td class="num">30 s</td><td class="num">200</td></tr>
+<tr><td><b>2.1.8 with the fix below</b></td><td>everyone</td><td class="num">32</td><td class="num">2 s</td><td class="num"><b>960</b></td></tr>
+</tbody></table></div>
+<p>The measured drains fit: the ActiveWork rebuild queue never exceeded 160 a minute; Attendance peaked at 418 handled and 905 leaving the queue only because the bonus helper publishes two or three messages into the same session, which lets a slot do more than one message per idle wait. The ceiling was confirmed in the library's cached builds: the alpha builds contain no <code>SessionIdleTimeout</code> at all, 2.1.7 and 2.1.8 do.</p>
+
+<figure>
+<svg viewBox="0 0 800 230" role="img" aria-label="Timeline of one processor slot: accept session, handle one message in 0.1 seconds, then wait 30 seconds idle before releasing; a hundred slots in parallel still complete only about 200 single-message sessions a minute." style="color: var(--fg)">
+  <text x="16" y="24" font-size="13" fill="currentColor">One slot, one single-message session, today</text>
+  <rect x="16" y="40" width="40" height="28" rx="3" fill="var(--accent)" fill-opacity=".25" stroke="var(--accent)"/><text x="36" y="59" font-size="11" text-anchor="middle" fill="currentColor">accept</text>
+  <rect x="58" y="40" width="14" height="28" rx="3" fill="var(--good)" fill-opacity=".5" stroke="var(--good)"/><text x="65" y="84" font-size="10" text-anchor="middle" fill="currentColor">0.1 s work</text>
+  <rect x="74" y="40" width="700" height="28" rx="3" fill="var(--bad)" fill-opacity=".18" stroke="var(--bad)" stroke-dasharray="4 3"/><text x="424" y="59" font-size="12" text-anchor="middle" fill="currentColor">waiting 30 s for another message in a session that will never get one</text>
+  <text x="16" y="122" font-size="13" fill="currentColor">The same slot after the fix (idle timeout 2 s)</text>
+  <g>
+    <rect x="16" y="138" width="40" height="28" rx="3" fill="var(--accent)" fill-opacity=".25" stroke="var(--accent)"/><rect x="58" y="138" width="14" height="28" rx="3" fill="var(--good)" fill-opacity=".5" stroke="var(--good)"/><rect x="74" y="138" width="46" height="28" rx="3" fill="var(--bad)" fill-opacity=".18" stroke="var(--bad)" stroke-dasharray="4 3"/>
+    <rect x="124" y="138" width="40" height="28" rx="3" fill="var(--accent)" fill-opacity=".25" stroke="var(--accent)"/><rect x="166" y="138" width="14" height="28" rx="3" fill="var(--good)" fill-opacity=".5" stroke="var(--good)"/><rect x="182" y="138" width="46" height="28" rx="3" fill="var(--bad)" fill-opacity=".18" stroke="var(--bad)" stroke-dasharray="4 3"/>
+    <rect x="232" y="138" width="40" height="28" rx="3" fill="var(--accent)" fill-opacity=".25" stroke="var(--accent)"/><rect x="274" y="138" width="14" height="28" rx="3" fill="var(--good)" fill-opacity=".5" stroke="var(--good)"/><rect x="290" y="138" width="46" height="28" rx="3" fill="var(--bad)" fill-opacity=".18" stroke="var(--bad)" stroke-dasharray="4 3"/>
+    <text x="360" y="157" font-size="12" fill="currentColor">… about 25 sessions in the time one took before</text>
+  </g>
+  <text x="16" y="206" font-size="12" fill="currentColor" opacity=".8">Handler speed is unchanged in both rows. Only the waiting changes. The scale is approximate: 30 s is drawn as 700 px, 2 s as 46 px.</text>
+</svg>
+<figcaption>Why a hundred slots behave like one: each is parked for the idle timeout after every single-message session.</figcaption>
+</figure>
+
+<h3>What fills the queues: bursts of recalculation and bulk operations</h3>
+<p>In the 14 October episode (backlog 1,244 at 15:18 UTC) the Attendance processor handled 743 <code>WageBonusModelUpdated</code> messages in 35 minutes, 580 of them in two minutes, alongside 290 <code>ActiveWorkModelRebuild2</code>. The chain behind the bonus burst is: a clock-out, an absence sync or a staff change triggers a wage recalculation for a staff member's week; the recalculation removes and re-awards the week's system bonus; each removal and award is its own message in its own session. The hourly HR absence sync (which re-emits unchanged absences, a bug already written up in the database plan) feeds this at 80 absence events an hour. Hourly bonus-message counts over the week reached 1,046, 859, 823 and 740 in the busiest hours, all between 11:00 and 16:00 UTC, which is exactly when users report the problem.</p>
+<p>Other fan-outs feeding the ActiveWork queue: any job contact change rebuilds every current and future ITW of the project (one message per ITW); a bulk ITW move does the same; a bulk handover run produces one job projection message per handover on a single job-id session, processed strictly one after another.</p>
+
+<h3>The refresh signal is itself delayed, and sometimes lost</h3>
+<p>The boards learn that a projection has caught up through a <code>PushNotificationEvent</code> that every service sends to one shared queue consumed by the Notification service. That service runs the oldest library build: 20 slots, 60-second idle wait, so about 20 notifications a minute, with ActiveWork's notifications all on one team-name session. Worse, that build predates the library's auto-compression, so notifications that the newer services compress because they are large arrive as text starting with <code>H4sI</code> and fail to parse: 6,100 <code>JsonReaderException</code> "'H' is an invalid start of a value" in seven days, and 7,529 dead-lettered notifications on that queue. For those, the board is never told, and the record stays missing until the user does something else.</p>
+
+<h2>3. Root cause, stated once</h2>
+<div class="callout">
+<p><b>Projection updates travel through Service Bus session queues whose consumers can only complete a few dozen single-message sessions a minute, because each of their few slots waits 30 to 60 seconds after every message. Ordinary bursts (wage recalculations, bulk ITW operations, hourly HR syncs) exceed that ceiling, queue for 5 to 10 minutes, and every user action behind them waits. The screens re-read the projection immediately after a write, so the just-saved record vanishes until the queue drains; and the SignalR event that would restore it travels through the same kind of queue, where part of it is dead-lettered unread.</b></p>
+</div>
+<p>Contributing, not primary: ten services run library builds from May in which the idle timeout cannot even be configured; the outbox publishers in Handovers, Inspections and Resources poll every 10 seconds and all of them stop the whole host on a single bad row; and four GET endpoints carry a 60-second browser cache header that can hide a caught-up projection for another minute.</p>
+
+<h2>4. Fixes, in the order that pays back fastest</h2>
+<h3>A. Configuration and library: days of work, removes the ceiling</h3>
+<ol>
+  <li><b>Upgrade every service to the current <code>Intowork.Common.Messaging</code> (2.1.8, then whatever the next build is).</b> This alone gives Handovers, Inspections, Resources, Materials, Permissions, Customers, Gateway and Notifications the idle-timeout setting, the 100-slot default and the auto-decompression that the dead-lettered notifications need. Eleven csproj references change from <code>2.1.2-alpha.7208</code> or <code>.7219</code>; ActiveWork and Projects move from 2.1.7.</li>
+  <li><b>Set the idle timeout to 2 seconds everywhere.</b> It is a configuration value once the services are on 2.1.8, delivered by the same chart change the Service Bus guide describes:
+<pre><code>Messaging__SessionProcessor__SessionSubscription__SessionIdleTimeout: "00:00:02"
+Messaging__SessionProcessor__Queue__SessionIdleTimeout: "00:00:02"</code></pre>
+  With 32 slots the ceiling becomes about 960 single-message sessions a minute per subscription, roughly 25 times today's for most services and five times Attendance's. A 1,200-message burst then drains in under two minutes instead of ten.</li>
+  <li><b>Slots: 32, not 16, and never below 8, for the projection queues.</b> This amends the Service Bus Listening Guide: lowering slots without first shortening the idle timeout would make this problem worse, not better. With a 2-second idle wait, 32 slots cost little when idle and give 960 a minute when busy.</li>
+  <li><b>Notification queue:</b> after the upgrade, give ActiveWork notifications a per-event session id (or the ITW id) instead of the team name, so one slow notification cannot hold every other board refresh for the team. Then re-drive or purge the 7,529 dead-lettered notifications.</li>
+</ol>
+<h3>B. Code: small, removes the bursts and the 10-second polls</h3>
+<ol start="5">
+  <li><b>Bonus recalculation fan-out.</b> <code>RecalculateWageRecordHandler</code> with <code>BonusHelper</code> emits one message per removed and one per awarded bonus. Publish one <code>BulkWageRecordsModelUpdatedEvent</code>-style message per recalculation instead; the handler already supports bulk rebuilds.</li>
+  <li><b>HR absence sync re-emission</b> (Resources, <code>StaffMemberRepo.cs</code> update path omits <code>LeaveTypeId</code>): fixing it removes most of the 80-an-hour absence events that start recalculations. Already in the database hygiene plan.</li>
+  <li><b>Outbox publishers:</b> poll every 2 seconds in Handovers, Inspections and Resources (they poll every 10 today), and stop killing the host on one bad row: mark the row poisoned after three attempts and continue. The Projects publisher already skips unresolvable types; make that the rule everywhere.</li>
+  <li><b>JobContactsUpdated and bulk moves</b> rebuild every ITW of a project one message at a time. Keep the behaviour, but after fix A it drains in seconds; revisit only if the metrics say otherwise.</li>
+</ol>
+<h3>C. Screens: stop overwriting what the user just saved</h3>
+<ol start="9">
+  <li><b>Attendance auto sign-in and sign-out</b> patch the rows from the response and then immediately re-fetch the project, wiping them. Keep the patched rows and merge the re-fetch instead of replacing it, or delay the re-fetch until a SignalR event arrives.</li>
+  <li><b>Daily and weekly planners:</b> creating an ITW re-fetches at once, so the new ITW is missing until the SignalR event. Add the returned ITW to the range list; keep the re-fetch for everything else. Two further bugs found on the way: overlapping refreshes keep the <em>older</em> response (the <code>forkJoin</code> on <code>first</code> in both API services), and the weekly board only live-refreshes the focused day. Both are small fixes.</li>
+  <li><b>Wages:</b> re-fetches at +1.5 s and +3 s and discards the local bonus or override if the projection is not there yet. Merge rather than replace, and refresh again when a push arrives.</li>
+  <li><b>Push events for the quiet modules:</b> once the notification queue is healthy, publish a refresh event after wage, attendance and handover projections, as ActiveWork already does. Until then, a visible "saving…" state on the row is honest and cheap.</li>
+  <li><b>Remove <code>ResponseCache(Duration = 60)</code></b> from <code>GET activework/{id}</code>, <code>handovers/project/{id}</code>, <code>inspections/activework/{id}</code> and <code>jobs/reduced/{id}</code>. A projection read must not be served from a minute-old browser cache.</li>
+</ol>
+<h3>D. Monitoring, so the next regression is seen in minutes</h3>
+<ol start="14">
+  <li>Alert when <code>ActiveMessages</code> on any production entity stays above 200 for five minutes, and when any dead-letter count grows. Both are Service Bus metrics; the Phase 2 action group can carry them.</li>
+</ol>
+
+<h2>5. How to prove it before touching production</h2>
+<div class="step"><b>Step 1. Dev, Attendance only, one environment variable.</b> Attendance already runs 2.1.8, so the idle timeout is configurable today.
+<pre><code>kubectl set env deployment/attendance-attendanceservice-service -n dev --context intowork-dev-admin Messaging__SessionProcessor__SessionSubscription__SessionIdleTimeout=00:00:02 Messaging__SessionProcessor__Queue__SessionIdleTimeout=00:00:02</code></pre>
+<span class="see">The dev namespace sees the same HR-sync bursts as production. After 24 hours, re-run the Application Insights query below against Dev-WUK for <code>dev_attendance_ordered_integration_events</code>. Expected: the busiest minute's handler time rises well above 60 seconds (several slots working at once), and <code>ActiveMessages</code> episodes on the dev namespace shrink to under a minute. Remove the variable to go back.</span></div>
+<pre><code>AppRequests
+| where TimeGenerated > ago(1d) and Name == "ServiceBusSessionProcessor.ProcessSessionMessage"
+| extend ent = tostring(Source)
+| summarize busyMs = sum(DurationMs), n = count() by bin(TimeGenerated, 1m), ent
+| summarize maxBusyMsPerMin = round(max(busyMs)), maxMsgsPerMin = max(n) by ent
+| order by maxBusyMsPerMin desc</code></pre>
+<div class="step"><b>Step 2. Dev, one old-build service upgraded</b> (Handovers is a good candidate: busy, and its rebuild queue is user-visible). Same measurement on its rebuild queue.</div>
+<div class="step"><b>Step 3. Staging soak</b> with a deliberate bulk ITW move and a supervisor clock-out of a full gang. The dispatch board should show the moved ITWs within seconds, and no wage row should vanish.</div>
+<div class="step"><b>Step 4. Production,</b> service by service, Attendance and ActiveWork first because their queues carry the user-visible episodes. Watch the backlog metric for a week; the 5-to-10-minute episodes should be gone.</div>
+
+<h2>6. Side findings worth tickets of their own</h2>
+<ul>
+  <li><b>36,350 dead-lettered <code>PricedMaterialItemUpdated</code></b> on the Jobs subscription: every priced-item update from Materials has failed in Jobs for as long as the dead-letter queue goes back. Jobs' item prices may be stale. Read the dead-letter reason, then fix.</li>
+  <li><b>3,683 dead-lettered <code>ActiveWorkStaffUpdated</code></b> on the Attendance subscription: staff assignment changes that attendance never applied. Same action.</li>
+  <li><b><code>UserPermissionUpdatedEvent</code>:</b> 844 dead-lettered on <code>gateway-service</code> and 101 parked on a subscription named <code>gateway</code> that nothing consumes. Permission changes may not be reaching the gateway for some users; the stale subscription should be deleted.</li>
+  <li><b>1,455 <code>NullReferenceException</code> a week in production wage recalculation</b> ("StandardExpectedHours on WeekDayTimeSettings"): a worker group without day-time defaults makes a staff member's recalculation fail and retry, which also inflates the bursts.</li>
+  <li><b>Outbox publishers stop the host on any error</b> (all services). One bad row restarts the pod that is also the consumer; the 2 October Projects crash-loop was this.</li>
+</ul>
+
+<footer>Evidence gathered read-only on 16 October 2026: Service Bus metrics for intowork-production (ActiveMessages, Incoming/Outgoing per entity, dead letters per subscription), Application Insights (ProcessSessionMessage requests, MessageHandler traces, AppExceptions) for the production workspace, pod state on both clusters, the csproj package references of all eleven services, the cached builds of Intowork.Common.Messaging, and the Frontend source. Companion to the Baton Platform Plan and the Service Bus Listening Guide.</footer>
+</div>
+
+</body></html>

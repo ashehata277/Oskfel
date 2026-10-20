@@ -1,0 +1,193 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><script type="text/javascript" nonce="7be98a3087e44cd992786915fdd" src="//local.adguard.org?ts=1792405736227&amp;type=content-script&amp;dmn=9d252876-bb26-4ff2-8882-2d36229eec13.frame.claudeusercontent.com&amp;url=https%3A%2F%2F9d252876-bb26-4ff2-8882-2d36229eec13.frame.claudeusercontent.com%2F_f%2F1792407685-ac79%2F_src%2Findex.html%3F__frame_t%3DNMx9_0XKEf6Lfkx-q5RBfymk.8bbf54d1-4eb3-43a3-90d0-a09fd628e0c0.5d1191e4-fa86-4d1f-8204-8ef37f5666a5.1792412023&amp;app=chrome.exe&amp;css=3&amp;js=1&amp;rel=1&amp;rji=1&amp;sbe=1"></script><script type="text/javascript" nonce="7be98a3087e44cd992786915fdd" src="//local.adguard.org?ts=1792405736227&amp;name=AdGuard%20Extra&amp;name=AdGuard%20Popup%20Blocker&amp;type=user-script"></script></head><body>
+<title>Service Bus Listening Guide</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column; the rule, how it works, the one target configuration, then numbered developer steps with full snippets, then checks, rollback and what not to do. No commands that need cluster access. */
+:root {
+  --bg: #f7f8fa; --surface: #ffffff; --fg: #15202b; --fg-2: #4a5663; --fg-3: #7a8694;
+  --line: #d9dee5; --accent: #1f5f8b; --accent-soft: #e4eef6; --good: #1b7f4b; --warn: #b4540a;
+  --display: "Source Serif 4", Georgia, serif; --body: "Source Sans 3", "Segoe UI", Helvetica, Arial, sans-serif; --mono: "IBM Plex Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #121619; --surface: #1a1f24; --fg: #e8ecf0; --fg-2: #b4bcc6; --fg-3: #8390a0; --line: #2d353e; --accent: #6fb0e0; --accent-soft: #1d2b38; --good: #4fc27f; --warn: #e3903a; color-scheme: dark } }
+:root[data-theme="dark"] { --bg: #121619; --surface: #1a1f24; --fg: #e8ecf0; --fg-2: #b4bcc6; --fg-3: #8390a0; --line: #2d353e; --accent: #6fb0e0; --accent-soft: #1d2b38; --good: #4fc27f; --warn: #e3903a; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16.5px; line-height: 1.55; margin: 0; padding-block: 0 64px; padding-inline: 16px; }
+.wrap { max-width: 920px; margin: 0 auto; }
+header { padding-block: 40px 22px; border-bottom: 1px solid var(--line); margin-bottom: 26px; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--fg-3); }
+h1 { font-family: var(--display); font-weight: 600; font-size: clamp(30px, 5vw, 40px); line-height: 1.1; margin: 8px 0 12px; text-wrap: balance; }
+.lede { font-size: 18px; color: var(--fg-2); max-width: 70ch; margin: 0; }
+h2 { font-family: var(--display); font-weight: 600; font-size: 24px; margin: 44px 0 10px; text-wrap: balance; }
+h3 { font-size: 17px; font-weight: 600; margin: 24px 0 6px; }
+p, li { max-width: 72ch; } p { margin: 0 0 12px; } ul, ol { padding-left: 22px; margin: 0 0 12px; } li { margin-bottom: 6px; }
+code { font-family: var(--mono); font-size: .88em; background: var(--accent-soft); padding: 1px 5px; border-radius: 3px; }
+pre { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 12px 14px; overflow-x: auto; font-family: var(--mono); font-size: 13px; line-height: 1.5; margin: 8px 0 16px; } pre code { background: none; padding: 0; font-size: inherit; }
+.rule { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--accent); padding: 16px 20px; margin: 0 0 8px; } .rule h2 { margin: 0 0 8px; font-size: 20px; }
+.where { font-family: var(--mono); font-size: 13px; color: var(--fg-2); background: var(--accent-soft); padding: 6px 10px; border-radius: 4px; display: inline-block; margin: 0 0 8px; max-width: 100%; overflow-wrap: anywhere; }
+table { border-collapse: collapse; width: 100%; font-size: 15px; } .tablewrap { overflow-x: auto; margin: 10px 0 18px; }
+th, td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+th { font-weight: 600; color: var(--fg-2); font-size: 13px; letter-spacing: .04em; text-transform: uppercase; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.step { border-left: 3px solid var(--accent); padding: 4px 0 4px 14px; margin: 18px 0; } .step > b { display: block; font-size: 17px; margin-bottom: 4px; } .step .see { color: var(--fg-2); font-size: 14.5px; }
+.callout { background: var(--accent-soft); border-radius: 6px; padding: 14px 18px; margin: 16px 0; } .callout p:last-child { margin-bottom: 0; }
+.target { background: var(--surface); border: 2px solid var(--accent); border-radius: 6px; padding: 14px 18px; margin: 12px 0 20px; }
+footer { margin-top: 52px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 14px; color: var(--fg-3); }
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">Baton platform · fix 6 · developer guide · rebuilt 19 October 2026</div>
+  <h1>Service Bus Listening Guide</h1>
+  <p class="lede">One change to how the services listen to Service Bus solves two problems at once: it stops paying for 40 million idle operations a month, and it stops saved records vanishing from screens for minutes. This guide explains the mechanism in plain words, fixes one target configuration, and gives the steps a developer applies with a code editor and a pull request. Nothing here needs cluster access; the commands an operator runs are in the companion <a href="https://claude.ai/artifact/U9FrNigdMFBcSmCuj2BH2c">Service Bus Operations Commands</a>.</p>
+</header>
+
+<section class="rule">
+  <h2>What this guide replaces</h2>
+  <p>Earlier versions of this page said 16 and 8 slots in some places and 32 in others, and showed only one of the two processor profiles in the chart values. Those versions are withdrawn. The configuration below is the only one to apply: <b>32 concurrent sessions and a 2-second session idle timeout, for both profiles, on every host, after the messaging library upgrade.</b> The reasoning is in the next two sections; the steps follow.</p>
+</section>
+
+<h2>1. How the services listen, in plain words</h2>
+<p>Every Background host listens to Service Bus topics and queues. Each listener keeps a number of <b>slots</b> open, set by <code>MaxConcurrentSessions</code>. A slot takes a <b>session</b>, a group of messages that share a session id and must be handled in order, handles its messages one at a time (<code>MaxConcurrentCallsPerSession = 1</code>), and then <b>waits</b> for more messages in that same session for as long as <code>SessionIdleTimeout</code> says before it lets go and takes another session.</p>
+<p>Two facts about Baton make these settings matter more than usual:</p>
+<ul>
+  <li><b>Almost every message is published in its own new session.</b> A wage record id, a bonus id, an ITW id. So almost every session has exactly one message, the handler finishes it in about a tenth of a second, and the slot then sits waiting for a second message that will never come.</li>
+  <li><b>When there is no work at all, every slot still asks Service Bus for the next session on a timer</b>, and every ask is billed. Production has about 1,500 slots across 149 subscriptions asking day and night: 40 million operations a month to carry 750 thousand messages.</li>
+</ul>
+<div class="tablewrap"><table>
+<thead><tr><th>Setting</th><th>Controls</th><th>Today</th><th>Effect of today's value</th></tr></thead>
+<tbody>
+<tr><td><code>MaxConcurrentSessions</code></td><td>how many sessions a host handles in parallel per subscription, and how many idle slots keep polling</td><td>100 in Attendance; 20 for queues and 32 for subscriptions everywhere else</td><td>the idle polling bill</td></tr>
+<tr><td><code>SessionIdleTimeout</code></td><td>how long a slot keeps a finished session open waiting for more</td><td>30 s on library 2.1.7 and 2.1.8; 60 s on the older builds, where the setting does not exist</td><td>the minutes of backlog: a slot is wasted for 30 to 60 s after every single-message session</td></tr>
+<tr><td><code>MaxConcurrentCallsPerSession</code></td><td>messages handled in parallel inside one session</td><td>1</td><td>ordering; unchanged</td></tr>
+</tbody></table></div>
+<p>The throughput of a subscription whose sessions carry one message each is therefore <i>slots ÷ idle seconds × 60</i> a minute, whatever the handler speed. One hundred slots at 30 seconds is about 200 a minute; twenty slots at 60 seconds is 20 a minute. Measured in production, Attendance's hundred slots did 55 seconds of handler work in their busiest minute: one worker's worth. The <a href="https://claude.ai/artifact/1xFMrQWxbyS7muudxjKv7f">Concurrent Sessions Explained</a> page walks one afternoon's messages through the arithmetic; the <a href="https://claude.ai/artifact/NVTLqQ5h1dXrEQT7TH4vZm">Projection Lag Investigation</a> has the full evidence.</p>
+
+<h2>2. The target configuration</h2>
+<div class="target">
+<p><b>Every host, every environment, both profiles:</b></p>
+<div class="tablewrap"><table>
+<thead><tr><th>Setting</th><th>Queue profile</th><th>SessionSubscription profile</th><th>Why</th></tr></thead>
+<tbody>
+<tr><td><code>MaxConcurrentSessions</code></td><td class="num">32</td><td class="num">32</td><td>enough parallelism (about 960 one-message sessions a minute at a 2-second idle wait); a third of today's idle polling in Attendance, the same as today elsewhere</td></tr>
+<tr><td><code>SessionIdleTimeout</code></td><td><code>00:00:02</code></td><td><code>00:00:02</code></td><td>frees a slot two seconds after a lonely message instead of 30 to 60; still keeps a genuinely multi-message session flowing</td></tr>
+<tr><td><code>MaxConcurrentCallsPerSession</code></td><td class="num">1</td><td class="num">1</td><td>unchanged; keeps order within a session</td></tr>
+<tr><td><code>PrefetchCount</code></td><td class="num">2</td><td class="num">2</td><td>unchanged</td></tr>
+</tbody></table></div>
+<p>Why one value for both profiles: the queues (<code>ActiveWorkModelRebuild2</code>, the <code>jobs_ordered</code> and <code>attendance_ordered</code> entities, the push-notification queue) carry exactly the same kind of single-message sessions as the topic subscriptions, so the same numbers are right for both. Keeping one values key for both avoids the two drifting apart.</p>
+<p>Why 32 and not fewer: below about 16 a single stuck session would hold too large a share of the slots, and the saving per slot removed is small. Why not more: each slot is a receiver link and a share of the polling bill, and 32 already gives four times today's Attendance ceiling and twenty times the other services'. If a real backlog ever persists, an operator can raise one host to 64 without a deploy (see the operations page).</p>
+</div>
+
+<h2>3. Where things stand per service</h2>
+<p>The settings only exist in the current messaging library. Ten of eleven services run older builds, so the upgrade comes first.</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Service</th><th><code>Intowork.Common.Messaging</code> today</th><th>Can set the idle timeout today</th><th>Order</th></tr></thead>
+<tbody>
+<tr><td>NotificationService</td><td>2.1.2-alpha.7219</td><td>no</td><td><b>1st</b>: it also lacks message decompression, which is losing board refreshes today</td></tr>
+<tr><td>AttendanceService</td><td>2.1.8</td><td>yes</td><td>2nd: configuration only, the biggest user-visible queue</td></tr>
+<tr><td>ActiveWorkService, ProjectService</td><td>2.1.7</td><td>yes (30 s default)</td><td>3rd</td></tr>
+<tr><td>HandoverService, InspectionsService, ResourcesService, MaterialsService, PermissionsService, CustomerService, Gateway</td><td>2.1.2-alpha.7208</td><td>no</td><td>4th, in any order</td></tr>
+</tbody></table></div>
+
+<h2>4. Developer steps, per service</h2>
+<p>Each service is one branch and one pull request (branch names use your prefix, for example <code>mahmoud/servicebus-listening</code>; nothing is merged into develop, stage or main by hand). Merging into <code>develop</code> deploys to dev at once and into <code>stage</code> deploys to staging at once, so merge dev first and let a day pass. The same pull request can carry the fix 4 telemetry changes if that work is in flight; the two touch different files.</p>
+
+<div class="step"><b>Step 1. Upgrade the messaging library to 2.1.8.</b>
+<p class="where">every .csproj in the service that references Intowork.Common.Messaging (API, Background, Core)</p>
+<pre><code>&lt;PackageReference Include="Intowork.Common.Messaging" Version="2.1.8" /&gt;</code></pre>
+<p>Restore, build, run the service's tests. For the services coming from 2.1.2-alpha, the jump also carries the library's changes of May to June 2026 (auto-compression of large messages, session-lock handling, the configurable processor profiles); read the CommonLibs history of Intowork.Common.Messaging between 19 May 2026 (commit <code>44424db</code>, SessionIdleTimeout added) and 20 July 2026 (commit <code>1b5aedd</code>, version 2.1.8) once, so the review knows what else arrives. Nothing in those changes alters a public method signature the services call.</p>
+<span class="see">Check: the service builds, and the Background host starts locally against the dev Service Bus with no configuration changes (the new defaults are 100 slots and 30 s, the same behaviour as Attendance today).</span></div>
+
+<div class="step"><b>Step 2. Add the two values to the chart, mapped to both profiles.</b>
+<p class="where">helm/&lt;chart&gt;/values.yaml, under env.messaging</p>
+<pre><code>env:
+  messaging:
+    connectionString:
+    topicPrefix:
+    subscriptionIdentifier:
+    sessionProcessor:
+      maxConcurrentSessions: 32
+      sessionIdleTimeout: "00:00:02"</code></pre>
+<p class="where">helm/&lt;chart&gt;/templates/deployment.yaml and deployment-service.yaml (and any third deployment template the chart has), next to the existing Messaging__ variables</p>
+<pre><code>- name: Messaging__SessionProcessor__Queue__MaxConcurrentSessions
+  value: {{ .Values.env.messaging.sessionProcessor.maxConcurrentSessions | default 32 | quote }}
+- name: Messaging__SessionProcessor__Queue__SessionIdleTimeout
+  value: {{ .Values.env.messaging.sessionProcessor.sessionIdleTimeout | default "00:00:02" | quote }}
+- name: Messaging__SessionProcessor__SessionSubscription__MaxConcurrentSessions
+  value: {{ .Values.env.messaging.sessionProcessor.maxConcurrentSessions | default 32 | quote }}
+- name: Messaging__SessionProcessor__SessionSubscription__SessionIdleTimeout
+  value: {{ .Values.env.messaging.sessionProcessor.sessionIdleTimeout | default "00:00:02" | quote }}</code></pre>
+<p>Four lines, because the library binds the <code>Messaging</code> section into <code>MessagingConfig</code>, whose <code>SessionProcessor</code> holds a <code>Queue</code> profile and a <code>SessionSubscription</code> profile (<code>CommonLibs\Intowork.Common.Messaging\MessagingConfig.cs</code>). Both are driven from the same two values. The git-ignored <code>values.&lt;env&gt;.yaml</code> files need nothing added; the chart defaults apply everywhere. Do not put real values in the committed <code>appsettings.json</code>; the library defaults are the fallback and the chart is the source.</p>
+<span class="see">Check: <code>helm template</code> renders the four variables for every deployment in the chart; <code>helm lint</code> passes.</span></div>
+
+<div class="step"><b>Step 3. Take the Service Bus checks off the liveness probe.</b>
+<p class="where">the service's HealthCheckExtensions (API and Background), the ApplicationBuilder extension that maps /health</p>
+<p>Today a probe on a Background host runs 22 to 29 Service Bus checks, every two minutes, inside a 30-second timeout. That is 7.5 million peeks a week, a <code>/health</code> that answers in seconds, and the risk that one slow Service Bus answer restarts a healthy pod. The checks stay, but move off the probe and onto a five-minute publisher that logs.</p>
+<p>3a. Tag every <code>AddAzureServiceBusSubscription</code>, <code>AddAzureServiceBusTopic</code> and <code>AddAzureServiceBusQueue</code> call (search the repo for <code>AddAzureServiceBus</code>):</p>
+<pre><code>.AddAzureServiceBusSubscription(sbConnection, EventBusServiceBus.GetTopicName&lt;HandoverApproved&gt;(sbTopicPrefix),
+    subscriptionIdentifier, name: "HandoverApproved", tags: new[] { "deep" })</code></pre>
+<p>3b. Make the probe run only untagged checks (the Mongo check and any self check):</p>
+<pre><code>// before
+app.UseHealthChecks("/health");
+// after  (Microsoft.AspNetCore.Diagnostics.HealthChecks)
+app.UseHealthChecks("/health", new HealthCheckOptions { Predicate = c =&gt; !c.Tags.Contains("deep") });</code></pre>
+<p>API hosts register the probe with <code>MapHealthChecks("/health")</code> instead; pass the same <code>HealthCheckOptions</code> there.</p>
+<p>3c. Register the shared publisher that runs the deep checks every five minutes and logs a Warning for anything unhealthy. It ships in <code>Intowork.Common.Logging</code> 2.3.0 together with the fix 4 telemetry changes; until that package is published, the same two small classes can live in the service:</p>
+<pre><code>// after AddHealthChecks(...) in each host
+services.AddDeepHealthCheckPublisher();   // period 5 min, Predicate = c =&gt; c.Tags.Contains("deep"), logs results</code></pre>
+<pre><code>public sealed class LoggingHealthCheckPublisher : IHealthCheckPublisher
+{
+    private readonly ILogger&lt;LoggingHealthCheckPublisher&gt; _log;
+    public LoggingHealthCheckPublisher(ILogger&lt;LoggingHealthCheckPublisher&gt; log) { _log = log; }
+    public Task PublishAsync(HealthReport report, CancellationToken ct)
+    {
+        foreach (var e in report.Entries.Where(e =&gt; e.Value.Status != HealthStatus.Healthy))
+            _log.LogWarning("Deep health check {Check} is {Status}: {Description}", e.Key, e.Value.Status, e.Value.Description ?? e.Value.Exception?.Message);
+        _log.LogInformation("Deep health checks: {Healthy} healthy, {Unhealthy} not, in {Ms} ms",
+            report.Entries.Count(e =&gt; e.Value.Status == HealthStatus.Healthy), report.Entries.Count(e =&gt; e.Value.Status != HealthStatus.Healthy), report.TotalDuration.TotalMilliseconds);
+        return Task.CompletedTask;
+    }
+}
+public static IServiceCollection AddDeepHealthCheckPublisher(this IServiceCollection services)
+{
+    services.Configure&lt;HealthCheckPublisherOptions&gt;(o =&gt; { o.Delay = TimeSpan.FromSeconds(30); o.Period = TimeSpan.FromMinutes(5); o.Predicate = c =&gt; c.Tags.Contains("deep"); });
+    services.AddSingleton&lt;IHealthCheckPublisher, LoggingHealthCheckPublisher&gt;();
+    return services;
+}</code></pre>
+<span class="see">Check: locally, <code>GET /health</code> with header <code>HealthProbe-Type: liveness</code> answers in under 50 ms and lists only the Mongo and self checks; the log shows "Deep health checks: N healthy" after 30 seconds and every five minutes.</span></div>
+
+<div class="step"><b>Step 4. Pull request, dev, then staging, then production.</b>
+<p>Open the pull request against <code>develop</code> with the three changes above. After merge, dev deploys itself. Leave it a day and do the checks in section 5. Then the same into <code>stage</code>, a day, then <code>main</code> and the production deploy by the usual process.</p>
+<span class="see">Order across services: NotificationService first, then Attendance, then ActiveWork and Projects, then the rest. Every service can go independently; none depends on another being done, except that NotificationService should precede any service that will send it large messages, which is why it is first.</span></div>
+
+<h2>5. What to check after each deploy, without cluster access</h2>
+<ul>
+  <li><b>Backlog gone.</b> Azure portal, the environment's Service Bus namespace, Metrics, <code>Active Messages</code>, split by Entity Name, 5-minute grain, last 24 hours. Before: episodes of 5 to 10 minutes with hundreds queued on <code>attendance_ordered_integration_events</code> and the ActiveWork rebuild queue. After: spikes that clear within a minute.</li>
+  <li><b>Slots actually working in parallel.</b> Application Insights, the environment's workspace, Logs:
+<pre><code>AppRequests
+| where TimeGenerated &gt; ago(1d) and Name == "ServiceBusSessionProcessor.ProcessSessionMessage"
+| extend ent = tostring(Source)
+| summarize busyMs = sum(DurationMs), n = count() by bin(TimeGenerated, 1m), ent
+| summarize maxBusyMsPerMin = round(max(busyMs)), maxMsgsPerMin = max(n) by ent
+| order by maxBusyMsPerMin desc</code></pre>
+  Before: the busiest minute never exceeds about 55,000 ms of handler time (one worker). After: well above 60,000 during a burst, because several slots work at once.</li>
+  <li><b>Fewer billable operations.</b> Same Metrics blade, <code>Incoming Requests</code>, 1-day grain, last 30 days. Expect the daily figure to fall after the change, by roughly two thirds in Attendance and somewhat elsewhere; the invoice line "Standard Messaging Operations" falls from about £75 to about £20 a month once all services are done.</li>
+  <li><b>Health probes quiet.</b> Application Insights: <code>AppDependencies | where TimeGenerated &gt; ago(1d) and Name == "ServiceBusReceiver.Peek" | count</code> drops to near zero for that service; <code>AppTraces | where Message startswith "Deep health checks"</code> shows one line per host every five minutes.</li>
+  <li><b>Users.</b> On the dispatch board, a bulk ITW move shows the moved ITWs within seconds; on the wages screen, a bonus or override no longer disappears after the 1.5-second refresh.</li>
+</ul>
+
+<h2>6. Rollback</h2>
+<p>Revert the pull request, or set the two values back in the chart (100 slots and <code>00:00:30</code> reproduce Attendance's current behaviour; the old builds cannot be reproduced by configuration, only by reverting the package). An operator can also override a single host's values at runtime without a deploy; that is in the operations page.</p>
+
+<h2>7. What not to do</h2>
+<ul>
+  <li>Do not lower the slot count anywhere before the idle timeout is 2 seconds and the service is on 2.1.8. Fewer slots with a long idle wait make the vanishing-record problem worse, not better.</li>
+  <li>Do not change <code>MaxConcurrentCallsPerSession</code>. It is 1 so that a record's events apply in order.</li>
+  <li>Do not remove the Service Bus health checks; tagged and run every five minutes they are the early warning for a deleted subscription or a rotated connection string.</li>
+  <li>Do not set the idle timeout to zero. It is also the wait between two messages of a genuinely multi-message session, such as an approval batch; one to two seconds keeps those flowing.</li>
+  <li>Do not treat the operations rate as traffic. Fifteen operations a second for a third of a message a second is waiting, and this guide removes most of the waiting.</li>
+</ul>
+
+<footer>Facts measured read-only on the production namespace intowork-production and its Application Insights workspace, 14 to 17 October 2026; library behaviour from CommonLibs Intowork.Common.Messaging (MessagingConfig.cs, EventBusServiceBus.cs) and Microsoft's documentation of ServiceBusSessionProcessorOptions.SessionIdleTimeout; package versions from each service's csproj. Companion pages: Concurrent Sessions Explained, Projection Lag Investigation, Service Bus Operations Commands.</footer>
+</div>
+
+</body></html>
