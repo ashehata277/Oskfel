@@ -30,12 +30,11 @@ one repo, that copy is the more specific one.
 
 ## Which repo does what
 
-| Repo | Role |
-|---|---|
-| Gateway | Supplies the headers from claims. Details in the Gateway section below |
-| 13 backend services | Read the header (`AddTeamTime`) and/or look teams up by name (`AddTeamTimeByTeamName`) |
+| Repo                                  | Role                                                                                                         |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| Gateway                               | Supplies the headers from claims. Details in the Gateway section below                                       |
+| 13 backend services                   | Read the header (`AddTeamTime`) and/or look teams up by name (`AddTeamTimeByTeamName`)                       |
 | Frontend, HandoverApp, InspectionsApp | `src/app/shared/time` kit: `TeamTimeService`, `asTeamDay`, `asTeamDate`, `isTeamFuture`, `TeamDateFormatter` |
-
 
 # Part 1: Backend rules (all services)
 
@@ -53,24 +52,24 @@ used to decide which calendar day an instant belongs to and to turn a team wall-
 The time kit lives in each service's own `Time` folder (namespace `Intowork.TeamTime`; the exact folder is listed per service in Part 2; HandoverService is the exception, with its own project and namespace). It is the same code in every Intowork
 service; do not fork it per service, and do not add a second clock abstraction next to it.
 
-| Type | What it is |
-|---|---|
-| `TeamHeaders` | Header names: `Intowork.TeamName`, `Intowork.StaffMemberId`, `Intowork.TeamTimeZone`, `Intowork.TeamDateFormat`, `Intowork.TeamTimeFormat`. `TeamHeaders.Forwarded` is the list passed on to downstream calls |
-| `IRequestInfo` / `HeaderRequestInfo` | Reads the headers of the current request. `TimeZone` throws `TeamTimeHeaderMissingException` when the header is missing or not a known zone, and `TeamTimeUnavailableException` when read outside a request. `DateFormat` / `TimeFormat` fall back to `TeamTimeDefaults` |
-| `IDateTimeProvider` | The clock you inject. `UtcNow`, `TeamNow`, `TeamToday`, `Zone`, `ToTeamTime`, `ToUtc`, `OffsetAt`, `DayOf`, `StartOfDayUtc`, `DayRangeUtc`, `ForZone` |
-| `RequestDateTimeProvider` | Scoped `IDateTimeProvider` for requests. **Lazy**: the zone is read from the header only the first time a team-zone member is used |
-| `TeamDateTimeProvider` | The same maths over a fixed `TimeZoneInfo`. This is what `ITeamClocks` hands out |
-| `ITeamClocks` / `TeamClocks` | `ForTeamAsync(teamName, token)` returns an `IDateTimeProvider`; `WithFormatsForTeamAsync(teamName, token)` returns `TeamClockWithFormats(Clock, DateFormat, TimeFormat)` |
-| `ITeamZoneResolver` / `TeamZoneResolver` | Looks the team up through `ITeamCopyReader` and validates the zone. `ZoneForAsync`, `TimeForAsync` |
-| `ITeamCopyReader` | The service's one adapter to its own copy of the teams. Returns `TeamTimeSettings(TimeZone, DateFormat, TimeFormat)` or `null` |
-| `TeamZones` | `TeamZones.Find(zoneId)` returns a cached `TimeZoneInfo?`. The only place a zone id is validated |
-| `TeamTimeDefaults` | `DateFormat = "dd/MM/yyyy"`, `TimeFormat = "HH:mm"`. Formats only, never a zone |
-| `TeamTimeHeaderMissingFilter` | MVC exception filter that turns `TeamTimeHeaderMissingException` into a 400 `ProblemDetails` titled "Team time zone required" |
-| `TeamTimeUnavailableException` | Background lookup failed. `TeamTimeHeaderMissingException` derives from it |
-| `UtcWindow` | `readonly record struct UtcWindow(DateTime From, DateTime To)`, a half-open `[From, To)` range |
-| `UtcDateTimeJsonConverter` | Registered by `AddTeamTime()` on MVC `JsonOptions`; reads and writes every `DateTime` as UTC |
-| `MongoDateParts` | `$dateToString`, `$dateToParts`, `$dayOfWeek`, `$dayOfMonth`, `$month`, `$year` stages that take the team `TimeZoneInfo`, converting Windows ids to IANA |
-| `TeamHeadersForwardingHandler` | `DelegatingHandler` that copies the team headers onto an outgoing `HttpClient` call |
+| Type                                     | What it is                                                                                                                                                                                                                                                               |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `TeamHeaders`                            | Header names: `Intowork.TeamName`, `Intowork.StaffMemberId`, `Intowork.TeamTimeZone`, `Intowork.TeamDateFormat`, `Intowork.TeamTimeFormat`. `TeamHeaders.Forwarded` is the list passed on to downstream calls                                                            |
+| `IRequestInfo` / `HeaderRequestInfo`     | Reads the headers of the current request. `TimeZone` throws `TeamTimeHeaderMissingException` when the header is missing or not a known zone, and `TeamTimeUnavailableException` when read outside a request. `DateFormat` / `TimeFormat` fall back to `TeamTimeDefaults` |
+| `IDateTimeProvider`                      | The clock you inject. `UtcNow`, `TeamNow`, `TeamToday`, `Zone`, `ToTeamTime`, `ToUtc`, `OffsetAt`, `DayOf`, `StartOfDayUtc`, `DayRangeUtc`, `ForZone`                                                                                                                    |
+| `RequestDateTimeProvider`                | Scoped `IDateTimeProvider` for requests. **Lazy**: the zone is read from the header only the first time a team-zone member is used                                                                                                                                       |
+| `TeamDateTimeProvider`                   | The same maths over a fixed `TimeZoneInfo`. This is what `ITeamClocks` hands out                                                                                                                                                                                         |
+| `ITeamClocks` / `TeamClocks`             | `ForTeamAsync(teamName, token)` returns an `IDateTimeProvider`; `WithFormatsForTeamAsync(teamName, token)` returns `TeamClockWithFormats(Clock, DateFormat, TimeFormat)`                                                                                                 |
+| `ITeamZoneResolver` / `TeamZoneResolver` | Looks the team up through `ITeamCopyReader` and validates the zone. `ZoneForAsync`, `TimeForAsync`                                                                                                                                                                       |
+| `ITeamCopyReader`                        | The service's one adapter to its own copy of the teams. Returns `TeamTimeSettings(TimeZone, DateFormat, TimeFormat)` or `null`                                                                                                                                           |
+| `TeamZones`                              | `TeamZones.Find(zoneId)` returns a cached `TimeZoneInfo?`. The only place a zone id is validated                                                                                                                                                                         |
+| `TeamTimeDefaults`                       | `DateFormat = "dd/MM/yyyy"`, `TimeFormat = "HH:mm"`. Formats only, never a zone                                                                                                                                                                                          |
+| `TeamTimeHeaderMissingFilter`            | MVC exception filter that turns `TeamTimeHeaderMissingException` into a 400 `ProblemDetails` titled "Team time zone required"                                                                                                                                            |
+| `TeamTimeUnavailableException`           | Background lookup failed. `TeamTimeHeaderMissingException` derives from it                                                                                                                                                                                               |
+| `UtcWindow`                              | `readonly record struct UtcWindow(DateTime From, DateTime To)`, a half-open `[From, To)` range                                                                                                                                                                           |
+| `UtcDateTimeJsonConverter`               | Registered by `AddTeamTime()` on MVC `JsonOptions`; reads and writes every `DateTime` as UTC                                                                                                                                                                             |
+| `MongoDateParts`                         | `$dateToString`, `$dateToParts`, `$dayOfWeek`, `$dayOfMonth`, `$month`, `$year` stages that take the team `TimeZoneInfo`, converting Windows ids to IANA                                                                                                                 |
+| `TeamHeadersForwardingHandler`           | `DelegatingHandler` that copies the team headers onto an outgoing `HttpClient` call                                                                                                                                                                                      |
 
 ## Requests
 
@@ -150,10 +149,10 @@ When a handler needs a zone for a team other than the one in the request (for ex
 
 ## Registration
 
-| Call | Use when |
-|---|---|
-| `services.AddTeamTime()` | The service only reads the **request** zone. Registers `IHttpContextAccessor`, `TimeProvider.System`, `IRequestInfo`, a scoped `IDateTimeProvider`, `TeamHeadersForwardingHandler`, `TeamTimeHeaderMissingFilter` on MVC and `UtcDateTimeJsonConverter` on JSON. `ITeamClocks` is **not** registered, so injecting it fails at resolve time |
-| `services.AddTeamTimeByTeamName<TTeamCopyReader>()` | The service keeps its own copy of the teams (synced by the `TeamCreated` / `TeamUpdated` handlers) and does background or by-name work. Calls `AddTeamTime()` and also registers `ITeamCopyReader`, `ITeamZoneResolver` and `ITeamClocks` as transient (hosted services need that) |
+| Call                                                | Use when                                                                                                                                                                                                                                                                                                                                    |
+| --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `services.AddTeamTime()`                            | The service only reads the **request** zone. Registers `IHttpContextAccessor`, `TimeProvider.System`, `IRequestInfo`, a scoped `IDateTimeProvider`, `TeamHeadersForwardingHandler`, `TeamTimeHeaderMissingFilter` on MVC and `UtcDateTimeJsonConverter` on JSON. `ITeamClocks` is **not** registered, so injecting it fails at resolve time |
+| `services.AddTeamTimeByTeamName<TTeamCopyReader>()` | The service keeps its own copy of the teams (synced by the `TeamCreated` / `TeamUpdated` handlers) and does background or by-name work. Calls `AddTeamTime()` and also registers `ITeamCopyReader`, `ITeamZoneResolver` and `ITeamClocks` as transient (hosted services need that)                                                          |
 
 Registration uses `TryAdd` / `Replace`, so calling both, or calling one twice, is safe. The reader must stay a
 thin mapping from the team document to `TeamTimeSettings`; it returns `null` for an unknown team and never
@@ -167,16 +166,16 @@ backfill is `oskfel-migrations/team-time/2026-10-12_backfill_team_time_defaults.
 
 All storage is UTC. A "day" is a team calendar day, which is not a 24-hour block of UTC.
 
-| Need | Use |
-|---|---|
-| Which team day an instant falls on | `clock.DayOf(utc)` returns a `DateOnly` |
-| Today in the team | `clock.TeamToday` |
-| UTC instant at which a team day begins | `clock.StartOfDayUtc(day)` |
-| Range for querying a team day | `clock.DayRangeUtc(day)` returns `UtcWindow(From, To)`; query `>= From && < To` |
-| Team wall-clock time to store | `clock.ToUtc(teamLocal)` |
-| Instant to display or compare in team time | `clock.ToTeamTime(utc)` |
-| UTC offset at an instant | `clock.OffsetAt(utc)` |
-| A range of several days | `StartOfDayUtc(first)` to `StartOfDayUtc(last.AddDays(1))` |
+| Need                                       | Use                                                                             |
+| ------------------------------------------ | ------------------------------------------------------------------------------- |
+| Which team day an instant falls on         | `clock.DayOf(utc)` returns a `DateOnly`                                         |
+| Today in the team                          | `clock.TeamToday`                                                               |
+| UTC instant at which a team day begins     | `clock.StartOfDayUtc(day)`                                                      |
+| Range for querying a team day              | `clock.DayRangeUtc(day)` returns `UtcWindow(From, To)`; query `>= From && < To` |
+| Team wall-clock time to store              | `clock.ToUtc(teamLocal)`                                                        |
+| Instant to display or compare in team time | `clock.ToTeamTime(utc)`                                                         |
+| UTC offset at an instant                   | `clock.OffsetAt(utc)`                                                           |
+| A range of several days                    | `StartOfDayUtc(first)` to `StartOfDayUtc(last.AddDays(1))`                      |
 
 `ToUtc` handles daylight-saving edges deterministically:
 
@@ -258,8 +257,6 @@ internal static class TeamClocksFor
 - Treating a UTC `DateTime` as a team date (`utc.Date`, `AddDays(1)` on UTC).
 - Zone-less teams in seed data and test fixtures. Seeders now give every team a zone and both `TeamCreated` and
   `TeamUpdated` copy `TimeZone`, `DateFormat` and `TimeFormat`.
-
-
 
 # Part 2: Per-service details
 
@@ -715,11 +712,11 @@ not break on the Gateway side.
 
 ## Gateway: The contract with the services
 
-| Header sent downstream | Claim it is mapped from | Value |
-|---|---|---|
-| `Intowork.TeamTimeZone` | `intowork_team_time_zone` | The team's IANA zone id, or an **empty string** |
-| `Intowork.TeamDateFormat` | `intowork_team_date_format` | The team's date format, default `dd/MM/yyyy` |
-| `Intowork.TeamTimeFormat` | `intowork_team_time_format` | The team's time format, default `HH:mm` |
+| Header sent downstream    | Claim it is mapped from     | Value                                           |
+| ------------------------- | --------------------------- | ----------------------------------------------- |
+| `Intowork.TeamTimeZone`   | `intowork_team_time_zone`   | The team's IANA zone id, or an **empty string** |
+| `Intowork.TeamDateFormat` | `intowork_team_date_format` | The team's date format, default `dd/MM/yyyy`    |
+| `Intowork.TeamTimeFormat` | `intowork_team_time_format` | The team's time format, default `HH:mm`         |
 
 Services read these in `HeaderRequestInfo`: an empty or unknown zone throws `TeamTimeHeaderMissingException`, which
 `TeamTimeHeaderMissingFilter` turns into a **400** titled "Team time zone required". Formats fall back to the same
@@ -731,17 +728,17 @@ makes the service refuse the request, which is visible and fixable.
 
 ## Gateway: Where it lives
 
-| What | Path |
-|---|---|
-| Claim names, `All`, `DefaultValueOf` | `Intowork.Gateway/Time/TeamTimeClaims.cs` (`IntoworkGateway.TeamTime.TeamTimeClaims`) |
-| `TeamTimeValues(TimeZone, DateFormat, TimeFormat)` and `WithoutZone` (`""`, `dd/MM/yyyy`, `HH:mm`) | `Intowork.Gateway/Time/TeamTimeValues.cs` (`Intowork.Gateway.Time`) |
-| Turns a `Team` into `TeamTimeValues`; validates the zone; logs once per team | `Intowork.Gateway/Time/TeamTimeResolver.cs` |
-| Fills / replaces the claims: `SetTeamTimeClaims`, `AddMissingHeaderClaims`, `HeaderMappedClaims`, `AddDummyPreflightValues` | `Intowork.Gateway/Auth/IntoworkAuthInjector.cs` |
-| Claim to header mapping (`Claims[intowork_team_time_zone] > value` and the two siblings) | `Intowork.Gateway.Core/Data/Models/Ingress.cs` (`HeaderTransformation`), consumed by `Intowork.Gateway/Config/ConfigBuilder.cs` |
-| Strips every client-supplied `Intowork.*` header | `Intowork.Gateway/Middleware/IntoworkHeaderStrippingMiddleware.cs` |
-| Replaces team claims when the user picked another team (`X-Selected-Team`) | `Intowork.Gateway/Middleware/IntoworkTeamOverrideMiddleware.cs`, `docs/auth-flow.md` section 3b |
-| Keeps the team copy (zone, formats) current | `Intowork.Gateway.Background/Events/Handlers/TeamCreatedHandler.cs`, `TeamUpdatedHandler.cs` |
-| Tests | `Intowork.Gateway.Tests/Auth/IntoworkAuthInjectorTests.cs`, `HeaderTransformationContractTests.cs`; `Intowork.Gateway.Background.Tests/Events/Handlers/TeamTimeSettingsHandlerTests.cs` |
+| What                                                                                                                        | Path                                                                                                                                                                                    |
+| --------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Claim names, `All`, `DefaultValueOf`                                                                                        | `Intowork.Gateway/Time/TeamTimeClaims.cs` (`IntoworkGateway.TeamTime.TeamTimeClaims`)                                                                                                   |
+| `TeamTimeValues(TimeZone, DateFormat, TimeFormat)` and `WithoutZone` (`""`, `dd/MM/yyyy`, `HH:mm`)                          | `Intowork.Gateway/Time/TeamTimeValues.cs` (`Intowork.Gateway.Time`)                                                                                                                     |
+| Turns a `Team` into `TeamTimeValues`; validates the zone; logs once per team                                                | `Intowork.Gateway/Time/TeamTimeResolver.cs`                                                                                                                                             |
+| Fills / replaces the claims: `SetTeamTimeClaims`, `AddMissingHeaderClaims`, `HeaderMappedClaims`, `AddDummyPreflightValues` | `Intowork.Gateway/Auth/IntoworkAuthInjector.cs`                                                                                                                                         |
+| Claim to header mapping (`Claims[intowork_team_time_zone] > value` and the two siblings)                                    | `Intowork.Gateway.Core/Data/Models/Ingress.cs` (`HeaderTransformation`), consumed by `Intowork.Gateway/Config/ConfigBuilder.cs`                                                         |
+| Strips every client-supplied `Intowork.*` header                                                                            | `Intowork.Gateway/Middleware/IntoworkHeaderStrippingMiddleware.cs`                                                                                                                      |
+| Replaces team claims when the user picked another team (`X-Selected-Team`)                                                  | `Intowork.Gateway/Middleware/IntoworkTeamOverrideMiddleware.cs`, `docs/auth-flow.md` section 3b                                                                                         |
+| Keeps the team copy (zone, formats) current                                                                                 | `Intowork.Gateway.Background/Events/Handlers/TeamCreatedHandler.cs`, `TeamUpdatedHandler.cs`                                                                                            |
+| Tests                                                                                                                       | `Intowork.Gateway.Tests/Auth/IntoworkAuthInjectorTests.cs`, `HeaderTransformationContractTests.cs`; `Intowork.Gateway.Background.Tests/Events/Handlers/TeamTimeSettingsHandlerTests.cs` |
 
 ## Gateway: How a request gets its headers
 
@@ -813,7 +810,6 @@ Run tests from inside `Gateway/`: `dotnet test IntoworkGateway.sln`.
 - The Gateway used to send London when the team had no zone, which hid zone-less teams and moved their day
   boundaries; it now sends an empty zone and logs a warning once per team.
 
-
 # Part 4: Front-end apps (Frontend, HandoverApp, InspectionsApp)
 
 The three apps share the same kit in `src/app/shared/time/`. The text below is the Frontend copy; the wiring that differs per app follows it.
@@ -830,21 +826,21 @@ one), so the app must not hide that by inventing one.
 
 All of it is in `Frontend/src/app/shared/time/` (import as `src/app/shared/time/...`).
 
-| Folder / file | What it is |
-|---|---|
-| `core/time-core.ts`, `core/time-core.types.ts` | Pure functions, no Angular: `isValidZone`, `utcToTeamWallClock`, `resolveTeamWallClock`, `teamWallClockToUtc`, `toApiString`, `parseApiString`, `parseCalendarDay`, `formatCalendarDay`, `calendarDayParts`, `localDate`, `calendarDateToApiString`, `formatInZone`, `formatCalendarDayAs`, `formatWallClock`, `offsetMinutesAt`, `formatUtcOffset`, `deviceZone`, `isDeviceZoneDifferent`. Types: `ZoneId`, `CalendarDay` (`yyyy-MM-dd`), `Instant`, `WallClock`, `ResolvedWallClock` |
-| `settings/team-time.service.ts` | `TeamTimeService` (root singleton): loads the team's settings, exposes `settings`, `settings$`, `zone`, `dateFormat`, `timeFormat`, `loaded$`, `toTeamDate`, `toUtcDate`, `teamNow`, `reload`, `refresh`, and the static `TeamTimeService.active` that the plain helper functions read |
-| `settings/team-time-settings.ts` | `DATE_FORMATS`, `TIME_FORMATS`, `TEAM_TIME_DEFAULTS`, `normalizeTeamTimeSettings`, `patternForFormatName` (names such as `date`, `dateTime`, `time`, `weekdayDate`, `dateLong`, `monthYear`) |
-| `settings/team-time-ready.guard.ts` | `teamTimeReadyGuard`: a route guard that waits for `loaded$` |
-| `conversion/from-api.ts` | API to app: `teamDate`, `calendarDay`, `asTeamDate`, `asTeamDay`, `asLocalDateTime` |
-| `conversion/to-api.ts` | App to API: `utcDate` |
-| `conversion/team-time-conversion.ts` | `teamNow`, `teamIso`, `teamDayText`, `isTeamToday`, `isTeamTomorrow`, `isTeamDayBeforeToday`, `isTeamPast`, `isTeamFuture`, `activeTeamTime` |
-| `display/team-date-formatter.service.ts` | `TeamDateFormatter`: `format(value, name)`, `formatDay(day, name)`, `pattern(name)` |
-| `display/team-date.pipe.ts` | `teamDate` pipe (standalone, impure) |
-| `display/date-time/`, `display/date-time-message/` | `<app-date-time [value] [kind] [format]>` and the message variant |
-| `input/date-time-field/` | `<app-date-time-field>`, a `ControlValueAccessor` date / date-time picker that shows the device-zone warning |
-| `input/team-format-date-adapter.ts` | `TeamFormatDateAdapter` (Material `DateAdapter`) and `TEAM_DATE_FORMATS` |
-| `time-kit.module.ts` | `TimeKitModule`: exports the components and the pipe, and activates `TeamTimeService` |
+| Folder / file                                      | What it is                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| -------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `core/time-core.ts`, `core/time-core.types.ts`     | Pure functions, no Angular: `isValidZone`, `utcToTeamWallClock`, `resolveTeamWallClock`, `teamWallClockToUtc`, `toApiString`, `parseApiString`, `parseCalendarDay`, `formatCalendarDay`, `calendarDayParts`, `localDate`, `calendarDateToApiString`, `formatInZone`, `formatCalendarDayAs`, `formatWallClock`, `offsetMinutesAt`, `formatUtcOffset`, `deviceZone`, `isDeviceZoneDifferent`. Types: `ZoneId`, `CalendarDay` (`yyyy-MM-dd`), `Instant`, `WallClock`, `ResolvedWallClock` |
+| `settings/team-time.service.ts`                    | `TeamTimeService` (root singleton): loads the team's settings, exposes `settings`, `settings$`, `zone`, `dateFormat`, `timeFormat`, `loaded$`, `toTeamDate`, `toUtcDate`, `teamNow`, `reload`, `refresh`, and the static `TeamTimeService.active` that the plain helper functions read                                                                                                                                                                                                 |
+| `settings/team-time-settings.ts`                   | `DATE_FORMATS`, `TIME_FORMATS`, `TEAM_TIME_DEFAULTS`, `normalizeTeamTimeSettings`, `patternForFormatName` (names such as `date`, `dateTime`, `time`, `weekdayDate`, `dateLong`, `monthYear`)                                                                                                                                                                                                                                                                                           |
+| `settings/team-time-ready.guard.ts`                | `teamTimeReadyGuard`: a route guard that waits for `loaded$`                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| `conversion/from-api.ts`                           | API to app: `teamDate`, `calendarDay`, `asTeamDate`, `asTeamDay`, `asLocalDateTime`                                                                                                                                                                                                                                                                                                                                                                                                    |
+| `conversion/to-api.ts`                             | App to API: `utcDate` for moments, `dayToApi` for days                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `conversion/team-time-conversion.ts`               | `teamNow`, `teamIso`, `teamDayText`, `isTeamToday`, `isTeamTomorrow`, `isTeamDayBeforeToday`, `isTeamPast`, `isTeamFuture`, `activeTeamTime`                                                                                                                                                                                                                                                                                                                                           |
+| `display/team-date-formatter.service.ts`           | `TeamDateFormatter`: `format(value, name)`, `formatDay(day, name)`, `pattern(name)`                                                                                                                                                                                                                                                                                                                                                                                                    |
+| `display/team-date.pipe.ts`                        | `teamDate` pipe (standalone, impure)                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `display/date-time/`, `display/date-time-message/` | `<app-date-time [value] [kind] [format]>` and the message variant                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `input/date-time-field/`                           | `<app-date-time-field>`, a `ControlValueAccessor` date / date-time picker that shows the device-zone warning                                                                                                                                                                                                                                                                                                                                                                           |
+| `input/team-format-date-adapter.ts`                | `TeamFormatDateAdapter` (Material `DateAdapter`) and `TEAM_DATE_FORMATS`                                                                                                                                                                                                                                                                                                                                                                                                               |
+| `time-kit.module.ts`                               | `TimeKitModule`: exports the components and the pipe, and activates `TeamTimeService`                                                                                                                                                                                                                                                                                                                                                                                                  |
 
 **Wiring in this app**
 
@@ -891,7 +887,10 @@ All of it is in `Frontend/src/app/shared/time/` (import as `src/app/shared/time/
   it returns the exact UTC `Date` (HttpClient then serialises it with `toISOString()`).
 - To build a string yourself use `teamIso(teamDate)` (throws `TypeError` on an invalid `Date`), or
   `calendarDateToApiString(day, zone)` to get the UTC instant at which a team calendar day starts.
-- Day-only fields that the API stores as a day send the `yyyy-MM-dd` (`teamDayText(date)`), not an instant.
+- Day-only fields are sent as the **UTC midnight** of the team day with `dayToApi(value)` (`conversion/to-api.ts`),
+  which takes a team date or a `yyyy-MM-dd`; read them back with `asTeamDay`. This is what the backend stores today
+  (vehicles, absences, bank holidays). Never send a day with `utcDate`: that is team midnight, which `asTeamDay` reads as
+  the day before east of UTC.
 - A wall-clock time that falls in a daylight-saving gap is moved forward in 30-minute steps; one in an overlap picks the
   first occurrence. `resolveTeamWallClock(input, zone)` returns `status: 'valid' | 'gap' | 'ambiguous'` so a form can warn.
   The backend `ToUtc` does the same, so both sides agree.
@@ -954,7 +953,6 @@ All of it is in `Frontend/src/app/shared/time/` (import as `src/app/shared/time/
 - Specs in `shared/time` are Karma/Jasmine (`ng test`); `input/date-time-field/field-value.spec.ts` is the example for pure functions.
 - Test conversion code against at least two zones and a daylight-saving gap and overlap (`resolveTeamWallClock`). Build
   the settings object explicitly; do not rely on the machine's zone.
-
 
 ## Wiring in Frontend
 
