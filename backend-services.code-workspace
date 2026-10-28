@@ -1,0 +1,27 @@
+{
+	"folders": [
+		{ "name": "Gateway", "path": "Gateway" },
+		{ "name": "ActiveWorkService", "path": "ActiveWorkService" },
+		{ "name": "AttendanceService", "path": "AttendanceService" },
+		{ "name": "CustomerService", "path": "CustomerService" },
+		{ "name": "ForecastingService", "path": "ForecastingService" },
+		{ "name": "GafferService", "path": "GafferService" },
+		{ "name": "HandoverService", "path": "HandoverService" },
+		{ "name": "InspectionsService", "path": "InspectionsService" },
+		{ "name": "MaterialsService", "path": "MaterialsService" },
+		{ "name": "NotificationService", "path": "NotificationService" },
+		{ "name": "PermissionsService", "path": "PermissionsService" },
+		{ "name": "ProjectService", "path": "ProjectService" },
+		{ "name": "ResourcesService", "path": "ResourcesService" },
+		{ "name": "SafetySuiteService", "path": "SafetySuiteService" },
+		{ "name": "CommonLibs", "path": "CommonLibs" },
+		{ "name": "FrameworkCache", "path": "FrameworkCache" },
+		{ "name": "OcelotConfigValidator", "path": "OcelotConfigValidator" }
+	],
+	"settings": {
+		"files.exclude": {
+			"**/bin": true,
+			"**/obj": true
+		}
+	}
+}
