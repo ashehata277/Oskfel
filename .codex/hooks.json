@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/Volumes/SSD/Projects/Work/Oskfel/.codex/hooks/handoff-check.sh'"
+          }
+        ]
+      }
+    ]
+  }
+}
