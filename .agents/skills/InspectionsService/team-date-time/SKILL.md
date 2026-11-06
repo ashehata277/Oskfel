@@ -1,269 +1,97 @@
 ---
 name: team-date-time
 description: >
-  How to handle dates, times and time zones in InspectionsService. Use whenever reading or writing a date or time,
-  computing "today", a day range, a deadline, a reminder time, a report or email timestamp, registering a recurring
-  job, writing an event handler that touches dates, or writing a test for any of these. Also trigger on
-  IDateTimeProvider, ITeamClocks, ITeamZoneResolver, ITeamCopyReader, TeamZones, UtcWindow, DayRangeUtc,
-  StartOfDayUtc, ToUtc, TeamTimeUnavailableException, TeamTimeHeaderMissingException, AddTeamTime,
-  AddTeamTimeByTeamName, Intowork.TeamTimeZone, DateTime.Now, DateTime.Today, TimeZoneInfo, "time zone",
-  "timezone", "UTC", "London" or "daylight saving".
+  Handle team-zone requests, scoped background clocks, UTC instants, calendar-day contracts and date/time tests in InspectionsService. Use when implementing or reviewing this service's date/time behavior.
 ---
 
 # Team date and time (InspectionsService)
 
-This skill is the single reference for how `InspectionsService` treats dates and times. The rule and the kit are shared by all Intowork services; the section below lists where they live in this repository, followed by the full rules.
+## Verify the checkout first
+
+Before relying on wiring or declaring a migration complete, run `git status --short --branch` and inspect the actual package references and source in the target checkout. The team-zone feature can be on a feature branch or another worktree while `main` still uses the old implementation. Use `git worktree list` and read the relevant branch with `git show` when needed; do not switch branches over unrelated changes. Rules below describe the team-zone implementation, not proof that every branch has it. Report the branch and scope searched with review findings.
 
 ## This service
 
-**Kit location:** `InspectionsService/Intowork.Inspections.Core/Time` (namespace `Intowork.TeamTime`).
+The reviewed `feature/1.6.0/team-zone-headers` branch references `Intowork.Common.Time` from:
 
-**Registration and team copy**
+- `Intowork.Inspections.Core/Intowork.Inspections.Core.csproj`
+- `Intowork.Inspections.Customer.Core/Intowork.Inspections.Customer.Core.csproj`
 
-- API: `AddTeamTime()` from `InspectionsServiceCollectionExtensions` (`Intowork.Inspections.API/Extensions/`), request time only.
-- Background: `AddInspectionsBackgroundTeamTime(configuration)` in
-  `Intowork.Inspections.Background/Extensions/InspectionsBackgroundServiceCollectionExtensions.cs` calls
-  `AddTeamTimeByTeamName<TeamCopyReader>()`.
-- Reader: `Intowork.Inspections.Core/Data/Repositories/TeamCopyReader.cs` over `ITeamsRepo.GetSingleAsync`.
-- `TeamCreatedHandler` / `TeamUpdatedHandler` in `Background/Events/Handlers/` keep the copy in sync.
+Use these existing registration, reader and scope integration files when present in the target branch:
 
-**Background and by-name work**
+- `Intowork.Inspections.Background/Events/Scoping/ScopedEventHandler.cs`
+- `Intowork.Inspections.Background/Events/Scoping/ScopedEventHandlerServiceCollectionExtensions.cs`
+- `Intowork.Inspections.Core/Data/Repositories/TeamCopyReader.cs`
 
-- `ReportGeneratorService` (`Background/Services/`) takes `ITeamZoneResolver` and formats the report with the team's
-  resolved zone and formats; it must let `TeamTimeUnavailableException` propagate.
+Relevant test entry points:
 
-**Request routes**
+- `Intowork.Inspections.Architecture.Tests/Time/ClockUsageTests.cs`
+- `Intowork.Inspections.Background.Tests/Events/ScopedEventHandlerTests.cs`
 
-- `GetInspectionsForTeamHandler` (`Intowork.Inspections.Core/CQRS/Handlers/Queries/`) takes `IDateTimeProvider` and converts a team
-  wall-clock filter value with `clock.ToUtc(value)` when its `Kind` is `Unspecified`, otherwise `ToUniversalTime()`.
-  The `...ForTeam...` in handler and repo names is the team-name argument, not `ITeamClocks`.
-- Inspections transactions and totals routes need the `Intowork.TeamTimeZone` header.
+Existing test command (confirm against this checkout and `global.json`): `dotnet test Intowork.Inspections.sln`.
 
-**Tests**
+Trace the actual callers of `UseTeamAsync`, team update handlers, scheduled jobs and report/email rendering when touching them; class names and constructor dependencies from the retired kit are not reliable. Preserve domain-specific behavior such as reminder schedules, wage recalculation ordering and explicit external-calendar zones.
 
-- `Intowork.Inspections.Background.Tests/Time/TeamTimeWiringTests.cs`; other projects: `Core.Tests`, `API.Tests`,
-  `Customer.Core.Tests`, `Architecture.Tests`.
+## Shared package and clock contract
 
-Run tests from inside `InspectionsService/` with `dotnet test Intowork.Inspections.sln`.
+The implementation lives in `CommonLibs/Intowork.Common.Time` and is consumed as the `Intowork.Common.Time` NuGet package. Do not restore per-service `Time/` copies or introduce another clock abstraction. The migrated services use one scoped `DateTimeProvider` implementing `IDateTimeProvider`; the old `Intowork.TeamTime`, `RequestDateTimeProvider`, `TeamDateTimeProvider`, `ITeamClocks`, `ITeamZoneResolver`, `ForTeamAsync` and `WithFormatsForTeamAsync` APIs are retired on these branches.
 
+| Namespace | Relevant API |
+| --- | --- |
+| `Intowork.Common.Time.Clock` | `IDateTimeProvider`, `DateTimeProvider`, `UtcWindow` |
+| `Intowork.Common.Time.Requests` | `IRequestInfo`, `HeaderRequestInfo`, `TeamHeaders`, forwarding handler, missing-header filter, UTC JSON converter |
+| `Intowork.Common.Time.Teams` | `ITeamCopyReader`, `TeamTimeSettings` |
+| `Intowork.Common.Time.Zones` | `TeamZones`, missing-header and unavailable exceptions |
+| `Intowork.Common.Time.Formats` | `TeamFormats` |
+| `Intowork.Common.Time.Calendar` | `CalendarDays` |
+| `Intowork.Common.Time.Mongo` | `MongoDateParts` |
+| `Intowork.Common.Time.DependencyInjection` | `AddTeamTime`, `AddTeamTimeByTeamName<TReader>` |
 
-## The rule in one paragraph
+Application code injects `IDateTimeProvider`. `TimeProvider` belongs inside the shared clock and test setup. Do not use `DateTime.Now`, `DateTime.Today`, `DateTimeOffset.Now`, `TimeZoneInfo.Local` or a hard-coded zone for team business logic. A fixed zone for an external calendar or an explicit team seed is a domain contract, not permission to add a fallback.
 
-Every team in Intowork has exactly one IANA time zone (plus a date format and a time format). A request learns
-its team's zone **only** from the `Intowork.TeamTimeZone` header that the Gateway injects. Background work
-(event handlers, scheduled jobs, hosted services) has no request, so it looks the team up **by name** in this
-service's own copy of the teams. If the zone cannot be found the code **fails**. There is no London fallback, no
-UTC fallback, and no "device zone" anywhere. Everything stored and sent over the wire is UTC; the zone is only
-used to decide which calendar day an instant belongs to and to turn a team wall-clock time back into UTC.
+## Request time and registration
 
-## The kit
+- The Gateway derives `Intowork.TeamTimeZone`, `Intowork.TeamDateFormat` and `Intowork.TeamTimeFormat` from the authorized team. Request code reads these through the package, never through body/query parameters or an independent team lookup.
+- `AddTeamTime()` registers the scoped clock, request reader, forwarding handler, MVC missing-header filter and UTC JSON converter. `AddTeamTimeByTeamName<TReader>()` also registers a transient `ITeamCopyReader`; it does not register `ITeamClocks`.
+- `UtcNow` is lazy and works without team settings. The first zone-dependent operation reads the request zone unless a background team was explicitly set. Missing, empty or invalid request zones become HTTP 400 through `TeamTimeHeaderMissingFilter`; keep zone reads out of constructors.
+- Date/time formats have defaults (`dd/MM/yyyy`, `HH:mm`); the zone has no fallback. Use `clock.Formats` or `FormatDate`, `FormatTime`, `FormatDateTime` for backend-rendered reports, emails and exports. Wire values remain UTC instants.
+- Forward trusted team headers on service-to-service requests. Never trust client-supplied `Intowork.*` headers or silently substitute another team's settings.
 
-The time kit in this service lives in `InspectionsService/Intowork.Inspections.Core/Time` (namespace `Intowork.TeamTime`). It is the same code in every Intowork
-service; do not fork it per service, and do not add a second clock abstraction next to it.
+## Background, events, jobs and SignalR
 
-| Type | What it is |
-|---|---|
-| `TeamHeaders` | Header names: `Intowork.TeamName`, `Intowork.StaffMemberId`, `Intowork.TeamTimeZone`, `Intowork.TeamDateFormat`, `Intowork.TeamTimeFormat`. `TeamHeaders.Forwarded` is the list passed on to downstream calls |
-| `IRequestInfo` / `HeaderRequestInfo` | Reads the headers of the current request. `TimeZone` throws `TeamTimeHeaderMissingException` when the header is missing or not a known zone, and `TeamTimeUnavailableException` when read outside a request. `DateFormat` / `TimeFormat` fall back to `TeamTimeDefaults` |
-| `IDateTimeProvider` | The clock you inject. `UtcNow`, `TeamNow`, `TeamToday`, `Zone`, `ToTeamTime`, `ToUtc`, `OffsetAt`, `DayOf`, `StartOfDayUtc`, `DayRangeUtc`, `ForZone` |
-| `RequestDateTimeProvider` | Scoped `IDateTimeProvider` for requests. **Lazy**: the zone is read from the header only the first time a team-zone member is used |
-| `TeamDateTimeProvider` | The same maths over a fixed `TimeZoneInfo`. This is what `ITeamClocks` hands out |
-| `ITeamClocks` / `TeamClocks` | `ForTeamAsync(teamName, token)` returns an `IDateTimeProvider`; `WithFormatsForTeamAsync(teamName, token)` returns `TeamClockWithFormats(Clock, DateFormat, TimeFormat)` |
-| `ITeamZoneResolver` / `TeamZoneResolver` | Looks the team up through `ITeamCopyReader` and validates the zone. `ZoneForAsync`, `TimeForAsync` |
-| `ITeamCopyReader` | The service's one adapter to its own copy of the teams. Returns `TeamTimeSettings(TimeZone, DateFormat, TimeFormat)` or `null` |
-| `TeamZones` | `TeamZones.Find(zoneId)` returns a cached `TimeZoneInfo?`. The only place a zone id is validated |
-| `TeamTimeDefaults` | `DateFormat = "dd/MM/yyyy"`, `TimeFormat = "HH:mm"`. Formats only, never a zone |
-| `TeamTimeHeaderMissingFilter` | MVC exception filter that turns `TeamTimeHeaderMissingException` into a 400 `ProblemDetails` titled "Team time zone required" |
-| `TeamTimeUnavailableException` | Background lookup failed. `TeamTimeHeaderMissingException` derives from it |
-| `UtcWindow` | `readonly record struct UtcWindow(DateTime From, DateTime To)`, a half-open `[From, To)` range |
-| `UtcDateTimeJsonConverter` | Registered by `AddTeamTime()` on MVC `JsonOptions`; reads and writes every `DateTime` as UTC |
-| `MongoDateParts` | `$dateToString`, `$dateToParts`, `$dayOfWeek`, `$dayOfMonth`, `$month`, `$year` stages that take the team `TimeZoneInfo`, converting Windows ids to IANA |
-| `TeamHeadersForwardingHandler` | `DelegatingHandler` that copies the team headers onto an outgoing `HttpClient` call |
+- A message or worker scope handles one team. Resolve `IDateTimeProvider` inside that scope and call `await clock.UseTeamAsync(teamName, token)` before any zone **or format** member. This requires a registered `ITeamCopyReader`.
+- `UseTeamAsync` sets the team once; calling it again or after reading zone/formats throws. A worker that only uses `UtcNow` needs no team lookup.
+- Hosted services and other singletons open a scope and resolve the worker/clock inside it. Never inject the scoped clock or a scoped repository into a singleton. A loop over teams needs a new scope per team.
+- Verify event-bus lifetimes. Where `RunEachEventInItsOwnScope()` wraps handlers, register it after all handlers and retain one scope per message. Do not resolve a handler from the root provider or share its clock across messages.
+- Resolve team time before business writes, transaction commit or recording an event as handled. Missing team/name/zone throws `TeamTimeUnavailableException`; let message failures propagate for retry. A multi-team scheduled loop may log and skip the failing team, preserving the others.
+- Team-settings synchronization is a special case: a TeamCreated/TeamUpdated handler must persist the incoming zone and both formats before dependent recalculation. Verify transaction and retry behavior rather than looking up an obsolete or nonexistent team copy first.
+- Both TeamCreated and TeamUpdated must copy zone and formats wherever this service maintains a team copy. Readers return null for unknown teams and never invent a zone.
+- Register recurring jobs with the resolved team's zone, not server local time. Check whether registrations must refresh after settings changes. A cron expression without an explicit correct zone is incomplete.
+- SignalR has no reliable request headers per message. Derive the team from authorized connection identity and resolve within the message scope before formatting; invalidate any cached settings on a team/settings change. Do not share a scoped clock for the lifetime of a connection.
 
-## Requests
+## Instants, calendar days and ranges
 
-- The zone comes from `Intowork.TeamTimeZone` and nowhere else. Never read it from the body, query string, a
-  team lookup, or a constant.
-- A missing header, an empty header, or an id `TimeZoneInfo` does not know throws
-  `TeamTimeHeaderMissingException`; `TeamTimeHeaderMissingFilter` turns it into **400**. Do not catch it in a
-  controller or handler, and do not turn it into a default zone.
-- Inject `IDateTimeProvider`. It is **lazy**, so a handler that only needs `UtcNow` works on a route that has no
-  header. The 400 appears the first time the code touches `TeamNow`, `TeamToday`, `Zone`, `ToTeamTime`, `ToUtc`,
-  `OffsetAt`, `DayOf`, `StartOfDayUtc` or `DayRangeUtc`. Keep it lazy: never read `Zone` in a constructor "to be
-  safe", or every route gains a hard header requirement.
-- Date and time **formats** still default to `dd/MM/yyyy` and `HH:mm` when their headers are absent. Only the
-  zone is strict.
-- Never use `DateTime.Now`, `DateTime.Today`, `DateTimeOffset.Now`, `TimeZoneInfo.Local` or a literal zone id such
-  as `"Europe/London"` in production code. Inject `IDateTimeProvider` or `TimeProvider`.
+Classify each field from its API/domain contract before changing conversion. A display format cannot establish whether a field is an instant or a calendar day.
 
-```csharp
-public sealed class GetTodayHandler(IDateTimeProvider clock, IThingsRepo things)
-{
-    public Task<IReadOnlyList<Thing>> HandleAsync(string teamName, CancellationToken token)
-    {
-        var window = clock.DayRangeUtc(clock.TeamToday);
-        return things.GetBetweenAsync(teamName, window.From, window.To, token);
-    }
-}
-```
+| Meaning | Handling |
+| --- | --- |
+| Actual event instant | Store/send UTC; convert with `ToTeamTime` for team business calculations |
+| Calendar day | Prefer `DateOnly` / `yyyy-MM-dd` where the contract supports it; preserve existing UTC-midnight day encodings where required |
+| Team wall-clock input | Resolve with `ToUtc`; do not assume it is already UTC |
+| Team day containing an instant | `DayOf(utc)` |
+| Today / day start | `TeamToday` / `StartOfDayUtc(day)` |
+| Inclusive calendar-day selection | `DaysRangeUtc(firstDay, lastDay)`; its returned UTC range is half-open |
+| Query one day | `DayRangeUtc(day)`, then `>= From && < To` |
 
-## Background work
+A day encoded as UTC midnight is a calendar label, not the instant at which that team's day starts. Do not zone-shift it or change its wire representation incidentally. Derive day/month boundaries in team time, then convert both endpoints to UTC; never add a fixed 24 hours, use an inclusive end-of-day timestamp, or take `.Date` from a UTC instant to identify the team day. Mongo aggregation date operators need the team's zone via `MongoDateParts`.
 
-Event handlers, Hangfire jobs, hosted services and startup code have no `HttpContext`, so there is no request
-zone (reading it throws `TeamTimeUnavailableException`). Do not inject `IDateTimeProvider` into a Background host or anything it runs: its
-`UtcNow` works, but any zone member throws there. Take the team name from the event, the job argument or the
-document, and ask `ITeamClocks`:
+`ToUtc` advances a nonexistent clock time in 30-minute steps until valid and picks the earlier instant in an overlap (largest offset). Preserve this policy across frontend and backend; an untouched repeated-hour value must preserve its original instant.
 
-```csharp
-var clock = await teamClocks.ForTeamAsync(@event.TeamName, token);
-var today = clock.TeamToday;
+## Validation and review coverage
 
-var (teamClock, dateFormat, timeFormat) = await teamClocks.WithFormatsForTeamAsync(@event.TeamName, token);
-```
-
-`ForTeamAsync` / `WithFormatsForTeamAsync` throw `TeamTimeUnavailableException` when:
-
-- the team name is null or empty,
-- the team is not in this service's copy of the teams,
-- the team has no zone, or the stored zone id is not valid (`TeamZones.Find` returns `null`).
-
-The exception is thrown when the clock is resolved, not later. An unknown or zone-less team is a data problem, and
-the correct reaction is a loud failure:
-
-- In an event handler, **let it propagate** (or rethrow) so the message is retried and eventually dead-lettered.
-  Never `catch (Exception)` and carry on with a guessed zone, and never swallow it and mark the event handled.
-- Resolve the clock **before** the handler commits its transaction or records the event as handled. Otherwise a
-  retry sees the event as already done and the failure is silently lost.
-- In a startup or scheduled-job loop over many teams, catch `TeamTimeUnavailableException` **per team**, log the
-  team name and the exception message, and continue with the next team. One bad team must not stop the others.
-- Never catch it and substitute `TimeZoneInfo.Utc` or London.
-
-```csharp
-foreach (var team in teams)
-{
-    try
-    {
-        var clock = await teamClocks.ForTeamAsync(team.TeamName, token);
-        await RunForTeamAsync(team, clock, token);
-    }
-    catch (TeamTimeUnavailableException ex)
-    {
-        logger.LogError(ex, "Skipped team {TeamName}: {Reason}", team.TeamName, ex.Message);
-    }
-}
-```
-
-When a handler needs a zone for a team other than the one in the request (for example an event fan-out), use
-`ForTeamAsync` with that team's name, or `clock.ForZone(zone)` when you already hold a validated `TimeZoneInfo`.
-
-## Registration
-
-| Call | Use when |
-|---|---|
-| `services.AddTeamTime()` | The service only reads the **request** zone. Registers `IHttpContextAccessor`, `TimeProvider.System`, `IRequestInfo`, a scoped `IDateTimeProvider`, `TeamHeadersForwardingHandler`, `TeamTimeHeaderMissingFilter` on MVC and `UtcDateTimeJsonConverter` on JSON. `ITeamClocks` is **not** registered, so injecting it fails at resolve time |
-| `services.AddTeamTimeByTeamName<TTeamCopyReader>()` | The service keeps its own copy of the teams (synced by the `TeamCreated` / `TeamUpdated` handlers) and does background or by-name work. Calls `AddTeamTime()` and also registers `ITeamCopyReader`, `ITeamZoneResolver` and `ITeamClocks` as transient (hosted services need that) |
-
-Registration uses `TryAdd` / `Replace`, so calling both, or calling one twice, is safe. The reader must stay a
-thin mapping from the team document to `TeamTimeSettings`; it returns `null` for an unknown team and never
-supplies a default zone.
-
-Both `TeamCreated` and `TeamUpdated` events carry `TimeZone`, `DateFormat` and `TimeFormat`. A service that keeps a
-team copy must copy all three fields in both handlers, otherwise `ITeamClocks` cannot resolve the team. The data
-backfill is `oskfel-migrations/team-time/2026-10-12_backfill_team_time_defaults.js`.
-
-## Day maths
-
-All storage is UTC. A "day" is a team calendar day, which is not a 24-hour block of UTC.
-
-| Need | Use |
-|---|---|
-| Which team day an instant falls on | `clock.DayOf(utc)` returns a `DateOnly` |
-| Today in the team | `clock.TeamToday` |
-| UTC instant at which a team day begins | `clock.StartOfDayUtc(day)` |
-| Range for querying a team day | `clock.DayRangeUtc(day)` returns `UtcWindow(From, To)`; query `>= From && < To` |
-| Team wall-clock time to store | `clock.ToUtc(teamLocal)` |
-| Instant to display or compare in team time | `clock.ToTeamTime(utc)` |
-| UTC offset at an instant | `clock.OffsetAt(utc)` |
-| A range of several days | `StartOfDayUtc(first)` to `StartOfDayUtc(last.AddDays(1))` |
-
-`ToUtc` handles daylight-saving edges deterministically:
-
-- **Gap** (clocks jump forward, the local time does not exist): the local time is moved forward in 30-minute
-  steps until it is valid, so `01:30` on the spring-forward day becomes `02:00` local.
-- **Overlap** (clocks fall back, the local time happens twice): the **first** occurrence (the earlier instant,
-  with the larger offset) is chosen.
-- Anything else converts normally.
-
-Day length is 23, 24 or 25 hours on transition days. Never write `AddDays(1)` on a UTC instant to mean "the next team
-day", never subtract `24h`, and never compare `.Date` of a UTC value with a team date. Add days to the `DateOnly`
-and convert it with `StartOfDayUtc`.
-
-Persist `DateTime` values with `DateTimeKind.Utc`. Do not store team-local times, offsets or strings that need the
-zone to be understood. If Mongo has to group or format by team day, use `MongoDateParts` with the team
-`TimeZoneInfo` rather than doing the conversion in memory.
-
-## Tests
-
-- **Registration tests**: the service has a `TeamTimeRegistrationTests` / `TeamTimeWiringTests` class that builds the
-  real container and asserts `IDateTimeProvider` (and `ITeamClocks` where `AddTeamTimeByTeamName` is used) resolve.
-  Keep it green when you touch registration.
-- **Request clock**: build a `HeaderRequestInfo` over a `DefaultHttpContext` with the header set, pass it to
-  `new RequestDateTimeProvider(TimeProvider.System, request)`. For the failure case, assert that
-  `TeamToday` (or another zone member) throws `TeamTimeHeaderMissingException`, and that `UtcNow` still works.
-- **Background clock**: use a **real** `TeamClocks` over a **real** `TeamZoneResolver` and a stubbed
-  `ITeamCopyReader`. Do not mock `ITeamClocks` or `IDateTimeProvider` with a made-up zone, because that hides the
-  failure paths.
-- **Fixed time**: a `TimeProvider` subclass whose `GetUtcNow()` returns a chosen instant.
-- Assert the throw when a **zone member is used**, not when the clock is resolved, for the request clock (lazy);
-  assert it when the clock is **resolved** for `ITeamClocks` (it fails in `ForTeamAsync`).
-- Cover the failure cases: team not found (`null` settings), team with a null or invalid zone, and no team name.
-  Cover a DST gap and a DST overlap for any day-boundary code.
-- Never write a test that expects a default zone for a missing one.
-
-```csharp
-internal static class TeamClocksFor
-{
-    public static ITeamClocks Zone(TimeProvider time, TimeZoneInfo zone)
-    {
-        var teams = new Mock<ITeamCopyReader>();
-        teams.Setup(t => t.SettingsOfAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new TeamTimeSettings(zone.Id, "dd/MM/yyyy", "HH:mm"));
-        return new TeamClocks(time, new TeamZoneResolver(teams.Object));
-    }
-}
-```
-
-## Do
-
-- Inject `IDateTimeProvider` for request code and `ITeamClocks` for background code.
-- Use `TeamZones.Find` for every zone validation; use `DayRangeUtc` / `StartOfDayUtc` for day boundaries.
-- Keep the clock lazy and resolve it only when the team-zone value is needed.
-- Resolve the team clock before commit or mark-handled, and rethrow `TeamTimeUnavailableException`.
-- Catch `TeamTimeUnavailableException` per team in loops, log it, and move on.
-- Store UTC, send UTC, and let the front end convert for display.
-- Add a test for the failure path of anything new that reads a zone.
-
-## Don't
-
-- Don't add a London, UTC or "default team" fallback, not even "just for tests" in production code.
-- Don't call `TimeZoneInfo.FindSystemTimeZoneById` / `TryFindSystemTimeZoneById` yourself; use `TeamZones.Find`.
-- Don't read `Intowork.TeamTimeZone` by hand from `HttpContext`; go through `IRequestInfo` / `IDateTimeProvider`.
-- Don't use `DateTime.Now`, `DateTime.Today`, `TimeZoneInfo.Local`, `DateTime.UtcNow` for team-day logic.
-- Don't add a time-zone field to an event just to avoid the lookup; the event carries the team name.
-- Don't catch `TeamTimeUnavailableException` in an event handler and mark the event handled.
-- Don't call `ITeamClocks` in a request path that already has the request clock, unless the code really acts on
-  another team.
-- Don't add comments or a second copy of the kit.
-
-## Mistakes this work already fixed
-
-- A silent London fallback (`TimeZoneFallbackMeter`, `TeamZones` fallbacks, `LondonOnlyTeamCopyReader`,
-  `TeamTimeDefaults.Zone`, `ITeamClocks.ForZoneId`): all removed. Do not bring them back under another name.
-- Resolving the clock **after** `CommitTransactionAsync` or `AddHandledEventAsync`, so a retry was a no-op.
-- Swallowing an exception in an event handler so a bad team never retried.
-- A startup loop that stopped at the first team without a zone; it now catches per team.
-- Reading `Zone` eagerly in a constructor or on a route that has no team-zone header.
-- Treating a UTC `DateTime` as a team date (`utc.Date`, `AddDays(1)` on UTC).
-- Zone-less teams in seed data and test fixtures. Seeders now give every team a zone and both `TeamCreated` and
-  `TeamUpdated` copy `TimeZone`, `DateFormat` and `TimeFormat`.
-
+- Verify actual package version, registration, request-header behavior, scoped lifetimes and team-copy readers in the target branch. A shared package change requires package tests, release/version handling and affected consumer checks; do not copy its source into consumers.
+- Cover zones on opposite sides of UTC, team midnight, a DST gap and overlap, and a 23/25-hour day range. Freeze the clock and set zones explicitly.
+- Test missing/invalid headers, unknown or zone-less teams, team setup before zone/formats, one team per scope, per-message isolation and failure before commit/mark-handled where relevant.
+- Check round trips for both instants and day labels, including nulls; verify backend-rendered dates use team formats. A grep passing on `main` is not validation of a feature branch.
+- Use each repo's actual solution, `global.json` test runner and existing test helpers. A compile check is not a test run. Report private-feed or runtime blockers precisely.
+- Do not add code comments. Preserve unrelated working-tree changes and local-only environment settings; do not commit them with date/time work.

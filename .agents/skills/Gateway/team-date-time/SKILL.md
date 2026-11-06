@@ -17,10 +17,14 @@ downstream request, truthfully, so that the services can apply the rule: the zon
 `Intowork.TeamTimeZone` header, and a service that does not get a valid one answers 400. This skill is what must
 not break on the Gateway side.
 
+## Verify the checkout first
+
+Before relying on wiring or declaring a migration complete, run `git status --short --branch` and inspect the actual package references and source in the target checkout. The team-zone feature can be on a feature branch or another worktree while `main` still uses the old implementation. Use `git worktree list` and read the relevant branch with `git show` when needed; do not switch branches over unrelated changes. Rules below describe the team-zone implementation, not proof that every branch has it. Report the branch and scope searched with review findings.
+
 ## The contract with the services
 
 | Header sent downstream | Claim it is mapped from | Value |
-|---|---|---|
+| --- | --- | --- |
 | `Intowork.TeamTimeZone` | `intowork_team_time_zone` | The team's IANA zone id, or an **empty string** |
 | `Intowork.TeamDateFormat` | `intowork_team_date_format` | The team's date format, default `dd/MM/yyyy` |
 | `Intowork.TeamTimeFormat` | `intowork_team_time_format` | The team's time format, default `HH:mm` |
@@ -36,7 +40,7 @@ makes the service refuse the request, which is visible and fixable.
 ## Where it lives
 
 | What | Path |
-|---|---|
+| --- | --- |
 | Claim names, `All`, `DefaultValueOf` | `Intowork.Gateway/Time/TeamTimeClaims.cs` (`IntoworkGateway.TeamTime.TeamTimeClaims`) |
 | `TeamTimeValues(TimeZone, DateFormat, TimeFormat)` and `WithoutZone` (`""`, `dd/MM/yyyy`, `HH:mm`) | `Intowork.Gateway/Time/TeamTimeValues.cs` (`Intowork.Gateway.Time`) |
 | Turns a `Team` into `TeamTimeValues`; validates the zone; logs once per team | `Intowork.Gateway/Time/TeamTimeResolver.cs` |
@@ -116,3 +120,7 @@ Run tests from inside `Gateway/`: `dotnet test IntoworkGateway.sln`.
 
 - The Gateway used to send London when the team had no zone, which hid zone-less teams and moved their day
   boundaries; it now sends an empty zone and logs a warning once per team.
+
+## End-to-end verification
+
+Check selected-team authorization, replacement of token-supplied claims, stripping client headers, placeholders on preflight, and copying zone plus both formats on team updates. Verify the generated Ocelot headers and a downstream zone-dependent request returns 400 for missing/invalid settings. Consumer services now use `Intowork.Common.Time`; do not infer migration status from an older checkout. A valid zone change also requires frontend settings/cache invalidation; Gateway correctness alone does not prove stale UI dates are refreshed.
