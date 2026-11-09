@@ -1,0 +1,10 @@
+{
+  "folders": [
+    { "name": "CustomerApp", "path": "CustomerApp" },
+    { "name": "Frontend", "path": "Frontend" },
+    { "name": "CustomerService", "path": "CustomerService" },
+    { "name": "Gateway", "path": "Gateway" },
+    { "name": "oskfel-migrations", "path": "oskfel-migrations" }
+  ],
+  "settings": {}
+}
