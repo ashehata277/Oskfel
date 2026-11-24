@@ -191,6 +191,15 @@ Syncfusion schedule, calendar and Gantt read dates in the device zone and create
 
 Any new component of this kind needs the same treatment; a `TeamDate` passed straight in shows device time.
 
+### All-day events
+
+Syncfusion treats `EndTime` of an all-day event as exclusive: an end at midnight on day X draws through X-1, and a start and end on the same midnight draws one day. Our panels, counts and labels treat the end day as inclusive, so a bar built from midnight ends comes out one day short.
+
+- For full-day records, bind `StartTime` to the start of the team day (`asTeamDay(startDay)`) and `EndTime` to the last moment of the inclusive end day (`endOfTeamDay`: `teamDateFrom(y, m, d, 23, 59, 59, 999)` from the end day's team fields).
+- Timed records, such as half-day leave, keep their real start and end instants.
+- When reading an edited or dragged event back, cut the end to year/month/day through `asTeamDate` before sending it; never subtract a day to compensate for the exclusive end.
+- Check multi-day and single-day all-day bars with the device zone set to `America/New_York` and a London team, and compare the bar with the side panel and the day count.
+
 ## Do
 
 - Use `teamDate` / `asTeamDate` / `asTeamDay` for what you read, `utcDate` / `teamIso` / `teamDayText` for what you send.

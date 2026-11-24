@@ -299,6 +299,24 @@ missing, add it there once, and copy the change to `HandoverApp` and `Inspection
 
 ---
 
+## 14. Ending an all-day Syncfusion event at midnight of the last day
+
+```ts
+EndTime: toSyncfusionDate(absence.endDay)
+```
+
+**Why it is wrong:** Syncfusion draws an all-day event up to, but not including, the day of `EndTime` when it is midnight. A leave from the 2nd to the 5th shows on the 2nd to the 4th, while the panel and the day count still say 4 days. Subtracting or adding a day elsewhere to compensate breaks the API value.
+
+```ts
+EndTime: endOfTeamDay(absence.endDay)
+```
+
+`endOfTeamDay` builds the last millisecond of the team day with `teamDateFrom(y, m, d, 23, 59, 59, 999)`. Half-day and other timed records keep their real instants.
+
+📍 `staff-calendar.component.ts` and `staff-wallchart.component.ts` (BAT-5804).
+
+---
+
 ## Checklist before committing date code
 
 - [ ] No new `new Date(` outside `shared/time`. `npm run check:dates` passes.
@@ -307,4 +325,5 @@ missing, add it there once, and copy the change to `HandoverApp` and `Inspection
 - [ ] Dates move with `addDays` / `addMonths`, not by adding milliseconds.
 - [ ] Request bodies use `utcDate` / `teamDayText` / `teamIso`.
 - [ ] Syncfusion bindings use `| toSyncfusion` / `withSyncfusionFields`, and read back with `asTeamDate`.
+- [ ] All-day Syncfusion events end at `endOfTeamDay` of the inclusive end day, not at midnight.
 - [ ] Checked once with the device zone set to `America/New_York` and a London team.
