@@ -78,11 +78,6 @@ get_service_colors() {
             echo "65535,65535,43000|0,0,0"
             ;;
 
-        # Gateway
-        *Gateway.API*|*Gateway.Background*|*Intowork.Gateway*)
-            echo "45000,56000,65535|0,0,0"
-            ;;
-
         *)
             echo ""
             ;;
@@ -156,17 +151,37 @@ EOF
     local escaped_terminal_fg_rgb
     escaped_terminal_fg_rgb=$(printf "%s" "$terminal_fg_rgb" | sed 's/"/\\"/g')
 
-    # Launch a new Terminal window and set its title
-    osascript <<EOF
+    # First service opens the window, every other service opens a new tab in it
+    if [[ -z "$TABS_WINDOW_OPENED" ]]; then
+        TABS_WINDOW_OPENED=1
+        osascript <<APPLESCRIPT
 tell application "Terminal"
-    set newWindow to do script "zsh \"$escaped_script\""
-    set custom title of newWindow to "$escaped_service_name"
+    activate
+    do script "zsh \"$escaped_script\""
+    set targetTab to selected tab of front window
+    set custom title of targetTab to "$escaped_service_name"
     if "$escaped_terminal_bg_rgb" is not "" and "$escaped_terminal_fg_rgb" is not "" then
-        set background color of newWindow to {$escaped_terminal_bg_rgb}
-        set normal text color of newWindow to {$escaped_terminal_fg_rgb}
+        set background color of targetTab to {$escaped_terminal_bg_rgb}
+        set normal text color of targetTab to {$escaped_terminal_fg_rgb}
     end if
 end tell
-EOF
+APPLESCRIPT
+    else
+        osascript <<APPLESCRIPT
+tell application "Terminal" to activate
+tell application "System Events" to keystroke "t" using command down
+delay 1
+tell application "Terminal"
+    do script "zsh \"$escaped_script\"" in front window
+    set targetTab to selected tab of front window
+    set custom title of targetTab to "$escaped_service_name"
+    if "$escaped_terminal_bg_rgb" is not "" and "$escaped_terminal_fg_rgb" is not "" then
+        set background color of targetTab to {$escaped_terminal_bg_rgb}
+        set normal text color of targetTab to {$escaped_terminal_fg_rgb}
+    end if
+end tell
+APPLESCRIPT
+    fi
 
     # Cleanup script after 10 seconds
     (sleep 10 && rm -f "$temp_script") &
@@ -192,6 +207,7 @@ is_service_excluded() {
 # PARSE ARGUMENTS
 #############################################
 EXCEPT_SERVICES=""
+TABS_WINDOW_OPENED=""
 while [[ $# -gt 0 ]]; do
     case "$1" in
         --except)
@@ -217,9 +233,6 @@ run_service "$SCRIPT_DIR/ResourcesService/Intowork.Resources.Background" "http:/
 sleep 2
 
 run_service "$SCRIPT_DIR/PermissionsService/Intowork.Permissions.API" "http://localhost:5001"
-sleep 2
-
-run_service "$SCRIPT_DIR/Gateway/Intowork.Gateway" "http://localhost:5002"
 sleep 2
 
 run_service "$SCRIPT_DIR/CustomerService/Intowork.Customers.API" "http://localhost:5003"
